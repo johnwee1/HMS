@@ -1,0 +1,2 @@
+id,startTime,endTime,appointmentType,appointmentStatus,patient_id,doctor_id,isPrescribed,diagnosis,prescription
+1234,10,15,0,1,2,3,4,"diagnoses are supposed to be strings without commas, but what if I have commas?",i think you just need more sleep.

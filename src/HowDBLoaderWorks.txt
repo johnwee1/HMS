@@ -1,0 +1,5 @@
+Create some db manager class:
+
+for example:
+AppointmentDB, which has the database.
+Call DB.load_txt to load the database according to the schema enforced (it checks the csv headers against the names of the attributes in the code)
