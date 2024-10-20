@@ -53,6 +53,7 @@ public class DBLoader {
                     String value = record.get(header);
 
                     // main parser logic here, only try parsing ints or bool else string
+                    // TODO: Add parsing logic for ArrayList<Integer> if it is necessary to store
                     if (field.getType()==int.class) {
                         int intValue = Integer.parseInt(value);
                         field.set(obj, intValue);
