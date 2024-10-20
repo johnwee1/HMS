@@ -1,11 +1,14 @@
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -23,6 +26,7 @@ public class DBLoader {
     public static <T> HashMap<Integer,T> load_txt(String filename, Class<T> cls) throws IOException {
         Reader in = new FileReader(filename);
         CSVParser parser = CSVFormat.EXCEL.builder()
+                .setIgnoreEmptyLines(true)
                 .setHeader()
                 .setSkipHeaderRecord(true)
                 .build()
@@ -30,7 +34,7 @@ public class DBLoader {
         String[] csvHeaders = parser.getHeaderNames().toArray(new String[0]);
         HashMap<String, Field> classFields = new HashMap<>();
         for (Field field:cls.getFields()){
-            System.out.println("field name = "+field.getName());
+//            System.out.println("field name = "+field.getName());
             classFields.put(field.getName(), field);
         }
         for (String header: csvHeaders){
@@ -71,5 +75,46 @@ public class DBLoader {
             }
         }
         return db;
+    }
+
+    /**
+     * Saves an instance of the database out to a CSV file by saving all fields
+     * Note: Object downcasting is handled by the commons csv library.
+     * TODO: Preserve future unimplemented keys - right now they are just simply dropped.
+     * @param filename
+     * @param db
+     * @param <T> The object.class
+     */
+    public static <T> void save_txt(String filename, HashMap<Integer,T> db){
+        if (db.isEmpty()){
+            System.out.println("No data saved, "+db.getClass().getName()+" has no entries!");
+            return;
+        }
+        T ref = db.values().iterator().next();
+        Field[] classFields = ref.getClass().getDeclaredFields();
+        ArrayList<String> headers = new ArrayList<>();
+        for (Field f:classFields){
+            headers.add(f.getName());
+        }
+        try (CSVPrinter printer = new CSVPrinter(new FileWriter(filename), CSVFormat.EXCEL)) {
+            printer.printRecord(headers);
+            for (T obj: db.values()){
+                ArrayList<Object> rec = new ArrayList<>();
+                for (Field f:classFields){
+                    try {
+                        Object val = f.get(obj);
+                        rec.add(val);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException("Error in accessing object fields in DBLoader: "+e);
+                    }
+                }
+                printer.printRecord(rec);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Error in DBLoader CSV saving "+ e);
+        }
+
+
     }
 }

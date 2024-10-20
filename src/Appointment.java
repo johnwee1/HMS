@@ -1,3 +1,7 @@
+/**
+ * Public Schema class for the Appointment object.
+ * the names of the columns are case-sensitive
+ */
 public class Appointment {
     public int id;
     public String startTime;

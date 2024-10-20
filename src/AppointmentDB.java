@@ -13,13 +13,17 @@ public class AppointmentDB {
         }
     }
 
+    public void save_database(String appointment_filename){
+        DBLoader.save_txt(appointment_filename,db);
+    }
+
     // for testing
-    public void printAllAppointments(){
-        db.forEach((k,v)->{
-            System.out.println("Key= "+k);
-            for (Field f:v.getClass().getFields()){
+    public void printAllAppointments() {
+        db.forEach((k, v) -> {
+            System.out.println("Key= " + k);
+            for (Field f : v.getClass().getFields()) {
                 try {
-                    System.out.println(f.getName()+": "+f.get(v));
+                    System.out.println(f.getName() + ": " + f.get(v));
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
