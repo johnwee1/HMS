@@ -17,10 +17,10 @@ import java.util.HashMap;
 public class DBLoader {
     /**
      * Template
-     * @param filename - name of csvfile to be passed in for processing
-     * @param cls - the class of the database being built
+     * @param filename name of csvfile to be passed in for processing
+     * @param cls the class of the database being built
      * @return HashMap<Integer, T> where the integer is the ID of the item T.
-     * @param <T> - the type (Appointment, Patient etc.) of object that we are trying to read in
+     * @param <T> the type (Appointment, Patient etc.) of object that we are trying to read in
      * @throws IOException
      */
     public static <T> HashMap<Integer,T> load_txt(String filename, Class<T> cls) throws IOException {

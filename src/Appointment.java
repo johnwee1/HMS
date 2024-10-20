@@ -1,6 +1,7 @@
 /**
  * Public Schema class for the Appointment object.
- * the names of the columns are case-sensitive
+ * the names of the columns are case-sensitive.
+ * Will need to implement additional parsing logic to handle time
  */
 public class Appointment {
     public int id;
