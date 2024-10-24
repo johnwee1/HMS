@@ -6,7 +6,7 @@ import java.util.HashMap;
 public abstract class AbstractDB<T> implements InterfaceDB {
     private final Class<T> classType;
     private final String filename;
-    public HashMap<Integer, T> db;
+    public HashMap<String, T> db;
 
     public AbstractDB(Class<T> classType, String csv_filepath){
         this.classType = classType;

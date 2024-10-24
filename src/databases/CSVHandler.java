@@ -10,6 +10,13 @@ public class CSVHandler {
     private static final char QUOTE_CHAR = '"'; // reserved
     private static final char UNPROCESSED_QUOTE_CHAR =  '\''; // swap " to ' if encountered
 
+
+    /**
+     *
+     * @param filepath absolute path of the CSV file
+     * @return iterable string of lists
+     * @throws IOException
+     */
     public static List<String> readHeaders(String filepath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line = reader.readLine();
@@ -24,7 +31,7 @@ public class CSVHandler {
         List<List<String>> rows = new ArrayList<>(); // upcast
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            // read headers and associate records with the row index
+            // read headers and associate records with the row index in the future? it's being associated via index now
             reader.readLine();
 
             while (true) {
@@ -34,7 +41,6 @@ public class CSVHandler {
                 }
                 else break;
             }
-
         }
         return rows;
     }

@@ -6,7 +6,7 @@ package models;
  * Will need to implement additional parsing logic to handle time, and I'm not sure if we want to actually put that logic into this class or a separate TimeParser class
  */
 public class Appointment {
-    public int id;
+    public String id;
     public String startTime;
     public String endTime;
     public int appointmentType;

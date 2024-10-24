@@ -17,10 +17,10 @@ public class DBLoader {
      * @param filename name of csvfile to be passed in for processing
      * @param cls      the class of the database being built
      * @param <T>      the type (models.Appointment, Patient etc.) of object that we are trying to read in
-     * @return HashMap<Integer, T> where the integer is the ID of the item T.
+     * @return HashMap<String, T> where the integer is the ID of the item T.
      * @throws IOException
      */
-    public static <T> HashMap<Integer, T> loadCSV(String filename, Class<T> cls) throws IOException {
+    public static <T> HashMap<String, T> loadCSV(String filename, Class<T> cls) throws IOException {
         List<String> headers = CSVHandler.readHeaders(filename);
         HashMap<String, Field> classFields = new HashMap<>();
 
@@ -36,12 +36,12 @@ public class DBLoader {
             }
         }
         // return this hashmap
-        HashMap<Integer, T> db = new HashMap<>();
+        HashMap<String, T> db = new HashMap<>();
 
         for (List<String> row : CSVHandler.readRows(filename)) {
             try {
                 T obj = cls.getDeclaredConstructor().newInstance(); // create new object to put in hmap
-                int id = -1;
+                String id = "";
                 assert row.size() == headers.size() : "Unexpected CSV Parse Error!";
 
                 // associate the header to row entry by index and process row entries
@@ -52,17 +52,18 @@ public class DBLoader {
 
                     // NOTE: main parser logic here, only try parsing ints, boolean, string
                     if (field.getType() == int.class) {
-                        int intValue = Integer.parseInt(value);
-                        field.set(obj, intValue);
-                        if ((headers.get(i)).equalsIgnoreCase("id")) {
-                            id = intValue;
-                        }
+                        field.set(obj, Integer.parseInt(value));
                     } else if (field.getType() == boolean.class) {
                         field.setBoolean(obj, Boolean.parseBoolean(value));
-                    } else if (field.getType() == String.class) field.set(obj, value);
+                    } else if (field.getType() == String.class) {
+                        field.set(obj, value);
+                        if ((headers.get(i)).equalsIgnoreCase("id")){
+                            id = value;
+                        }
+                    }
                 }
 
-                if (id != -1) {
+                if (!id.isEmpty()) {
                     db.put(id, obj);
                 } else {
                     // this should never happen
@@ -83,7 +84,7 @@ public class DBLoader {
      * @param db
      * @param <T>      The object.class
      */
-    public static <T> void saveCSV(String filename, HashMap<Integer, T> db) {
+    public static <T> void saveCSV(String filename, HashMap<String, T> db) {
         if (db.isEmpty()) {
             System.out.println("No data saved, " + db.getClass().getName() + " has no entries!");
             return;
