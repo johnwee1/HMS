@@ -36,5 +36,10 @@ public class TestDBLoading {
         CSVParser outparser = new CSVParser(out, CSVFormat.EXCEL.builder().setIgnoreEmptyLines(true).build());
         List<CSVRecord> list2 = outparser.getRecords();
         Assertions.assertIterableEquals(list,list2);
+        // close streams
+        in.close();
+        parser.close();
+        out.close();
+        outparser.close();
     }
 }
