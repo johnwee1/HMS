@@ -1,6 +1,3 @@
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -29,17 +26,9 @@ public class TestDBLoading {
         String output_filename = "save_"+appointmentDB.getClass().getName()+".csv";
         String outpath = tempDir.resolve(output_filename).toString();
         appointmentDB.save_database(outpath);
-        Reader in = new FileReader(filepath);
-        CSVParser parser = new CSVParser(in, CSVFormat.EXCEL.builder().setIgnoreEmptyLines(true).build());
-        List<CSVRecord> list = parser.getRecords();
-        Reader out = new FileReader(outpath);
-        CSVParser outparser = new CSVParser(out, CSVFormat.EXCEL.builder().setIgnoreEmptyLines(true).build());
-        List<CSVRecord> list2 = outparser.getRecords();
-        Assertions.assertIterableEquals(list,list2);
-        // close streams
-        in.close();
-        parser.close();
-        out.close();
-        outparser.close();
+
+        // check if the saved files are the same.
+        Assertions.assertIterableEquals(CSVHandler.readHeaders(filepath),CSVHandler.readHeaders(outpath));
+        Assertions.assertIterableEquals(CSVHandler.readRows(filepath),CSVHandler.readRows(outpath));
     }
 }

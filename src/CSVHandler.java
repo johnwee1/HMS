@@ -22,7 +22,7 @@ public class CSVHandler {
         List<List<String>> rows = new ArrayList<>(); // upcast
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            // Skip the header
+            // read headers and associate records with the row index
             reader.readLine();
 
             while (true) {

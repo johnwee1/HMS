@@ -15,7 +15,7 @@ public class AppointmentDB {
      */
     public void load_database(String appointment_filename){
         try {
-            db=DBLoader.load_txt(appointment_filename,Appointment.class);
+            db=DBLoader.loadCSV(appointment_filename,Appointment.class);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load AppointmentDB: "+e);
         }
@@ -26,10 +26,10 @@ public class AppointmentDB {
      * @param appointment_filename
      */
     public void save_database(String appointment_filename){
-        DBLoader.save_txt(appointment_filename,db);
+        DBLoader.saveCSV(appointment_filename,db);
     }
 
-    // for testing, but can prettify later down the line
+    // for testing, but can prettify later down the line when we actually need to implement this
     public void printAllAppointments() {
         db.forEach((k, v) -> {
             System.out.println("Key= " + k);
