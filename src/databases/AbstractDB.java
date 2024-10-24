@@ -25,4 +25,8 @@ public abstract class AbstractDB<T> implements InterfaceDB {
         DBLoader.saveCSV(filename,db);
     }
 
+    public int getSize(){
+        return db.size();
+    }
+
 }
