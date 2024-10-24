@@ -1,3 +1,5 @@
+package models;
+
 public class Medicine {
     public int id;
     public String name;

@@ -1,3 +1,5 @@
+package databases;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -5,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Template class DBLoader can be used to serialize CSV files and deserialize CSV files in memory.
+ * Template class databases.DBLoader can be used to serialize CSV files and deserialize CSV files in memory.
  */
 public class DBLoader {
 
@@ -14,7 +16,7 @@ public class DBLoader {
      *
      * @param filename name of csvfile to be passed in for processing
      * @param cls      the class of the database being built
-     * @param <T>      the type (Appointment, Patient etc.) of object that we are trying to read in
+     * @param <T>      the type (models.Appointment, Patient etc.) of object that we are trying to read in
      * @return HashMap<Integer, T> where the integer is the ID of the item T.
      * @throws IOException
      */
@@ -102,7 +104,7 @@ public class DBLoader {
                         String val = f2.get(obj).toString();
                         row.add(val);
                     } catch (IllegalAccessException e) {
-                        throw new RuntimeException("Error in accessing object fields in DBLoader: " + e);
+                        throw new RuntimeException("Error in accessing object fields in databases.DBLoader: " + e);
                     }
                 }
                 rows.add(row);
