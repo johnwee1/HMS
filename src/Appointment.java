@@ -1,7 +1,7 @@
 /**
  * Public Schema class for the Appointment object.
  * the names of the columns are case-sensitive.
- * Will need to implement additional parsing logic to handle time
+ * Will need to implement additional parsing logic to handle time, and I'm not sure if we want to actually put that logic into this class or a separate TimeParser class
  */
 public class Appointment {
     public int id;

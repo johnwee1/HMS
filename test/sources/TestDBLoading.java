@@ -2,10 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.FileReader;
-import java.io.Reader;
 import java.nio.file.Path;
-import java.util.List;
 
 public class TestDBLoading {
     @TempDir
@@ -21,11 +18,11 @@ public class TestDBLoading {
      */
     public void AppointmentDBLoadSaveEquiv() throws Exception {
         AppointmentDB appointmentDB = new AppointmentDB();
-        appointmentDB.load_database(filepath);
+        appointmentDB.loadDatabase(filepath);
 //        appointmentDB.printAllAppointments();
         String output_filename = "save_"+appointmentDB.getClass().getName()+".csv";
         String outpath = tempDir.resolve(output_filename).toString();
-        appointmentDB.save_database(outpath);
+        appointmentDB.saveDatabase(outpath);
 
         // check if the saved files are the same.
         Assertions.assertIterableEquals(CSVHandler.readHeaders(filepath),CSVHandler.readHeaders(outpath));

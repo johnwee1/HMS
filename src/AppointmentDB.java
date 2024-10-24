@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * AppointmentDB handles loading and saving of csv files. Other appointment related methods will go in here.
  */
-public class AppointmentDB {
+public class AppointmentDB extends InterfaceDB {
     //default constructor is sufficient
     public HashMap<Integer,Appointment> db;
 
@@ -13,7 +13,7 @@ public class AppointmentDB {
      * Loads `appointment_filename` as a CSV. have to pass the absolute path of the file.
      * @param appointment_filename
      */
-    public void load_database(String appointment_filename){
+    public void loadDatabase(String appointment_filename){
         try {
             db=DBLoader.loadCSV(appointment_filename,Appointment.class);
         } catch (IOException e) {
@@ -25,7 +25,7 @@ public class AppointmentDB {
      * Saves `appointment_filename` as a CSV. Have to pass absolute path of the file.
      * @param appointment_filename
      */
-    public void save_database(String appointment_filename){
+    public void saveDatabase(String appointment_filename){
         DBLoader.saveCSV(appointment_filename,db);
     }
 
