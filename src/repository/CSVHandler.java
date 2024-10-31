@@ -1,4 +1,4 @@
-package databases;
+package repository;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -88,30 +88,30 @@ public class CSVHandler {
         }
         writer.newLine();
     }
-
-    public static void main(String[] args){
-        final String filename = "appointments.csv";
-        final String filepath = java.nio.file.Paths.get(System.getProperty("user.dir"),"test","resources", filename).toString();
-
-        try {
-            System.out.println(readHeaders(filepath));
-        } catch (IOException e){
-            throw new RuntimeException("Error: "+e);
-        }
-        List<List<String>> rows = new ArrayList<>();
-        try {
-            rows = readRows(filepath);
-            System.out.println(readRows(filepath));
-        } catch (IOException e){
-            throw new RuntimeException("Error: "+e);
-        }
-        final String outpath = java.nio.file.Paths.get(System.getProperty("user.dir"),"test","resources", "out.csv").toString();
-        try{
-            writeCSV(outpath,readHeaders(filepath),rows);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
+//
+//    public static void main(String[] args){
+//        final String filename = "appointments.csv";
+//        final String filepath = java.nio.file.Paths.get(System.getProperty("user.dir"),"test","resources", filename).toString();
+//
+//        try {
+//            System.out.println(readHeaders(filepath));
+//        } catch (IOException e){
+//            throw new RuntimeException("Error: "+e);
+//        }
+//        List<List<String>> rows = new ArrayList<>();
+//        try {
+//            rows = readRows(filepath);
+//            System.out.println(readRows(filepath));
+//        } catch (IOException e){
+//            throw new RuntimeException("Error: "+e);
+//        }
+//        final String outpath = java.nio.file.Paths.get(System.getProperty("user.dir"),"test","resources", "out.csv").toString();
+//        try{
+//            writeCSV(outpath,readHeaders(filepath),rows);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
 }
 

@@ -1,4 +1,4 @@
-package databases;
+package repository;
 
 import models.Appointment;
 
@@ -6,11 +6,11 @@ import java.lang.reflect.Field;
 
 
 /**
- * databases.AppointmentDB handles loading and saving of csv files. Other appointment related methods will go in here.
+ * databases.AppointmentRepository handles loading and saving of csv files. Other appointment related methods will go in here.
  */
-public class AppointmentDB extends AbstractDB<Appointment> {
+public class AppointmentRepository extends AbstractRepository<Appointment> {
 
-    public AppointmentDB(String csv_filepath) {
+    public AppointmentRepository(String csv_filepath) {
         super(Appointment.class, csv_filepath);
     }
 

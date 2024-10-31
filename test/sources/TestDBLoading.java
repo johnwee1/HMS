@@ -1,10 +1,8 @@
-import databases.AppointmentDB;
-import databases.CSVHandler;
+import repository.AppointmentRepository;
+import repository.CSVHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.nio.file.Path;
 import java.util.List;
 
 public class TestDBLoading {
@@ -13,13 +11,13 @@ public class TestDBLoading {
 
     @Test
     /**
-     * Using databases.AppointmentDB, load and save a CSV file to see if the result is identical.
-     * If updating databases.AppointmentDB the respective test/resources/appointments.csv must be updated to reflect this change
+     * Using databases.AppointmentRepository, load and save a CSV file to see if the result is identical.
+     * If updating databases.AppointmentRepository the respective test/resources/appointments.csv must be updated to reflect this change
      */
     public void AppointmentDBLoadSaveEquiv() throws Exception {
         List<String> in_headers = CSVHandler.readHeaders(filepath);
         List<List<String>> in_rows = CSVHandler.readRows(filepath);
-        AppointmentDB appointmentDB = new AppointmentDB(filepath);
+        AppointmentRepository appointmentDB = new AppointmentRepository(filepath);
         appointmentDB.loadDatabase();
         appointmentDB.printAllAppointments(); // can change later
         appointmentDB.saveDatabase();

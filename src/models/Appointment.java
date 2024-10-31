@@ -5,7 +5,7 @@ package models;
  * the names of the columns are case-sensitive.
  * Will need to implement additional parsing logic to handle time, and I'm not sure if we want to actually put that logic into this class or a separate TimeParser class
  */
-public class Appointment {
+public class Appointment implements IdentifiedObject {
     public String id;
     public String startTime;
     public String endTime;
@@ -16,4 +16,8 @@ public class Appointment {
     public boolean isPrescribed;
     public String diagnosis;
     public String prescription;
+
+    public String getID(){
+        return id;
+    }
 }

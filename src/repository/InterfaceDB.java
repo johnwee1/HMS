@@ -1,4 +1,4 @@
-package databases;
+package repository;
 
 public interface InterfaceDB {
     public void loadDatabase();
