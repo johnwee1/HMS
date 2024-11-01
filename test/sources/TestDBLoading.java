@@ -1,5 +1,5 @@
 import repository.AppointmentRepository;
-import repository.CSVHandler;
+import utils.CSVHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

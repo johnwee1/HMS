@@ -2,4 +2,4 @@ Create some db manager class:
 
 for example:
 repository.AppointmentRepository, which has the database.
-Call repository.InterfaceDB.load_txt to load the database according to the schema enforced (it checks the csv headers against the names of the attributes in the code)
+Call repository.InterfaceRepository.load_txt to load the database according to the schema enforced (it checks the csv headers against the names of the attributes in the code)

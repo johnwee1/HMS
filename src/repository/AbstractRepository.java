@@ -1,13 +1,14 @@
 package repository;
 
 import models.IdentifiedObject;
+import utils.DBLoader;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 // https://www.geeksforgeeks.org/repository-design-pattern/#disadvantages-of-repository-design-pattern
 
-public abstract class AbstractRepository<T extends IdentifiedObject> implements InterfaceDB {
+public abstract class AbstractRepository<T extends IdentifiedObject> implements InterfaceRepository {
     private final Class<T> classType;
     private final String filename;
     public HashMap<String, T> db;

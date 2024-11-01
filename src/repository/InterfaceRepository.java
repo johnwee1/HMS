@@ -1,6 +1,6 @@
 package repository;
 
-public interface InterfaceDB {
+public interface InterfaceRepository {
     public void loadDatabase();
     public void saveDatabase();
 }
