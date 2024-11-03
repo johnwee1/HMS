@@ -4,7 +4,9 @@ import models.IdentifiedObject;
 import utils.DBLoader;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 // https://www.geeksforgeeks.org/repository-design-pattern/#disadvantages-of-repository-design-pattern
 
@@ -16,12 +18,20 @@ import java.util.HashMap;
 public class GenericRepository<T extends IdentifiedObject> extends AbstractRepository<T> {
     private final Class<T> classType;
     private final String filename;
-    public HashMap<String, T> db;
+    private HashMap<String, T> db;
 
     public GenericRepository(Class<T> classType, String csv_filepath){
         this.classType = classType;
         this.filename = csv_filepath;
         loadDatabase(); // implicit load
+    }
+
+    /**
+     * Returns the entire database for iteration. Method usage needs to be accompanied by a saveDatabase() call if underlying db is changed.
+     * @return view only iterator
+     */
+    public Map<String, T> defaultViewOnlyDatabase(){
+        return (Map<String, T>) Collections.unmodifiableMap(db);
     }
 
     protected void loadDatabase() {
