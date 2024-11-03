@@ -27,4 +27,17 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
             }
         });
     }
+
+    // all methods for doctors
+    public boolean createNewAppointment(String startTime, String endTime, int type, int status, String patient_id, String doctor_id){
+        // set patient_id to "" first
+        Appointment newAppointment = new Appointment(startTime, endTime, type, status, patient_id, doctor_id);
+        try {
+            defaultCreateItem(newAppointment);
+        } catch (Exception e) {
+            System.out.println("failed to create appointment object");
+            return false;
+        }
+        return true;
+    }
 }
