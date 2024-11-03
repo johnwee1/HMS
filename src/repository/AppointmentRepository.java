@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 /**
  * databases.AppointmentRepository handles loading and saving of csv files. Other appointment related methods will go in here.
  */
-public class AppointmentRepository extends AbstractRepository<Appointment> {
+public class AppointmentRepository extends GenericRepository<Appointment> {
 
     public AppointmentRepository(String csv_filepath) {
         super(Appointment.class, csv_filepath);

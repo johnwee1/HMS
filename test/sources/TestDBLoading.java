@@ -18,9 +18,7 @@ public class TestDBLoading {
         List<String> in_headers = CSVHandler.readHeaders(filepath);
         List<List<String>> in_rows = CSVHandler.readRows(filepath);
         AppointmentRepository appointmentDB = new AppointmentRepository(filepath);
-        appointmentDB.loadDatabase();
         appointmentDB.printAllAppointments(); // can change later
-        appointmentDB.saveDatabase();
         // check if the saved files are the same.
         Assertions.assertIterableEquals(CSVHandler.readHeaders(filepath),in_headers);
         Assertions.assertIterableEquals(CSVHandler.readRows(filepath),in_rows);

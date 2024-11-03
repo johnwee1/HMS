@@ -1,0 +1,123 @@
+@startuml
+class repository.AppointmentRepository {
++ void printAllAppointments()
+}
+
+abstract class repository.AbstractRepository {
+# {abstract}void loadDatabase()
+# {abstract}void saveDatabase()
+# {abstract}void defaultCreateItem(T)
+# {abstract}T defaultReadItem(String)
+# {abstract}void defaultUpdateItem(T)
+# {abstract}void defaultDeleteItem(String)
+}
+
+class models.Appointment {
++ String id
++ String startTime
++ String endTime
++ int appointmentType
++ int appointmentStatus
++ int patient_id
++ int doctor_id
++ boolean isPrescribed
++ String diagnosis
++ String prescription
++ String getID()
+}
+
+
+class utils.CSVHandler {
+- {static} char DELIMITER
+- {static} char QUOTE_CHAR
+- {static} char UNPROCESSED_QUOTE_CHAR
++ {static} List<String> readHeaders(String)
++ {static} List<List<String>> readRows(String)
+- {static} List<String> parseLine(String)
++ {static} void writeCSV(String,List<String>,List<List<String>>)
+- {static} void writeLine(BufferedWriter,List<String>)
+}
+
+
+class models.Patient {
++ String id
++ String name
++ String currentTreatmentPlan
++ String getID()
+}
+
+
+class models.Medicine {
++ String id
++ String displayName
++ int quantity
++ int alertLevel
++ boolean topUpRequested
++ String getID()
+}
+
+
+class repository.MedicineRepository {
++ void setAlertLevel(String,int)
++ void requestTopUp(String)
++ void setQuantity(String,int)
+}
+
+class utils.PasswordHelper {
+- {static} String salt
++ {static} String hash(String)
++ {static} boolean passwordRuleValidator(String)
+}
+
+
+interface models.IdentifiedObject {
++ String getID()
+}
+
+class models.User {
++ String id
++ String passwordHash
++ String role
++ String getID()
+}
+
+
+class repository.UserRepository {
++ {static} String[] roles
++ String getUserRole(String)
++ boolean createNewUser(String,String,String)
++ boolean updateUserPassword(String,String)
++ void deleteUser(String)
++ User getUserObject(String)
+}
+
+
+class utils.DBLoader {
++ {static} HashMap<String,T> loadCSV(String,Class<T>)
++ {static} void saveCSV(String,HashMap<String,T>)
+}
+
+class repository.GenericRepository {
+- Class<T> classType
+- String filename
++ HashMap<String,T> db
+# void loadDatabase()
+# void saveDatabase()
+# void defaultCreateItem(T)
+# T defaultReadItem(String)
+# void defaultUpdateItem(T)
+# void defaultDeleteItem(String)
+}
+
+
+
+
+repository.GenericRepository <|-- repository.AppointmentRepository
+models.IdentifiedObject <|.. models.Appointment
+models.IdentifiedObject <|.. models.Patient
+models.IdentifiedObject <|.. models.Medicine
+repository.GenericRepository <|-- repository.MedicineRepository
+models.IdentifiedObject <|.. models.User
+repository.GenericRepository <|-- repository.UserRepository
+repository.AbstractRepository <|-- repository.GenericRepository
+@enduml

@@ -5,7 +5,7 @@ import utils.PasswordHelper;
 
 import java.util.Arrays;
 
-public class UserRepository extends AbstractRepository<User> {
+public class UserRepository extends GenericRepository<User> {
 
     /**
      * Static final array of possible roles defined.
@@ -50,6 +50,24 @@ public class UserRepository extends AbstractRepository<User> {
         user.passwordHash = PasswordHelper.hash(newPassword);
         defaultUpdateItem(user);
         return true;
+    }
+
+    /**
+     * Delete's the user with the given username. Only used in testing for now
+     * @param username username (id) of the user.
+     * @return
+     */
+    public void deleteUser(String username){
+        defaultDeleteItem(username);
+    }
+
+    /**
+     * Retrieves the user object with a given username. only used in testing for now
+     * @param username
+     * @return
+     */
+    public User getUserObject(String username){
+        return defaultReadItem(username);
     }
 
 }

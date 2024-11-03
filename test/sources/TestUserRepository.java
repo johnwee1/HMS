@@ -20,7 +20,7 @@ public class TestUserRepository{
     @Order(2)
     public void validateUserPassword(){
         for (int i = 0; i < 10; i++)
-            Assertions.assertEquals(users.defaultReadItem("Test_User_Repository_"+i).passwordHash, PasswordHelper.hash("testPassword" + i));
+            Assertions.assertEquals(users.getUserObject("Test_User_Repository_"+i).passwordHash, PasswordHelper.hash("testPassword" + i));
     }
 
     @Test
@@ -28,7 +28,7 @@ public class TestUserRepository{
     public void deleteUsers(){
         int num = users.db.size();
         for (int i = 0;i < 10; i++)
-            users.defaultDeleteItem("Test_User_Repository_"+i);
+            users.deleteUser("Test_User_Repository_"+i);
         Assertions.assertEquals(users.db.size(),num-10);
     }
 
@@ -37,10 +37,10 @@ public class TestUserRepository{
         String username = "Test_User_Repo_change_pwd";
         String password="password";
         users.createNewUser(username,password,"admin");
-        Assertions.assertEquals(users.defaultReadItem(username).passwordHash, PasswordHelper.hash(password));
+        Assertions.assertEquals(users.getUserObject(username).passwordHash, PasswordHelper.hash(password));
         users.updateUserPassword(username,"new_password");
-        Assertions.assertNotEquals(users.defaultReadItem(username).passwordHash, PasswordHelper.hash(password));
-        Assertions.assertEquals(users.defaultReadItem(username).passwordHash, PasswordHelper.hash("new_password"));
-        users.defaultDeleteItem(username);
+        Assertions.assertNotEquals(users.getUserObject(username).passwordHash, PasswordHelper.hash(password));
+        Assertions.assertEquals(users.getUserObject(username).passwordHash, PasswordHelper.hash("new_password"));
+        users.deleteUser(username);
     }
 }
