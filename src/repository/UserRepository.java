@@ -53,9 +53,8 @@ public class UserRepository extends GenericRepository<User> {
     }
 
     /**
-     * Delete's the user with the given username. Only used in testing for now
+     * Deletes the user with the given username. Only used in testing for now
      * @param username username (id) of the user.
-     * @return
      */
     public void deleteUser(String username){
         defaultDeleteItem(username);

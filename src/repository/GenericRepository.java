@@ -28,7 +28,7 @@ public class GenericRepository<T extends IdentifiedObject> extends AbstractRepos
 
     /**
      * Returns the entire database for iteration. Method usage needs to be accompanied by a saveDatabase() call if underlying db is changed.
-     * @return view only iterator
+     * @return view only database object, for iteration and filtering.
      */
     public Map<String, T> defaultViewOnlyDatabase(){
         return (Map<String, T>) Collections.unmodifiableMap(db);
