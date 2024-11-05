@@ -103,11 +103,23 @@ public class MedicineSystem extends GenericRepository<Medicine> {
     public void setQuantity(String medicineId, int newQty){
         Medicine med = defaultReadItem(medicineId);
         med.quantity = newQty;
-        if (newQty > med.alertLevel){
+        if (newQty >= med.alertLevel){
             med.topUpRequested = false;
             alertedMedicines.remove(med);
         }
         defaultUpdateItem(med);
+    }
+
+    /**
+     * Register a new medicine into the CSV file.
+     * @param medicine
+     */
+    public void registerMedicine(Medicine medicine){
+        defaultCreateItem(medicine);
+    }
+
+    public void deregisterMedicine(String medicineId){
+        defaultDeleteItem(medicineId);
     }
 
     /**
@@ -118,4 +130,5 @@ public class MedicineSystem extends GenericRepository<Medicine> {
     public Set<Medicine> getAlerts(){
         return Collections.unmodifiableSet(alertedMedicines);
     }
+
 }
