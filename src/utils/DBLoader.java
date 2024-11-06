@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 /**
  * Template class databases.DBLoader can be used to serialize CSV files and deserialize CSV files in memory.
  */
@@ -17,8 +18,7 @@ public class DBLoader {
      * @param filename name of csvfile to be passed in for processing
      * @param cls      the class of the database being built
      * @param <T>      the type (models.Appointment, Patient etc.) of object that we are trying to read in
-     * @return HashMap<String, T> where the integer is the ID of the item T.
-     * @throws IOException
+     * @return HashMap of key type String and value store of T, where the string is the ID.
      */
     public static <T> HashMap<String, T> loadCSV(String filename, Class<T> cls) throws IOException {
         List<String> headers = CSVHandler.readHeaders(filename);

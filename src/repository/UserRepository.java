@@ -23,7 +23,7 @@ public class UserRepository extends GenericRepository<User> {
      * @return role as a lower-case string
      */
     public String getUserRole(String username){
-        String role = db.get(username).role.toLowerCase();
+        String role = defaultReadItem(username).role.toLowerCase();
         if (!Arrays.asList(roles).contains(role))
             throw new RuntimeException("Role is not defined in the list of defined roles!");
         return role;
@@ -31,7 +31,7 @@ public class UserRepository extends GenericRepository<User> {
 
     // TODO: Instead of returning false, return custom exceptions so its prettier.
     public boolean createNewUser(String username, String passwordString, String role) {
-        if (db.containsKey(username)) return false;
+        if (defaultViewOnlyDatabase().containsKey(username)) return false;
         if (!Arrays.asList(roles).contains(role)) return false;
         User newUser = new User(username,passwordString,role);
         defaultCreateItem(newUser);
@@ -53,9 +53,8 @@ public class UserRepository extends GenericRepository<User> {
     }
 
     /**
-     * Delete's the user with the given username. Only used in testing for now
+     * Deletes the user with the given username. Only used in testing for now
      * @param username username (id) of the user.
-     * @return
      */
     public void deleteUser(String username){
         defaultDeleteItem(username);

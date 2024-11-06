@@ -11,10 +11,10 @@ public class TestUserRepository{
     @Test
     @Order(1)
     public void addUsers(){
-        int num = users.db.size();
+        int num = users.defaultViewOnlyDatabase().size();
         for (int i = 0;i < 10; i++)
             users.createNewUser("Test_User_Repository_"+i,"testPassword"+i,"admin");
-        Assertions.assertEquals(users.db.size(),num+10);
+        Assertions.assertEquals(users.defaultViewOnlyDatabase().size(),num+10);
     }
     @Test
     @Order(2)
@@ -26,10 +26,10 @@ public class TestUserRepository{
     @Test
     @Order(3)
     public void deleteUsers(){
-        int num = users.db.size();
+        int num = users.defaultViewOnlyDatabase().size();
         for (int i = 0;i < 10; i++)
             users.deleteUser("Test_User_Repository_"+i);
-        Assertions.assertEquals(users.db.size(),num-10);
+        Assertions.assertEquals(users.defaultViewOnlyDatabase().size(),num-10);
     }
 
     @Test
