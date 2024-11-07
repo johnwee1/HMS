@@ -1,5 +1,7 @@
 package models;
 
+import jdk.jshell.spi.SPIResolutionException;
+
 import java.util.UUID;
 
 /**
@@ -36,5 +38,14 @@ public class Appointment implements IdentifiedObject {
 
     public String getID(){
         return id;
+    }
+
+    public void setPrescription(String prescription) {
+        this.isPrescribed = true;
+        this.prescription = prescription;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 }

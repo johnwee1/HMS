@@ -40,4 +40,9 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
         }
         return true;
     }
+
+    public void deleteAppointment(String id) {
+        defaultDeleteItem(id);
+    }
+
 }
