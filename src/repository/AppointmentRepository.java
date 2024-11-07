@@ -4,6 +4,7 @@ import models.Appointment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -31,9 +32,9 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
     }
 
     // all methods for doctors
-    public boolean createNewAppointment(String startTime, String endTime, int type, int status, String patient_id, String doctor_id) {
+    public boolean createNewAppointment(String startTime, String endTime, int status, String doctor_id) {
         // set patient_id to "" first
-        Appointment newAppointment = new Appointment(startTime, endTime, type, status, patient_id, doctor_id);
+        Appointment newAppointment = new Appointment(startTime, endTime, status, doctor_id);
         try {
             defaultCreateItem(newAppointment);
         } catch (Exception e) {
@@ -67,11 +68,15 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
         if (doctor_id != null) {
             curappt.doctor_id = doctor_id;
         }
+        defaultUpdateItem(curappt);
     } //usage: to update fields, add in the value to the fields that need to be changed. else add null.
 
-    public void completeAppointment(String id, String prescription, String diagnosis) {
+    public void completeAppointment(String id, String prescription, String diagnosis, Integer type) {
         Appointment curappt = defaultReadItem(id);
         curappt.appointmentStatus = 3;
+        if (type != null){
+            curappt.appointmentType = type;
+        }
         if (prescription != null) {
             curappt.isPrescribed = true;
             curappt.prescription = prescription;
@@ -79,36 +84,28 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
         if (diagnosis != null) {
             curappt.diagnosis = diagnosis;
         }
+        defaultUpdateItem(curappt);
     } //usage: if no prescription/diagnosis put null
 
-    public ArrayList<String> listByPatID(String patID) {
-        ArrayList<String> patList = new ArrayList<>();
-        defaultViewOnlyDatabase().forEach((k, v) -> {
-            if (Objects.equals(v.patient_id, patID)) {
-                patList.add(v.id);
+
+    public List<Appointment> filterAppointments(String patID, String docID, Integer statusInt) {
+        ArrayList<Appointment> filteredList = new ArrayList<>();
+        defaultViewOnlyDatabase().forEach((k, appt) -> {
+            boolean matches = true;
+            if (patID != null) {
+                matches = matches && Objects.equals(appt.patient_id, patID) ;
+            }
+            if (docID != null) {
+                matches = matches && Objects.equals(appt.doctor_id, docID);
+            }
+            if (statusInt != null) {
+                matches = matches && appt.appointmentStatus == statusInt;
+            }
+            if (matches) {
+                filteredList.add(appt);
             }
         });
-        return patList;
-    }
-
-    public ArrayList<String> listByDocID(String docID){
-        ArrayList<String> docList = new ArrayList<>();
-        defaultViewOnlyDatabase().forEach((k,v) -> {
-            if (Objects.equals(v.doctor_id,docID)){
-                docList.add(v.id);
-            };
-        });
-        return docList;
-    }
-
-    public ArrayList<String> listByStatus(int statusInt){
-        ArrayList<String> statusList = new ArrayList<>();
-        defaultViewOnlyDatabase().forEach((k,v) -> {
-            if (v.appointmentStatus == statusInt){
-                statusList.add(v.id);
-            };
-        });
-        return statusList;
+        return filteredList;
     }
 
 }

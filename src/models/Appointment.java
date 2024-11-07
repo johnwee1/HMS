@@ -22,13 +22,13 @@ public class Appointment implements IdentifiedObject {
     public String prescription;
 
     public Appointment(){};
-    public Appointment(String startTime, String endTime, int type, int status, String patient_id, String doctor_id){
+    public Appointment(String startTime, String endTime, int status, String doctor_id){
         this.id = UUID.randomUUID().toString();
         this.startTime = startTime;
         this.endTime = endTime;
-        this.appointmentType = type;
+        this.appointmentType = -1;
         this.appointmentStatus = status;
-        this.patient_id = patient_id;
+        this.patient_id = "";
         this.doctor_id = doctor_id;
         this.isPrescribed = false;
         this.diagnosis = "";
