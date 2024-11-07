@@ -48,4 +48,8 @@ public class Appointment implements IdentifiedObject {
     public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
     }
+
+    public String getPatient_ID(){return patient_id;}
+
+    public void setPatient_ID(String id){this.patient_id = id;}
 }
