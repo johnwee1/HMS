@@ -1,10 +1,12 @@
 package repository;
 
 import models.Appointment;
+import utils.DateTimeHandler;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -34,14 +36,26 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
     // all methods for doctors
     public boolean createNewAppointment(String startTime, String endTime, int status, String doctor_id) {
         // set patient_id to "" first
-        Appointment newAppointment = new Appointment(startTime, endTime, status, doctor_id);
-        try {
-            defaultCreateItem(newAppointment);
-        } catch (Exception e) {
-            System.out.println("failed to create appointment object");
+        Map<String, Appointment> appointments = defaultViewOnlyDatabase();
+        boolean match = appointments.values().stream().anyMatch(appointment -> appointment.doctor_id.equals(doctor_id) && appointment.startTime.equals(startTime));
+        if (match) {
+            System.out.println("doctor has already created this appointment");
             return false;
         }
-        return true;
+        if (DateTimeHandler.isValid(startTime)) {
+            Appointment newAppointment = new Appointment(startTime, endTime, status, doctor_id);
+            try {
+                defaultCreateItem(newAppointment);
+            } catch (Exception e) {
+                System.out.println("failed to create appointment object");
+                return false;
+            }
+            return true;
+        }
+        else {
+            System.out.println("Invalid time.");
+            return false;
+        }
     }
 
     public void deleteAppointment(String id) {
@@ -50,6 +64,10 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
 
     public void updateAppointment(String id, String startTime, String endTime, Integer type, Integer status, String patient_id, String doctor_id) {
         Appointment curappt = defaultReadItem(id);
+        if (curappt == null){
+            System.out.println("appointment not found");
+            return;
+        }
         if (startTime != null) {
             curappt.startTime = startTime;
         }
@@ -78,7 +96,7 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
             curappt.appointmentType = type;
         }
         if (prescription != null) {
-            curappt.isPrescribed = true;
+            curappt.isPrescribed = 1;
             curappt.prescription = prescription;
         }
         if (diagnosis != null) {
@@ -87,8 +105,15 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
         defaultUpdateItem(curappt);
     } //usage: if no prescription/diagnosis put null
 
+    public void prescribeMedicine(String id) {
+        Appointment curappt = defaultReadItem(id);
+        curappt.isPrescribed = 2;
+        defaultUpdateItem(curappt);
+    }
 
-    public List<Appointment> filterAppointments(String patID, String docID, Integer statusInt) {
+
+
+    public List<Appointment> filterAppointments(String patID, String docID, Integer statusInt, String startTime, Integer isPrescribed) {
         ArrayList<Appointment> filteredList = new ArrayList<>();
         defaultViewOnlyDatabase().forEach((k, appt) -> {
             boolean matches = true;
@@ -101,9 +126,17 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
             if (statusInt != null) {
                 matches = matches && appt.appointmentStatus == statusInt;
             }
+            if (startTime != null) {
+                matches = matches && Objects.equals(appt.startTime, startTime);
+            }
+            if (isPrescribed != null){
+                matches = matches && appt.isPrescribed == isPrescribed;
+            }
             if (matches) {
                 filteredList.add(appt);
             }
+
+
         });
         return filteredList;
     }

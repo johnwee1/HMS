@@ -11,13 +11,13 @@ import java.util.UUID;
  */
 public class Appointment implements IdentifiedObject {
     public String id;
-    public String startTime; //format: DDMMYY:HH (in 24hr format)
-    public String endTime; //format: DDMMYY:HH (in 24hr format)
+    public String startTime; //format: DDMMYYHH (in 24hr format) // we enforce appointments to be in 1hr blocks (CLI)
+    public String endTime; //format: DDMMYYHH (in 24hr format)
     public int appointmentType;
     public int appointmentStatus; // 0: booked 1: avaliable 2: pending 3: completed
     public String patient_id;
     public String doctor_id;
-    public boolean isPrescribed;
+    public int isPrescribed; // 0: No prescription 1: Pending prescription 2: Completed prescription
     public String diagnosis;
     public String prescription;
 
@@ -30,7 +30,7 @@ public class Appointment implements IdentifiedObject {
         this.appointmentStatus = status;
         this.patient_id = "";
         this.doctor_id = doctor_id;
-        this.isPrescribed = false;
+        this.isPrescribed = 0;
         this.diagnosis = "";
         this.prescription = "";
         // set prescription and diagnosis only after completion
@@ -41,7 +41,7 @@ public class Appointment implements IdentifiedObject {
     }
 
     public void setPrescription(String prescription) {
-        this.isPrescribed = true;
+        this.isPrescribed = 2;
         this.prescription = prescription;
     }
 
