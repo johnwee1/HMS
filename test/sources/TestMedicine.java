@@ -1,6 +1,6 @@
 import models.Medicine;
 import org.junit.jupiter.api.*;
-import repository.MedicineSystem;
+import repository.MedicineRepository;
 
 import java.util.Set;
 
@@ -8,7 +8,7 @@ import java.util.Set;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestMedicine {
     final String filepath = java.nio.file.Paths.get(System.getProperty("user.dir"), "test", "resources", "test_medicines.csv").toString();
-    MedicineSystem system = new MedicineSystem(filepath);
+    MedicineRepository system = new MedicineRepository(filepath);
     private final String test_id = "test_medicine";
     private final int defaultAlertLevel = 30;
 

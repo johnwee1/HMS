@@ -61,9 +61,10 @@ public class UserRepository extends GenericRepository<User> {
     }
 
     /**
-     * Retrieves the user object with a given username. only used in testing for now
-     * @param username
-     * @return
+     * Retrieves the user object with a given username.
+     * Throws a runtime exception if the username does not exist
+     * @param username username string
+     * @return A User object
      */
     public User getUserObject(String username){
         return defaultReadItem(username);

@@ -8,14 +8,14 @@ import java.util.Set;
 
 // Currently written with assumption that medicine IDs are human-rememberable IDs
 
-public class MedicineSystem extends GenericRepository<Medicine> {
+public class MedicineRepository extends GenericRepository<Medicine> {
     Set<Medicine> alertedMedicines = new HashSet<>();
 
     /**
      * Initializes medicines and then builds a list of low qty medicines
      * @param filename
      */
-    public MedicineSystem(String filename){
+    public MedicineRepository(String filename){
         super(Medicine.class, filename);
         // builds alertedMedicine list at initialization time
         for (Medicine m : this.defaultViewOnlyDatabase().values()){
