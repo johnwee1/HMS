@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CSVHandler {
+public class CSVHandler implements ResourceHandler {
     private static final char DELIMITER = ',';
     private static final char QUOTE_CHAR = '"'; // reserved
     private static final char UNPROCESSED_QUOTE_CHAR =  '\''; // swap " to ' if encountered
@@ -17,7 +17,7 @@ public class CSVHandler {
      * @return iterable string of lists
      * @throws IOException
      */
-    public static List<String> readHeaders(String filepath) throws IOException {
+    public List<String> readHeaders(String filepath) throws IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line = reader.readLine();
             if (line != null) {
@@ -27,7 +27,7 @@ public class CSVHandler {
         throw new IOException("Error reading CSV! No headers?");
     }
 
-    public static List<List<String>> readRows(String filePath) throws IOException {
+    public List<List<String>> readRows(String filePath) throws IOException {
         List<List<String>> rows = new ArrayList<>(); // upcast
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -45,7 +45,7 @@ public class CSVHandler {
         return rows;
     }
 
-    private static List<String> parseLine(String line) {
+    private List<String> parseLine(String line) {
         List<String> row = new ArrayList<>();
         StringBuilder entry = new StringBuilder();
         boolean isInQuotations = false; // default
@@ -62,7 +62,7 @@ public class CSVHandler {
         return row;
     }
 
-    public static void writeCSV(String filePath, List<String> headers, List<List<String>> rows) throws IOException {
+    public void writeToFile(String filePath, List<String> headers, List<List<String>> rows) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writeLine(writer, headers);
             for (List<String> row : rows) {
@@ -71,7 +71,7 @@ public class CSVHandler {
         }
     }
 
-    private static void writeLine(BufferedWriter writer, List<String> fields) throws IOException {
+    private void writeLine(BufferedWriter writer, List<String> fields) throws IOException {
         boolean first = true; // avoid having to delete the last comma
         for (String field : fields) {
             if (!first) {

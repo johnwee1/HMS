@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class DBLoader {
 
+    private static final ResourceHandler resourceHandler = new CSVHandler();
+
     /**
      * Template
      *
@@ -21,7 +23,7 @@ public class DBLoader {
      * @return HashMap of key type String and value store of T, where the string is the ID.
      */
     public static <T> HashMap<String, T> loadCSV(String filename, Class<T> cls) throws IOException {
-        List<String> headers = CSVHandler.readHeaders(filename);
+        List<String> headers = resourceHandler.readHeaders(filename);
         HashMap<String, Field> classFields = new HashMap<>();
 
         // create a hashmap of the declared field names in class to the actual field object
@@ -38,7 +40,7 @@ public class DBLoader {
         // return this hashmap
         HashMap<String, T> db = new HashMap<>();
 
-        for (List<String> row : CSVHandler.readRows(filename)) {
+        for (List<String> row : resourceHandler.readRows(filename)) {
             try {
                 T obj = cls.getDeclaredConstructor().newInstance(); // create new object to put in hmap
                 String id = "";
@@ -111,7 +113,7 @@ public class DBLoader {
                 rows.add(row);
             }
             try {
-                CSVHandler.writeCSV(filename, headers, rows);
+                resourceHandler.writeToFile(filename, headers, rows);
             } catch (IOException e) {
                 throw new RuntimeException("Error saving CSV: " + e);
             }
