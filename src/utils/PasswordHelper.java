@@ -38,7 +38,18 @@ public class PasswordHelper {
         return true;
     }
 
-
+    /**
+     * Function to verify if the entered password matches the stored hashed password
+     * @param enteredPassword the plain text password entered by user
+     * @param storedHashedPassword the hashed password stored
+     * @return True if passwords match, false if they do not
+     */
+    public static boolean verify(String enteredPassword, String storedHashedPassword){
+        //Hash the entered password
+        String hashedEnteredPassword = hash(enteredPassword);
+        //Compare with stored hashed password
+        return hashedEnteredPassword.equals(storedHashedPassword);
+    }
 
 }
 
