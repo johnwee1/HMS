@@ -3,6 +3,8 @@ package menus;
 import repository.UserRepository;
 import models.User;
 import utils.PasswordHelper;
+
+import java.awt.event.MouseWheelEvent;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
@@ -44,13 +46,8 @@ public class MainMenu {
         System.out.println("Login successful!");
         String role = userRepository.getUserRole(username);
 
-        //REPLACE WITH FACTORY
-        //switch cases for routing to specific CLIsn
-//        switch(role){
-//            case "patient" -> new PatientMenu().run();
-//            case "doctor" -> new DoctorMenu().run();
-//            case "pharmacist" -> new PharmacistMenu.run();
-//            case "admin" -> new AdminMenu.run();
-//            default -> System.out.println("Role unknown. Please try again.");
+        // REPLACE WITH FACTORY
+         Menu menu  = MenuFactory.createMenu(role);
+         menu.userInterface();
     }
 }

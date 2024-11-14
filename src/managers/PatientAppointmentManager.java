@@ -5,6 +5,8 @@ import repository.AppointmentRepository;
 import java.util.List;
 
 public class PatientAppointmentManager {
+    public PatientAppointmentManager(){}
+
     public List<Appointment> checkAvailability(AppointmentRepository repo) {
         return repo.filterAppointments(null,null,1, null,null);
     }
