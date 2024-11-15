@@ -1,3 +1,2 @@
 id,startTime,endTime,appointmentType,appointmentStatus,patient_id,doctor_id,isPrescribed,diagnosis,prescription
-i'm now a string,10,15,0,1,2,3,0,"diagnoses are supposed to be strings without commas, but what if I have commas?",i think you just need more sleep.
 72d7b615-318f-4aef-9f30-3b871df3054b,12112411,12112212,5,3,pat_a,test_doc,1,diagnosis,prescription

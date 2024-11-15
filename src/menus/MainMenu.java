@@ -5,9 +5,6 @@ import models.User;
 import utils.InputValidater;
 import utils.PasswordHelper;
 
-import java.awt.event.MouseWheelEvent;
-import java.util.Scanner;
-
 import static java.lang.System.exit;
 
 public class MainMenu {
@@ -47,6 +44,7 @@ public class MainMenu {
         for (;attempts<5;attempts++) {
             if (!PasswordHelper.verify(password, user.passwordHash)) {
                 System.out.println("Invalid password. Please try again.");
+                password = InputValidater.getValidString();
             } else break;
         }
         if (attempts >=5) {

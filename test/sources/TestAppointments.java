@@ -7,7 +7,7 @@ import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestAppointments {
-    final String filepath = java.nio.file.Paths.get(System.getProperty("user.dir"), "test", "resources", "appointments.csv").toString();
+    final String filepath = java.nio.file.Paths.get(System.getProperty("user.dir"), "test", "resources", "test_appointments.csv").toString();
     AppointmentRepository repo = new AppointmentRepository(filepath);
 
     @Test

@@ -7,7 +7,7 @@ import utils.ResourceHandler;
 import java.util.List;
 
 public class TestDBLoading {
-    final String filename = "appointments.csv";
+    final String filename = "test_appointments.csv";
     final String filepath = java.nio.file.Paths.get(System.getProperty("user.dir"),"test","resources", filename).toString();
     private final ResourceHandler rh = new CSVHandler();
 
