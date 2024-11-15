@@ -50,15 +50,15 @@ public class MainMenu {
             } else break;
         }
         if (attempts >=5) {
-            System.out.println("Login too many times. goodbye!");
+            System.out.println("Login too many times. Goodbye!");
             exit(0); // exit program
         }
 
         System.out.println("Login successful!");
         String role = userRepository.getUserRole(username);
 
-        // REPLACE WITH FACTORY
         MenuFactory mf = new MenuFactory(
+                userRepository,
                 csv_appts,
                 csv_medicines,
                 csv_staff,

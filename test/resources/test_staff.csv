@@ -1,0 +1,4 @@
+id,name,role,age,gender
+admin,Default admin,admin,30,M
+doctor1,Default doctor,doctor,32,F
+pharmacist1,Default pharmacist,pharmacist,44,F

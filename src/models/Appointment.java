@@ -14,7 +14,7 @@ public class Appointment implements IdentifiedObject {
     public String startTime; //format: DDMMYYHH (in 24hr format) // we enforce appointments to be in 1hr blocks (CLI)
     public String endTime; //format: DDMMYYHH (in 24hr format)
     public int appointmentType;
-    public int appointmentStatus; // 0: booked 1: avaliable 2: pending 3: completed
+    public int appointmentStatus; // 0: booked 1: available 2: pending 3: completed
     public String patient_id;
     public String doctor_id;
     public int isPrescribed; // 0: No prescription 1: Pending prescription 2: Completed prescription

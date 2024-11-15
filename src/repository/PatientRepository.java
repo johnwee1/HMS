@@ -14,19 +14,28 @@ public class PatientRepository extends GenericRepository<Patient> {
     public String getName(String username) {
         Patient patient = defaultReadItem(username);
         if (patient == null) {
-            return "patientnotfound";
+            return "Patient not found.";
         }
         return patient.name;
     }
 
-    public boolean createNewPatient(String username, String name, String role, int age, Boolean gender, String treatmentPlan) {
-        if (defaultViewOnlyDatabase().containsKey(username)) return false;
-        Patient newPatient = new Patient(username, name, role, age, gender, treatmentPlan);
+    public Patient getPatient(String id) {
+        return defaultReadItem(id);
+    }
+
+    // Updated to include new attributes
+    public boolean createNewPatient(String id, String name, String email, int phoneNumber, String role,
+                                    int age, Boolean gender, String bloodType) {
+        if (defaultViewOnlyDatabase().containsKey(id)) return false;
+        Patient newPatient = new Patient(id, name, email, phoneNumber, role, age, gender, bloodType);
         defaultCreateItem(newPatient);
         return true;
     }
 
-    public void updatePatient(String username, String name, String role, Integer age, Boolean gender, String treatmentPlan) {
+
+    // Updated to include new attributes
+    public void updatePatient(String username, String name, String role, Integer age, Boolean gender,
+                              String email, Integer phoneNumber, String bloodType, String pastDiagnoses, String treatmentPlan) {
         Patient curPatient = defaultReadItem(username);
         if (curPatient == null) {
             System.out.println("Patient not found");
@@ -44,27 +53,88 @@ public class PatientRepository extends GenericRepository<Patient> {
         if (gender != null) {
             curPatient.gender = gender;
         }
+        if (email != null) {
+            curPatient.email = email;
+        }
+        if (phoneNumber != null) {
+            curPatient.phoneNumber = phoneNumber;
+        }
+        if (bloodType != null) {
+            curPatient.bloodType = bloodType;
+        }
+        if (pastDiagnoses != null) {
+            curPatient.pastDiagnoses = pastDiagnoses;
+        }
         if (treatmentPlan != null) {
             curPatient.currentTreatmentPlan = treatmentPlan;
         }
         defaultUpdateItem(curPatient);
     }
 
-    public void setCurrentTreatmentPlan(String username, String treatmentPlan) {
-        Patient curPatient = defaultReadItem(username);
-        if (curPatient == null) {
+    // Update Past Diagnoses
+    public void updatePastDiagnoses(String patientId, String newDiagnoses) {
+        Patient patient = defaultReadItem(patientId);
+        if (patient == null) {
             System.out.println("Patient not found");
             return;
         }
-        curPatient.currentTreatmentPlan = treatmentPlan;
-        defaultUpdateItem(curPatient);
+        patient.pastDiagnoses = newDiagnoses;
+        defaultUpdateItem(patient);
+        System.out.println("Past diagnoses updated successfully.");
     }
+
+    // Update Current Treatment Plan
+    public void updateCurrentTreatmentPlan(String patientId, String newTreatmentPlan) {
+        Patient patient = defaultReadItem(patientId);
+        if (patient == null) {
+            System.out.println("Patient not found");
+            return;
+        }
+        patient.currentTreatmentPlan = newTreatmentPlan;
+        defaultUpdateItem(patient);
+        System.out.println("Current treatment plan updated successfully.");
+    }
+
+    // Update Email
+    public void updateEmail(String patientId, String newEmail) {
+        Patient patient = defaultReadItem(patientId);
+        if (patient == null) {
+            System.out.println("Patient not found");
+            return;
+        }
+        if (newEmail != null && newEmail.contains("@")) {
+            patient.email = newEmail;
+            defaultUpdateItem(patient);
+            System.out.println("Email updated successfully.");
+        } else {
+            System.out.println("Invalid email address. Please provide a valid email.");
+        }
+    }
+
+    // Update Phone Number
+    public void updatePhoneNumber(String patientId, int newPhoneNumber) {
+        Patient patient = defaultReadItem(patientId);
+        if (patient == null) {
+            System.out.println("Patient not found");
+            return;
+        }
+        if (newPhoneNumber > 0) {
+            patient.phoneNumber = newPhoneNumber;
+            defaultUpdateItem(patient);
+            System.out.println("Phone number updated successfully.");
+        } else {
+            System.out.println("Invalid phone number. Please provide a valid phone number.");
+        }
+    }
+
 
     public void deletePatient(String username) {
         defaultDeleteItem(username);
     }
 
-    public List<Patient> filterPatients(String username, String name, String role, Integer age, Boolean gender, String treatmentPlan) {
+    // Updated filter method to include new attributes
+    public List<Patient> filterPatients(String username, String name, String role, Integer age, Boolean gender,
+                                        String email, Integer phoneNumber, String bloodType, String pastDiagnoses, String treatmentPlan) {
         List<Patient> filteredList = new ArrayList<>();
         defaultViewOnlyDatabase().forEach((key, patient) -> {
             boolean matches = true;
@@ -83,6 +153,18 @@ public class PatientRepository extends GenericRepository<Patient> {
             if (gender != null) {
                 matches = matches && Objects.equals(patient.gender, gender);
             }
+            if (email != null) {
+                matches = matches && Objects.equals(patient.email, email);
+            }
+            if (phoneNumber != null) {
+                matches = matches && Objects.equals(patient.phoneNumber, phoneNumber);
+            }
+            if (bloodType != null) {
+                matches = matches && Objects.equals(patient.bloodType, bloodType);
+            }
+            if (pastDiagnoses != null) {
+                matches = matches && Objects.equals(patient.pastDiagnoses, pastDiagnoses);
+            }
             if (treatmentPlan != null) {
                 matches = matches && Objects.equals(patient.currentTreatmentPlan, treatmentPlan);
             }
@@ -93,4 +175,5 @@ public class PatientRepository extends GenericRepository<Patient> {
         return filteredList;
     }
 }
+
 

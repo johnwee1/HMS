@@ -3,7 +3,10 @@ package managers;
 import models.Appointment;
 import repository.AppointmentRepository;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DoctorAppointmentManager {
     public List<Appointment> checkPending(AppointmentRepository repo, String docID){
@@ -18,6 +21,15 @@ public class DoctorAppointmentManager {
         return repo.filterAppointments(null, docID,3, null, null);
     }
 
+    public Set<String> patientsUnderCare(AppointmentRepository repo,String docID){
+        List<Appointment> list = repo.filterAppointments(null,docID,null,null,null);
+        Set<String> patients = new HashSet<>();
+        for (Appointment appointment : list) {
+            patients.add(appointment.patient_id);
+        }
+        return patients;
+    }
+
     public void acceptAppointment(AppointmentRepository repo, String apptID){
         repo.updateAppointment(apptID,null,null,null,0,null,null);
     }
@@ -26,9 +38,16 @@ public class DoctorAppointmentManager {
         repo.updateAppointment(apptID,null,null,null,1,null,null);
     }
 
-    public void createAppointment(AppointmentRepository repo,String start, String end, String docID){
-        repo.createNewAppointment(start,end,1,docID);
+    public boolean createAppointment(AppointmentRepository repo, String start, String end, String docID) {
+        if (repo.createNewAppointment(start, end, 1, docID)) {
+            System.out.println("Appointment created successfully.");
+            return true;
+        } else {
+            System.out.println("Failed to create the appointment.");
+            return false;
+        }
     }
+
 
     public void completeAppointment(AppointmentRepository repo,String id, String prescription, String diagnosis, Integer type){
         //if no prescription put null

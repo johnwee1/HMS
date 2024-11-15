@@ -47,7 +47,7 @@ public class GenericRepository<T extends IdentifiedObject> extends AbstractRepos
     }
 
     protected void defaultCreateItem(T item) {
-        if (db.containsKey(item.getID())) throw new RuntimeException("Create operation failed! Item does not exist!");
+        if (db.containsKey(item.getID())) throw new RuntimeException("Create operation failed! Item exists already!");
         db.put(item.getID(), item);
         saveDatabase();
     }

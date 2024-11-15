@@ -15,6 +15,10 @@ public class PatientAppointmentManager {
         return repo.filterAppointments(patId, null, 0, null,null);
     }
 
+    public List<Appointment> checkPastAppointments(AppointmentRepository repo, String patId) {
+        return repo.filterAppointments(patId, null, 3, null,null);
+    }
+
     public void bookAppointment(AppointmentRepository repo, String apptID, String patId) {
         repo.updateAppointment(apptID,null,null,null,2, patId, null);
     }

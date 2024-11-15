@@ -9,7 +9,11 @@ public class InputValidater {
         while (true) {
             System.out.print("Please enter a valid integer: ");// Consume the input to prevent input issues
             if (scan.hasNextInt()) {
-                return scan.nextInt(); // Consume the valid integer
+                int nextInt = scan.nextInt();
+                if (nextInt < 0) {
+                    System.out.println("Invalid input (negative number). Please try again.");
+                }
+                else return nextInt;
             } else {
                 scan.next(); // Consume the invalid input
                 System.out.println("Invalid input. Please input a valid integer");

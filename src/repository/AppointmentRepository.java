@@ -39,7 +39,7 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
         Map<String, Appointment> appointments = defaultViewOnlyDatabase();
         boolean match = appointments.values().stream().anyMatch(appointment -> appointment.doctor_id.equals(doctor_id) && appointment.startTime.equals(startTime));
         if (match) {
-            System.out.println("doctor has already created this appointment");
+            System.out.println("Doctor has already created this appointment");
             return false;
         }
         if (DateTimeHandler.isValid(startTime)) {
@@ -47,7 +47,7 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
             try {
                 defaultCreateItem(newAppointment);
             } catch (Exception e) {
-                System.out.println("failed to create appointment object");
+                System.out.println("Failed to create appointment object");
                 return false;
             }
             return true;

@@ -5,6 +5,7 @@ import models.Appointment;
 import models.Medicine;
 import repository.AppointmentRepository;
 import repository.MedicineRepository;
+import repository.UserRepository;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -12,12 +13,12 @@ import java.util.Scanner;
 
 public class PharmacistMenu extends Menu {
 
-    private final PharmacistAppointmentManager pharmacistAppointmentManager = new PharmacistAppointmentManager();
     private final MedicineRepository med_repo;
+    private final PharmacistAppointmentManager pharmacistAppointmentManager = new PharmacistAppointmentManager();
     private final Scanner sc = new Scanner(System.in);
 
-    public PharmacistMenu(MedicineRepository med_repo, AppointmentRepository repo, String id){
-        super(repo, id);
+    public PharmacistMenu(MedicineRepository med_repo, AppointmentRepository repo, UserRepository userRepo, String id){
+        super(repo,userRepo, id);
         this.med_repo = med_repo;
     }
 
@@ -32,7 +33,7 @@ public class PharmacistMenu extends Menu {
             System.out.println("4. Submit Replenishment Request");
             System.out.println("5. Logout");
             System.out.print("\nPlease select an option (1-5): ");
-            List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(repo);
+            List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(apptRepo);
             try {
                 int choice = sc.nextInt();
                 switch (choice) {

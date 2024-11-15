@@ -143,7 +143,11 @@ public class MedicineRepository extends GenericRepository<Medicine> {
      * @param medicine
      */
     public void registerMedicine(Medicine medicine) {
-        defaultCreateItem(medicine);
+        try {
+            defaultCreateItem(medicine);
+        } catch (RuntimeException e) {
+            System.out.println("Medicine registration failed. Medicine ID already exists.");
+        }
     }
 
     public void deregisterMedicine(String medicineId) {
