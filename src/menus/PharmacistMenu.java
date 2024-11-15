@@ -8,7 +8,6 @@ import repository.MedicineRepository;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class PharmacistMenu extends Menu {
@@ -33,37 +32,37 @@ public class PharmacistMenu extends Menu {
             System.out.println("4. Submit Replenishment Request");
             System.out.println("5. Logout");
             System.out.print("\nPlease select an option (1-5): ");
-
+            List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(repo);
             try {
                 int choice = sc.nextInt();
-                sc.nextLine(); // Clear the buffer
-                List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(repo);
-                String format = "%-3s|%-15s|%-10s|%-12d|";
-
                 switch (choice) {
                     case 1:
-                        for (int i = 0; i < appts.size(); i++) {
-                            Appointment a = appts.get(i);
-                            System.out.format(format, i, a.endTime, a.prescription, a.isPrescribed);
-                        }
+                        printAppointments(appts);
                         break;
 
                     case 2:
-                        for (int i = 0; i < appts.size(); i++) {
-                            Appointment a = appts.get(i);
-                            System.out.format(format, i, a.endTime, a.prescription, a.isPrescribed);
-                        }
+                        printAppointments(appts);
                         System.out.println("Enter the ID of the appointment for prescription");
+                    try {
                         int index = sc.nextInt();
-                        updatePrescriptionStatus(index);
+                        while (!updatePrescriptionStatus(index)){};
                         break;
-
+                    } catch (InputMismatchException e){
+                        System.out.println("Invalid input!");
+                        break;
+                    }
                     case 3:
                         med_repo.viewMedicationInventory();
                         break;
 
-                    case 4:
-                        submitReplenishmentRequest();
+                    case 4: // Submit replenishment requests
+                        System.out.println("Enter the ID of the medicine to request for");
+                        try {
+                            String m_id = sc.next();
+                            while (!submitReplenishmentRequest(m_id)){};
+                        } catch (InputMismatchException e){
+                            System.out.println("Invalid input!");
+                        }
                         break;
 
                     case 5:
@@ -82,16 +81,74 @@ public class PharmacistMenu extends Menu {
         }
     }
 
-    private void updatePrescriptionStatus(int index){
-        System.out.println("Enter the medicine ID to update");
-        String medicineId = sc.next();
-        // display medicine information
-        System.out.println("Enter the quantity of medicine that was prescribed to the patient.");
-        System.out.println("If the quantity is insufficient, the medicine will not be dispensed and will automatically request for top up.");
+    /**
+     * Called when prescribing medicine (update appointment outcome)
+     * @param index
+     * @return true when the operation succeeds, false when the operation results in an invalid input.
+     */
+    private boolean updatePrescriptionStatus(int index){
+        System.out.println("Enter the medicine ID to update. To cancel, just press enter (empty)");
+        String medicineId;
+        try {
+            medicineId = sc.next();
+        } catch (InputMismatchException e){
+            System.out.println("Invalid input! Try again.");
+            return false;
+        }
+        if (medicineId.isEmpty()) return true;
+        Medicine m;
+        try {
+            m = med_repo.getMedicineObject(medicineId);
+        } catch (RuntimeException e){
+            System.out.println("Medicine does not exist! Try again.");
+            return false;
+        }
+        med_repo.printMedicineStatus(m);
+
+        System.out.println("Enter the quantity of medicine to dispense to the patient.");
+        int qtySpecified;
+        try {
+            qtySpecified = sc.nextInt();
+        } catch (InputMismatchException e){
+            System.out.println("Invalid input! Try again.");
+            return false;
+        }
+        if (qtySpecified > m.quantity){
+            if (m.topUpRequested){
+                System.out.printf("Insufficient %s (ID: %s) specified. Top-up is in progress. \n", m.displayName, m.id);
+            }
+            else{
+                System.out.printf("Insufficient %s (ID: %s) specified, automatically requesting for top-up.\n", m.displayName, m.id);
+                med_repo.setRequest(m.getID(), true);
+            }
+            System.out.println("Medicine dispense cancelled.");
+            return true;
+        }
+        med_repo.dispense(m.id, qtySpecified);
+        System.out.println("Medicine dispense successful. Displaying new medicine status");
+        med_repo.printMedicineStatus(m);
+        return true;
     }
 
-    private void submitReplenishmentRequest(){
-//        med_repo.setRequest();
+    private boolean submitReplenishmentRequest(String medicineId){
+        if (med_repo.setRequest(medicineId, true)){
+            System.out.println("Success");
+            return true;
+        }
+        else System.out.println("Medicine id does not exist!");
+        return false;
+
+    }
+
+    private void printAppointments(List<Appointment> appts){
+        final String headerFormat = "%-3s|%-15s|%-20s|%-12s|";
+        System.out.printf(headerFormat, "No.", "Time Added", "Prescription", "Status");
+
+        final String format = "%-3s|%-15s|%-20s|%-12d|";
+        for (int i = 0; i < appts.size(); i++) {
+            Appointment a = appts.get(i);
+            System.out.printf(format, i, a.endTime, a.prescription, a.isPrescribed);
+        }
     }
 
 //● View Appointment Outcome Record

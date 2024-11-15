@@ -6,6 +6,9 @@ import java.util.*;
 
 // Currently written with assumption that medicine IDs are human-rememberable IDs
 
+/**
+ * Offers higher level functionality for the UI classes. However, doesn't handle exceptions yet
+ */
 public class MedicineRepository extends GenericRepository<Medicine> {
     Set<Medicine> alertedMedicines = new HashSet<>();
     private static final String headerFormat = "%-20s|%-15s|%-10s|%-12s|%-15s%n";
@@ -37,15 +40,21 @@ public class MedicineRepository extends GenericRepository<Medicine> {
      *
      * @param medicineId
      * @param newAlertLevel
+     * @return True if success, false if medicine id does not exist.
      */
-    public void setAlertLevel(String medicineId, int newAlertLevel) {
-        Medicine med = defaultReadItem(medicineId);
-        if (med.quantity < newAlertLevel) {
-            med.topUpRequested = true;
-            alertedMedicines.add(med);
+    public boolean setAlertLevel(String medicineId, int newAlertLevel) {
+        try {
+            Medicine med = defaultReadItem(medicineId);
+            if (med.quantity < newAlertLevel) {
+                med.topUpRequested = true;
+                alertedMedicines.add(med);
+            }
+            med.alertLevel = newAlertLevel;
+            defaultUpdateItem(med);
+            return true;
+        } catch (RuntimeException e){
+            return false;
         }
-        med.alertLevel = newAlertLevel;
-        defaultUpdateItem(med);
     }
 
     /**
@@ -54,13 +63,18 @@ public class MedicineRepository extends GenericRepository<Medicine> {
      * @param medicineId
      * @param topUpRequested
      */
-    public void setRequest(String medicineId, boolean topUpRequested) {
-        Medicine med = defaultReadItem(medicineId);
-        if (topUpRequested) {
-            alertedMedicines.add(med);
-        } else alertedMedicines.remove(med); // no duplication check needed, since hashset used
-        med.topUpRequested = topUpRequested;
-        defaultUpdateItem(med);
+    public boolean setRequest(String medicineId, boolean topUpRequested) {
+        try {
+            Medicine med = defaultReadItem(medicineId);
+            if (topUpRequested) {
+                alertedMedicines.add(med);
+            } else alertedMedicines.remove(med); // no duplication check needed, since hashset used
+            med.topUpRequested = topUpRequested;
+            defaultUpdateItem(med);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     /**
@@ -69,17 +83,22 @@ public class MedicineRepository extends GenericRepository<Medicine> {
      * @param medicineId medicine name
      * @param qty        qty to dispense
      * @return True if the existing medicine quantity is at least equal to the specified qty.
-     * Otherwise, the medicine is NOT dispensed (and returns false)
+     * Otherwise, the medicine is NOT dispensed (and returns false). Returns false if medicine does not exist.
      */
     public boolean dispense(String medicineId, int qty) {
-        Medicine med = defaultReadItem(medicineId);
-        if (qty > med.quantity) return false;
-        med.quantity -= qty;
-        if (med.quantity < med.alertLevel) {
-            med.topUpRequested = true;
-            alertedMedicines.add(med);
+        try {
+            Medicine med = defaultReadItem(medicineId);
+
+            if (qty > med.quantity) return false;
+            med.quantity -= qty;
+            if (med.quantity < med.alertLevel) {
+                med.topUpRequested = true;
+                alertedMedicines.add(med);
+            }
+            return true;
+        } catch (RuntimeException e){
+            return false;
         }
-        return true;
     }
 
     /**
@@ -96,10 +115,15 @@ public class MedicineRepository extends GenericRepository<Medicine> {
      *
      * @param medicineId
      */
-    public void defaultReplenish(String medicineId) {
-        Medicine med = defaultReadItem(medicineId);
-        int q = med.alertLevel + 10;
-        setQuantity(medicineId, q);
+    public boolean defaultReplenish(String medicineId) {
+        try {
+            Medicine med = defaultReadItem(medicineId);
+            int q = med.alertLevel + 10;
+            setQuantity(medicineId, q);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
 
@@ -159,5 +183,14 @@ public class MedicineRepository extends GenericRepository<Medicine> {
      */
     public void viewReplenishmentRequests(){
         printMedicineCollection(alertedMedicines);
+    }
+
+    public void printMedicineStatus(Medicine m){
+        System.out.printf("Medicine ID: %s\n", m.id);
+        System.out.printf("Display Name: %s\n", m.displayName);
+        System.out.printf("Quantity in stock: %s\n", m.quantity);
+        System.out.print("Top-up status: ");
+        if (m.topUpRequested) System.out.println("Top-up request pending");
+        else System.out.println("Normal");
     }
 }
