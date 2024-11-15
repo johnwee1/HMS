@@ -12,9 +12,9 @@ import java.util.Scanner;
 
 public class PharmacistMenu extends Menu {
 
-    private PharmacistAppointmentManager pharmacistAppointmentManager = new PharmacistAppointmentManager();
-    private MedicineRepository med_repo;
-    private Scanner sc = new Scanner(System.in);
+    private final PharmacistAppointmentManager pharmacistAppointmentManager = new PharmacistAppointmentManager();
+    private final MedicineRepository med_repo;
+    private final Scanner sc = new Scanner(System.in);
 
     public PharmacistMenu(MedicineRepository med_repo, AppointmentRepository repo, String id){
         super(repo, id);
@@ -76,7 +76,6 @@ public class PharmacistMenu extends Menu {
 
             } catch (InputMismatchException e) {
                 System.out.println("\nInvalid input. Please enter a number.");
-                sc.nextLine(); // Clear the buffer
             }
         }
     }
