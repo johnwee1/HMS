@@ -37,18 +37,25 @@ public class PharmacistMenu extends Menu {
             try {
                 int choice = sc.nextInt();
                 sc.nextLine(); // Clear the buffer
+                List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(repo);
+                String format = "%-3s|%-15s|%-10s|%-12d|";
 
                 switch (choice) {
                     case 1:
-                        List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(repo);
-                        String format = "%-20s|%-15s|%-10s|%-12d|";
-                        for (Appointment a : appts) {
-                            System.out.format(format, a.id, a.endTime, a.prescription, a.isPrescribed);
+                        for (int i = 0; i < appts.size(); i++) {
+                            Appointment a = appts.get(i);
+                            System.out.format(format, i, a.endTime, a.prescription, a.isPrescribed);
                         }
                         break;
 
                     case 2:
-                        updatePrescriptionStatus();
+                        for (int i = 0; i < appts.size(); i++) {
+                            Appointment a = appts.get(i);
+                            System.out.format(format, i, a.endTime, a.prescription, a.isPrescribed);
+                        }
+                        System.out.println("Enter the ID of the appointment for prescription");
+                        int index = sc.nextInt();
+                        updatePrescriptionStatus(index);
                         break;
 
                     case 3:
@@ -75,9 +82,8 @@ public class PharmacistMenu extends Menu {
         }
     }
 
-    private void updatePrescriptionStatus(){
-        pharmacistAppointmentManager.completePrescription(repo, id);
-//        med_repo.dispense()
+    private void updatePrescriptionStatus(int index){
+
     }
 
     private void submitReplenishmentRequest(){
