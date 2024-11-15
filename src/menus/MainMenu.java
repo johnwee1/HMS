@@ -2,6 +2,7 @@ package menus;
 
 import repository.UserRepository;
 import models.User;
+import utils.InputValidater;
 import utils.PasswordHelper;
 
 import java.awt.event.MouseWheelEvent;
@@ -10,19 +11,29 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 public class MainMenu {
-    final static String filename = "test_users.csv";
-    final static String filepath = java.nio.file.Paths.get(System.getProperty("user.dir"),"test","resources", filename).toString();
+    String csv_users;
+    String csv_appts;
+    String csv_medicines;
+    String csv_staff;
+    String csv_patients;
 
-    public static void main(String[] args){
-        Scanner s = new Scanner(System.in);
-        final UserRepository userRepository = new UserRepository(filepath);
+    public MainMenu(String users, String appts, String medicines, String staff, String patients) {
+        this.csv_users = users;
+        this.csv_appts=appts;
+        this.csv_medicines=medicines;
+        this.csv_staff=staff;
+        this.csv_patients=patients;
+    }
+
+    public void run(){
+        final UserRepository userRepository = new UserRepository(csv_users);
 
         System.out.println("Hospital Management System");
 
         System.out.println("Login with username:");
-        String username = s.next(); //
+        String username = InputValidater.getValidString(); //
         System.out.println("Password:");
-        String password = s.next(); //
+        String password = InputValidater.getValidString(); //
         User user;
         while (true) {
             try {
@@ -47,7 +58,13 @@ public class MainMenu {
         String role = userRepository.getUserRole(username);
 
         // REPLACE WITH FACTORY
-         Menu menu  = MenuFactory.createMenu(role);
-         menu.userInterface();
+        MenuFactory mf = new MenuFactory(
+                csv_appts,
+                csv_medicines,
+                csv_staff,
+                csv_patients
+        );
+        Menu menu  = mf.createMenu(role, user.id);
+        menu.userInterface();
     }
 }

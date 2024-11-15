@@ -1,0 +1,5 @@
+id,passwordHash,role
+admin,EKbmzIMRo+K8wJv2wZmt7NXdWUCMND6SaxKcSRTzywE=,admin
+user1,XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=,patient
+doctor1,XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=,doctor
+pharmacist1,XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=,pharmacist

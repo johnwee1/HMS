@@ -1,0 +1,4 @@
+id,displayName,quantity,alertLevel,topUpRequested
+paracetemol,panadol,200,25,FALSE
+ibuprofen,fever medicine,100,10,FALSE
+morphine,painkillers,100,50,FALSE
