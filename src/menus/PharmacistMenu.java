@@ -15,6 +15,7 @@ public class PharmacistMenu extends Menu {
 
     private PharmacistAppointmentManager pharmacistAppointmentManager = new PharmacistAppointmentManager();
     private MedicineRepository med_repo;
+    private Scanner sc = new Scanner(System.in);
 
     public PharmacistMenu(MedicineRepository med_repo, AppointmentRepository repo, String id){
         super(repo, id);
@@ -23,7 +24,6 @@ public class PharmacistMenu extends Menu {
 
     @Override
     public void userInterface(){
-        Scanner sc = new Scanner(System.in);
         boolean running = true;
         while (running) {
             System.out.println("\n=== Pharmacy Management System ===");
@@ -83,7 +83,11 @@ public class PharmacistMenu extends Menu {
     }
 
     private void updatePrescriptionStatus(int index){
-
+        System.out.println("Enter the medicine ID to update");
+        String medicineId = sc.next();
+        // display medicine information
+        System.out.println("Enter the quantity of medicine that was prescribed to the patient.");
+        System.out.println("If the quantity is insufficient, the medicine will not be dispensed and will automatically request for top up.");
     }
 
     private void submitReplenishmentRequest(){
