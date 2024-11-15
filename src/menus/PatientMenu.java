@@ -57,7 +57,7 @@ public class PatientMenu extends Menu {
                         for (int i = 0; i < avail.size(); i++) {
                             Appointment appointment = avail.get(i);
                             System.out.println((i + 1) + ". Start Time: " + appointment.startTime);
-                            System.out.println("Doctor: " + appointment.doctor_id);
+                            System.out.println("Staff: " + appointment.doctor_id);
                         }
                     break;
 
@@ -72,7 +72,7 @@ public class PatientMenu extends Menu {
                         for (int i = 0; i < schedavail.size(); i++) {
                             Appointment appointment = schedavail.get(i);
                             System.out.println((i + 1) + ". Start Time: " + appointment.startTime +
-                                    ", Doctor: " + appointment.doctor_id);
+                                    ", Staff: " + appointment.doctor_id);
                         }
 
                         // Taking user input to select an appointment
@@ -89,7 +89,7 @@ public class PatientMenu extends Menu {
                             // Perform operations on the selected appointment
                             System.out.println("You selected appointment with Start Time: " +
                                     selectedAppointment.startTime +
-                                    " and Doctor: " + selectedAppointment.doctor_id + "pending approval");
+                                    " and Staff: " + selectedAppointment.doctor_id + "pending approval");
 
                             // Manipulate the selectedAppointment object as needed here
                         } else {
@@ -113,7 +113,7 @@ public class PatientMenu extends Menu {
                         for (int i = 0; i < reschedBooked.size(); i++) {
                             Appointment appointment = reschedBooked.get(i);
                             System.out.println((i + 1) + ". Start Time: " + appointment.startTime +
-                                    ", Doctor: " + appointment.doctor_id);
+                                    ", Staff: " + appointment.doctor_id);
                         }
                         System.out.print("Select an appointment (1 to " + reschedBooked.size() + ") to reschedule: ");
                     }
@@ -128,7 +128,7 @@ public class PatientMenu extends Menu {
                             System.out.println("Select appointment to change to:");
                             for (int i = 0; i < reschedAvail.size(); i++) {
                                 Appointment appointment = reschedAvail.get(i);
-                                System.out.println((i + 1) + ". Start Time: " + appointment.startTime + "\n" + "Doctor: " + appointment.doctor_id);
+                                System.out.println((i + 1) + ". Start Time: " + appointment.startTime + "\n" + "Staff: " + appointment.doctor_id);
                             }
                             System.out.print("Select an appointment (1 to " + reschedBooked.size() + ") to reschedule: ");
                         }
@@ -138,7 +138,7 @@ public class PatientMenu extends Menu {
                         // Perform operations on the selected appointment
                         System.out.println("You selected appointment with Start Time: " +
                                 selectedAppointment.startTime +
-                                " and Doctor: " + selectedAppointment.doctor_id + "pending approval");
+                                " and Staff: " + selectedAppointment.doctor_id + "pending approval");
 
                         // Manipulate the selectedAppointment object as needed here
                     } else {
@@ -160,7 +160,7 @@ public class PatientMenu extends Menu {
                         for (int i = 0; i < curBooked.size(); i++) {
                             Appointment appointment = curBooked.get(i);
                             System.out.println((i + 1) + ". Start Time: " + appointment.startTime +
-                                    ", Doctor: " + appointment.doctor_id);
+                                    ", Staff: " + appointment.doctor_id);
                         }
 
                         // Taking user input to select an appointment
@@ -177,7 +177,7 @@ public class PatientMenu extends Menu {
                             // Perform operations on the selected appointment
                             System.out.println("appointment with Start Time: " +
                                     selectedAppointment.startTime +
-                                    " and Doctor: " + selectedAppointment.doctor_id + "has been cancelled");
+                                    " and Staff: " + selectedAppointment.doctor_id + "has been cancelled");
                     
                     break;
 

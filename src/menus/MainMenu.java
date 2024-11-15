@@ -20,9 +20,9 @@ public class MainMenu {
         System.out.println("Hospital Management System");
 
         System.out.println("Login with username:");
-        String username = s.next();
+        String username = s.next(); //
         System.out.println("Password:");
-        String password = s.next();
+        String password = s.next(); //
         User user;
         while (true) {
             try {
