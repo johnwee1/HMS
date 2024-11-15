@@ -1,6 +1,7 @@
 package menus;
 
 import managers.DoctorAppointmentManager;
+import models.Appointment;
 import models.Patient;
 import repository.AppointmentRepository;
 import repository.PatientRepository;
@@ -66,19 +67,17 @@ public class DoctorMenu extends Menu{
 
                 case 5:
                     System.out.println("Accepting or Declining Appointment Requests...");
-
+                    handlePendingAppointments(apptManager,apptRepo,id);
                     break;
 
                 case 6:
                     System.out.println("Viewing Upcoming Appointments...");
-                    // Call method to view upcoming appointments
-
+                    viewBookedAppointments(apptManager,apptRepo,id);
                     break;
 
                 case 7:
                     System.out.println("Recording Appointment Outcome...");
-                    // Call method to record the outcome of an appointment
-
+                    recordAppointmentOutcome(apptManager,apptRepo,patientRepo,id);
                     break;
 
                 case 8:
@@ -91,7 +90,6 @@ public class DoctorMenu extends Menu{
                     break;
             }
         }
-
     }
 
     private void viewPatientMedicalRecords(DoctorAppointmentManager apptManager, PatientRepository patientRepo, String doctorId) {
@@ -238,7 +236,7 @@ public class DoctorMenu extends Menu{
             endHour = InputValidater.getValidInteger();
 
             // Validate the time range
-            if (startHour < 0 || startHour > 23 || endHour < 0 || endHour > 23 || startHour >= endHour) {
+            if (startHour < 0  || endHour < 0 || endHour > 23 || startHour >= endHour) {
                 System.out.println("Invalid time range. Please ensure the start time is before the end time and within 0-23.");
             } else {
                 break;
@@ -269,6 +267,131 @@ public class DoctorMenu extends Menu{
         System.out.println("Appointment creation process completed.");
     }
 
+    private void handlePendingAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId) {
+        List<Appointment> pendingAppointments = apptManager.checkPending(apptRepo, doctorId);
 
+        if (pendingAppointments.isEmpty()) {
+            System.out.println("No pending appointments.");
+            return;
+        }
 
+        System.out.println("Pending Appointments:");
+        for (int i = 0; i < pendingAppointments.size(); i++) {
+            Appointment appointment = pendingAppointments.get(i);
+            System.out.println((i + 1) + ". Start Time: " + appointment.startTime + ", Patient ID: " + appointment.patient_id);
+        }
+
+        int choice;
+        while (true) {
+            System.out.print("Select an appointment to accept or decline (1-" + pendingAppointments.size() + "): ");
+            choice = InputValidater.getValidInteger();
+
+            if (choice >= 1 && choice <= pendingAppointments.size()) {
+                break;
+            } else {
+                System.out.println("Invalid selection. Please choose a valid appointment number.");
+            }
+        }
+
+        Appointment selectedAppointment = pendingAppointments.get(choice - 1);
+
+        int action;
+        while (true) {
+            System.out.print("Would you like to (1) Accept or (2) Decline this appointment? Enter 1 or 2: ");
+            action = InputValidater.getValidInteger();
+
+            if (action == 1) {
+                apptManager.acceptAppointment(apptRepo, selectedAppointment.getID());
+                System.out.println("Appointment accepted.");
+                break;
+            } else if (action == 2) {
+                apptManager.declineAppointment(apptRepo, selectedAppointment.getID());
+                System.out.println("Appointment declined.");
+                break;
+            } else {
+                System.out.println("Invalid choice. Please enter 1 to accept or 2 to decline.");
+            }
+        }
+    }
+
+    private void viewBookedAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId) {
+        List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
+
+        if (bookedAppointments.isEmpty()) {
+            System.out.println("No upcoming booked appointments.");
+            return;
+        }
+
+        System.out.println("Upcoming Booked Appointments:");
+        for (int i = 0; i < bookedAppointments.size(); i++) {
+            Appointment appointment = bookedAppointments.get(i);
+            System.out.println((i + 1) + ". Start Time: " + appointment.startTime + ", Patient ID: " + appointment.patient_id);
+        }
+    }
+
+    private void recordAppointmentOutcome(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, PatientRepository patientRepo, String doctorId) {
+        List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
+
+        if (bookedAppointments.isEmpty()) {
+            System.out.println("No booked appointments to complete.");
+            return;
+        }
+
+        System.out.println("Booked Appointments:");
+        for (int i = 0; i < bookedAppointments.size(); i++) {
+            Appointment appointment = bookedAppointments.get(i);
+            System.out.println((i + 1) + ". Start Time: " + appointment.startTime + ", Patient ID: " + appointment.patient_id);
+        }
+
+        int choice;
+        while (true) {
+            System.out.print("Select an appointment to complete (1-" + bookedAppointments.size() + "): ");
+            choice = InputValidater.getValidInteger();
+
+            if (choice >= 1 && choice <= bookedAppointments.size()) {
+                break;
+            } else {
+                System.out.println("Invalid selection. Please choose a valid appointment number.");
+            }
+        }
+
+        Appointment selectedAppointment = bookedAppointments.get(choice - 1);
+
+        // Get diagnosis and prescription from the doctor
+        System.out.print("Enter the diagnosis: ");
+        String diagnosis = InputValidater.getValidString();
+
+        System.out.print("Enter the prescription (or 'none' if no prescription): ");
+        String prescription = InputValidater.getValidString();
+        if (prescription.equalsIgnoreCase("none")) {
+            prescription = null;
+        }
+
+        // Prompt for the type of service provided
+        int serviceType;
+        while (true) {
+            System.out.print("Enter the type of service provided (0: Consultation, 1: X-Ray, 2: Blood Test): ");
+            serviceType = InputValidater.getValidInteger();
+
+            if (serviceType >= 0 && serviceType <= 2) {
+                break;
+            } else {
+                System.out.println("Invalid service type. Please enter 0, 1, or 2.");
+            }
+        }
+
+        // Complete the appointment using DoctorAppointmentManager
+        apptManager.completeAppointment(apptRepo, selectedAppointment.getID(), prescription, diagnosis, serviceType);
+
+        // Update the patient's medical record using PatientRepository
+        String patientId = selectedAppointment.patient_id;
+        if (diagnosis != null) {
+            patientRepo.updatePastDiagnoses(patientId, diagnosis);
+        }
+        if (prescription != null) {
+            patientRepo.updateCurrentTreatmentPlan(patientId, prescription);
+        }
+
+        System.out.println("Appointment completed and patient medical record updated.");
+    }
 }
