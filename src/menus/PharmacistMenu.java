@@ -6,6 +6,7 @@ import models.Medicine;
 import repository.AppointmentRepository;
 import repository.MedicineRepository;
 import repository.UserRepository;
+import utils.InputValidater;
 
 import java.util.InputMismatchException;
 import java.util.List;
@@ -13,17 +14,17 @@ import java.util.Scanner;
 
 public class PharmacistMenu extends Menu {
 
-    private final MedicineRepository med_repo;
+    private final MedicineRepository medRepo;
     private final PharmacistAppointmentManager pharmacistAppointmentManager = new PharmacistAppointmentManager();
     private final Scanner sc = new Scanner(System.in);
 
-    public PharmacistMenu(MedicineRepository med_repo, AppointmentRepository repo, UserRepository userRepo, String id){
-        super(repo,userRepo, id);
-        this.med_repo = med_repo;
+    public PharmacistMenu(MedicineRepository med_repo, AppointmentRepository repo, UserRepository userRepo, String id) {
+        super(repo, userRepo, id);
+        this.medRepo = med_repo;
     }
 
     @Override
-    public void userInterface(){
+    public void userInterface() {
         boolean running = true;
         while (running) {
             System.out.println("\n=== Pharmacy Management System ===");
@@ -34,116 +35,125 @@ public class PharmacistMenu extends Menu {
             System.out.println("5. Logout");
             System.out.print("\nPlease select an option (1-5): ");
             List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(apptRepo);
-            try {
-                int choice = sc.nextInt();
-                switch (choice) {
-                    case 1:
-                        printAppointments(appts);
-                        break;
+            int choice = InputValidater.getValidInteger();
+            switch (choice) {
+                case 1:
+                    printAppointments(appts);
+                    break;
 
-                    case 2:
-                        printAppointments(appts);
-                        System.out.println("Enter the ID of the appointment for prescription");
+                case 2:
+                    printAppointments(appts);
+                    if (appts.isEmpty()) break;
+                    System.out.println("Updating Prescription Status...");
+                    System.out.println("Enter the number (id) of the appointment for prescription");
                     try {
                         int index = sc.nextInt();
-                        while (!updatePrescriptionStatus(index)){};
-                        break;
-                    } catch (InputMismatchException e){
-                        System.out.println("Invalid input!");
-                        break;
-                    }
-                    case 3:
-                        med_repo.viewMedicationInventory();
-                        break;
-
-                    case 4: // Submit replenishment requests
-                        System.out.println("Enter the ID of the medicine to request for");
-                        try {
-                            String m_id = sc.next();
-                            while (!submitReplenishmentRequest(m_id)){};
-                        } catch (InputMismatchException e){
-                            System.out.println("Invalid input!");
+                        if (index > appts.size() - 1 || index < 0) {
+                            System.out.println("Invalid input! Please enter a number that's displayed on screen.");
+                            break;
                         }
+                        if (!updatePrescriptionStatus(appts.get(index).getID())) {
+                            System.out.println("Invalid ID!");
+                            break;
+                        }
+                        ;
                         break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input! Must be an integer!");
+                        sc.nextLine();
+                    }
+                    break;
+                case 3:
+                    medRepo.viewMedicationInventory();
+                    break;
 
-                    case 5:
-                        System.out.println("\nLogging out...");
-                        running = false;
-                        break;
+                case 4: // Submit replenishment requests
+                    System.out.println("Enter the ID of the medicine to request for.");
+                    String m_id = InputValidater.getValidString();
+                    if (!submitReplenishmentRequest(m_id)) {
+                        System.out.println("Invalid ID!");
+                    };
+                    break;
 
-                    default:
-                        System.out.println("\nInvalid option. Please select a number between 1 and 5.");
-                }
+                case 5:
+                    System.out.println("\nLogging out...");
+                    running = false;
+                    break;
 
-            } catch (InputMismatchException e) {
-                System.out.println("\nInvalid input. Please enter a number.");
+                default:
+                    System.out.println("\nInvalid option. Please select a number between 1 and 5.");
             }
+
+
         }
     }
 
     /**
      * Called when prescribing medicine (update appointment outcome)
-     * @param index
+     *
      * @return true when the operation succeeds, false when the operation results in an invalid input.
      */
-    private boolean updatePrescriptionStatus(int index){
+    private boolean updatePrescriptionStatus(String apptId) {
         System.out.println("Enter the medicine ID to update. To cancel, just press enter (empty)");
         String medicineId;
         try {
             medicineId = sc.next();
-        } catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input! Try again.");
             return false;
         }
         if (medicineId.isEmpty()) return true;
         Medicine m;
         try {
-            m = med_repo.getMedicineObject(medicineId);
-        } catch (RuntimeException e){
+            m = medRepo.getMedicineObject(medicineId);
+        } catch (RuntimeException e) {
             System.out.println("Medicine does not exist! Try again.");
             return false;
         }
-        med_repo.printMedicineStatus(m);
+        medRepo.printMedicineStatus(m);
 
         System.out.println("Enter the quantity of medicine to dispense to the patient.");
         int qtySpecified;
         try {
             qtySpecified = sc.nextInt();
-        } catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("Invalid input! Try again.");
             return false;
         }
-        if (qtySpecified > m.quantity){
-            if (m.topUpRequested){
+        if (qtySpecified > m.quantity) {
+            if (m.topUpRequested) {
                 System.out.printf("Insufficient %s (ID: %s) specified. Top-up is in progress. \n", m.displayName, m.id);
-            }
-            else{
+            } else {
                 System.out.printf("Insufficient %s (ID: %s) specified, automatically requesting for top-up.\n", m.displayName, m.id);
-                med_repo.setRequest(m.getID(), true);
+                medRepo.setRequest(m.getID(), true);
             }
             System.out.println("Medicine dispense cancelled.");
             return true;
         }
-        med_repo.dispense(m.id, qtySpecified);
+        medRepo.dispense(m.id, qtySpecified);
         System.out.println("Medicine dispense successful. Displaying new medicine status");
-        med_repo.printMedicineStatus(m);
+        apptRepo.prescribeMedicine(apptId);
+        medRepo.printMedicineStatus(m);
         return true;
     }
 
-    private boolean submitReplenishmentRequest(String medicineId){
-        if (med_repo.setRequest(medicineId, true)){
+    private boolean submitReplenishmentRequest(String medicineId) {
+        if (medRepo.setRequest(medicineId, true)) {
             System.out.println("Success");
             return true;
-        }
-        else System.out.println("Medicine id does not exist!");
+        } else System.out.println("Medicine id does not exist!");
         return false;
 
     }
 
-    private void printAppointments(List<Appointment> appts){
+    private void printAppointments(List<Appointment> appts) {
+        if (appts.isEmpty()) {
+            System.out.println("No outstanding appointments found!\n");
+            return;
+        }
         final String headerFormat = "%-3s|%-15s|%-20s|%-12s|";
         System.out.printf(headerFormat, "No.", "Time Added", "Prescription", "Status");
-
+        System.out.println("-".repeat(headerFormat.length()));
         final String format = "%-3s|%-15s|%-20s|%-12d|";
         for (int i = 0; i < appts.size(); i++) {
             Appointment a = appts.get(i);

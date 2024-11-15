@@ -105,10 +105,15 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
         defaultUpdateItem(curappt);
     } //usage: if no prescription/diagnosis put null
 
-    public void prescribeMedicine(String id) {
-        Appointment curappt = defaultReadItem(id);
-        curappt.isPrescribed = 2;
-        defaultUpdateItem(curappt);
+    public boolean prescribeMedicine(String appointmentId) {
+        try {
+            Appointment curappt = defaultReadItem(appointmentId);
+            curappt.isPrescribed = 2;
+            defaultUpdateItem(curappt);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
@@ -140,5 +145,6 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
         });
         return filteredList;
     }
+
 
 }

@@ -25,13 +25,4 @@ public class PharmacistAppointmentManager {
     public List<Appointment> checkOutstandingRecords(AppointmentRepository repo) {
         return repo.filterAppointments(null, null, 0, null, 1);
     }
-
-    /**
-     * Mark the patient's prescription as dispensed.
-     * @param repo appointment repo
-     * @param patId patient id
-     */
-    public void completePrescription(AppointmentRepository repo, String patId){
-        repo.prescribeMedicine(patId);
-    }
 }

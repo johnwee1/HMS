@@ -10,6 +10,7 @@ public class InputValidater {
             System.out.print("Please enter a valid integer: ");// Consume the input to prevent input issues
             if (scan.hasNextInt()) {
                 int nextInt = scan.nextInt();
+                scan.nextLine();
                 if (nextInt < 0) {
                     System.out.println("Invalid input (negative number). Please try again.");
                 }

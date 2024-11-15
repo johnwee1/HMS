@@ -17,14 +17,16 @@ public class TestPharmacist {
         return java.nio.file.Paths.get(System.getProperty("user.dir"), "test","resources", filename).toString();
     }
 
-    static MedicineRepository medRepo = new MedicineRepository(f(medicines));
-    static UserRepository userRepo = new UserRepository(f(users));
-    static AppointmentRepository apptRepo = new AppointmentRepository(f(users));
 
 
     public static void main(String args[]) {
-        Menu m = new PharmacistMenu(medRepo, apptRepo,userRepo, id);
+        MedicineRepository medRepo = new MedicineRepository(f(medicines));
+        UserRepository userRepo = new UserRepository(f(users));
+        AppointmentRepository apptRepo = new AppointmentRepository(f(appointments));
+
+        PharmacistMenu m = new PharmacistMenu(medRepo, apptRepo,userRepo, id);
         m.userInterface();
     }
-    
+
 }
+
