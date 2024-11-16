@@ -1,6 +1,5 @@
 package repository;
 
-import models.Appointment;
 import models.Staff;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class StaffRepository extends GenericRepository<Staff>{
             curStaff.age = age;
         }
         if (gender != null) {
-            curStaff.gender = gender;
+            curStaff.genderIsMale = gender;
         }
         defaultUpdateItem(curStaff);
     }
@@ -72,7 +71,7 @@ public class StaffRepository extends GenericRepository<Staff>{
                 matches = matches && Objects.equals(staff.age, age);
             }
             if (gender != null) {
-                matches = matches && Objects.equals(staff.gender, gender);
+                matches = matches && Objects.equals(staff.genderIsMale, gender);
             }
             if (matches) {
                 filteredList.add(staff);

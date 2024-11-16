@@ -13,6 +13,15 @@ public class MenuFactory {
     MedicineRepository medRepo;
     StaffRepository staffRepo;
 
+    /**
+     * Generic factory class to create a new menu to display to the user, depending on their role.
+     * Additionally, creates a default user if none exists yet (since staff repository is only initialized here.)
+     * @param userRepo
+     * @param appts
+     * @param medicines
+     * @param staff
+     * @param patients
+     */
     MenuFactory(UserRepository userRepo, String appts, String medicines, String staff, String patients) {
         this.userRepo = userRepo;
         this.csv_appts = appts;
@@ -24,6 +33,10 @@ public class MenuFactory {
         staffRepo = new StaffRepository(csv_staff);
         patientRepo = new PatientRepository(csv_patients);
         medRepo = new MedicineRepository(csv_medicines);
+        if (staffRepo.defaultViewOnlyDatabase().isEmpty()){
+            // create new admin user, if admin user does not exist.
+            staffRepo.createNewStaff("admin","Administrator","admin",0,true);
+        }
     }
 
 

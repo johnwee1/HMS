@@ -85,11 +85,19 @@ public class PatientMenu extends Menu {
         }
     }
 
+    /**
+     * Prints the patient's medical record to output stream
+     * @param current patient ID
+     */
     private void viewMedicalRecord(Patient current) {
         System.out.println("Viewing Medical Record...");
         System.out.println(current.toString());
     }
 
+    /**
+     * CLI to update the patient's information
+     * @param current curr patient id
+     */
     private void updatePersonalInformation(Patient current) {
         System.out.println("Updating Personal Information...");
         System.out.println(current.toString());
@@ -132,6 +140,12 @@ public class PatientMenu extends Menu {
         }
     }
 
+    /**
+     * View available appointments
+     * @param manager
+     * @param inputFormatter
+     * @param outputFormatter
+     */
     private void viewAvailableAppointments(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
         System.out.println("Viewing Available Appointment Slots...");
         List<Appointment> avail = manager.checkAvailability(apptRepo);
@@ -153,6 +167,12 @@ public class PatientMenu extends Menu {
         }
     }
 
+    /**
+     * Schedule an appointment
+     * @param manager
+     * @param inputFormatter
+     * @param outputFormatter
+     */
     private void scheduleAppointment(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
         System.out.println("Scheduling an Appointment...");
         List<Appointment> schedAvail = manager.checkAvailability(apptRepo);

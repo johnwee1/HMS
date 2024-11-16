@@ -99,6 +99,12 @@ public class DoctorMenu extends Menu{
         }
     }
 
+    /**
+     * CLI to view patient medical records under a particular doctor
+     * @param apptManager apptmanager obj
+     * @param patientRepo patientrepo obj
+     * @param doctorId doctor id
+     */
     private void viewPatientMedicalRecords(DoctorAppointmentManager apptManager, PatientRepository patientRepo, String doctorId) {
         // Get the set of patient IDs under this doctor's care
         Set<String> patientIds = apptManager.patientsUnderCare(apptRepo, doctorId);
@@ -123,6 +129,12 @@ public class DoctorMenu extends Menu{
         }
     }
 
+    /**
+     * CLI Menu (and submenus) to update patient medical record
+     * @param apptManager apptmanager obj
+     * @param patientRepo patientrepo obj
+     * @param doctorId doctor id
+     */
     private void updatePatientMedicalRecord(DoctorAppointmentManager apptManager, PatientRepository patientRepo, String doctorId) {
         System.out.println("Updating Patient Medical Record...");
 
@@ -206,6 +218,12 @@ public class DoctorMenu extends Menu{
         }
     }
 
+    /**
+     * CLI Menu (and submenus) to create appointments
+     * @param apptManager apptmanager obj
+     * @param  apptRepo apptrepo object
+     * @param doctorId doctor id
+     */
     public void createAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId) {
         System.out.println("Creating new appointments...");
 
@@ -274,6 +292,13 @@ public class DoctorMenu extends Menu{
         System.out.println("Appointment creation process completed.");
     }
 
+    /**
+     * Fetch the appointments then allow the user (doctor) to accept or reject appointments that are pending
+     * @param apptManager apptManager
+     * @param apptRepo apptRepo
+     * @param doctorId id
+     * @param inputFormatter formatter object defined at top level of class
+     */
     private void handlePendingAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId, DateTimeFormatter inputFormatter) {
         List<Appointment> pendingAppointments = apptManager.checkPending(apptRepo, doctorId);
 
@@ -326,6 +351,13 @@ public class DoctorMenu extends Menu{
         }
     }
 
+    /**
+     * CLI to display booked appointments to the doctor
+     * @param apptManager
+     * @param apptRepo
+     * @param doctorId
+     * @param inputFormatter
+     */
     private void viewBookedAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId, DateTimeFormatter inputFormatter) {
         List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
 
@@ -347,6 +379,14 @@ public class DoctorMenu extends Menu{
         }
     }
 
+    /**
+     * Record the outcome (diagnosis, prescription, appointment type)
+     * @param apptManager
+     * @param apptRepo
+     * @param patientRepo
+     * @param doctorId
+     * @param inputFormatter
+     */
     private void recordAppointmentOutcome(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, PatientRepository patientRepo, String doctorId, DateTimeFormatter inputFormatter) {
         List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
 

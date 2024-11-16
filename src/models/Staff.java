@@ -5,16 +5,16 @@ public class Staff implements IdentifiedObject {
     public String name;
     public String role;
     public int age;
-    public boolean gender; // true: Male false: Female
+    public boolean genderIsMale; // true: Male false: Female
 
 
     public Staff(){}
-    public Staff(String id, String name, String role, int age, boolean gender) {
+    public Staff(String id, String name, String role, int age, boolean genderIsMale) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.age = age;
-        this.gender = gender;
+        this.genderIsMale = genderIsMale;
     }
 
     public String getID(){

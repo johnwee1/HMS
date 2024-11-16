@@ -32,6 +32,10 @@ public class Patient implements IdentifiedObject {
         return id;
     }
 
+    /**
+     * Override toString() to return formatted string
+     * @return Printable string
+     */
     @Override
     public String toString() {
         return "Patient Information:\n" +

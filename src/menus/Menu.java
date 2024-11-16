@@ -19,8 +19,14 @@ public abstract class Menu {
         this.id = id;
     }
 
+    /**
+     * Abstract userInterface() implemented by all subclasses
+     */
     public abstract void userInterface();
 
+    /**
+     * CLI menu to change password common to all menus
+     */
     public void changePassword(){
 
         User user = userRepo.getUserObject(id);

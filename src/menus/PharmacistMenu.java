@@ -94,7 +94,7 @@ public class PharmacistMenu extends Menu {
     }
 
     /**
-     * Called when prescribing medicine (update appointment outcome)
+     * CLI called when prescribing medicine (update appointment outcome)
      *
      * @return true when the operation succeeds, false when the operation results in an invalid input.
      */
@@ -142,6 +142,11 @@ public class PharmacistMenu extends Menu {
         return true;
     }
 
+    /**
+     * CLI to submit replenishment requests
+     * @param medicineId
+     * @return
+     */
     private boolean submitReplenishmentRequest(String medicineId) {
         if (medRepo.setRequest(medicineId, true)) {
             System.out.println("Success");
@@ -151,6 +156,10 @@ public class PharmacistMenu extends Menu {
 
     }
 
+    /**
+     * Print appointments helper fnc displaying prescription info relevant for pharmacists
+     * @param appts list of appointments
+     */
     private void printAppointments(List<Appointment> appts) {
         if (appts.isEmpty()) {
             System.out.println("No outstanding appointments found!\n");
@@ -165,11 +174,4 @@ public class PharmacistMenu extends Menu {
             System.out.printf(format, i, a.timeToDisplayString(a.endTime), a.prescription, a.prescriptionIdToString(a.isPrescribed));
         }
     }
-
-//● View Appointment Outcome Record
-//● Update Prescription Status -----------> ??
-//● View Medication Inventory ---------> done
-//● Submit Replenishment Request --------> done ?
-//● Logout
-
 }
