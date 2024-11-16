@@ -5,17 +5,33 @@ import java.util.UUID;
 /**
  * Public Schema class for the models.Appointment object.
  * the names of the columns are case-sensitive.
- * Will need to implement additional parsing logic to handle time, and I'm not sure if we want to actually put that logic into this class or a separate TimeParser class
+ *
  */
 public class Appointment implements IdentifiedObject {
+    /**
+     * Unlike other IDs, Appointment IDs are UUIDs.
+     */
     public String id;
-    public String startTime; //format: DDMMYYHH (in 24hr format) // we enforce appointments to be in 1hr blocks (CLI)
-    public String endTime; //format: DDMMYYHH (in 24hr format)
-    public int appointmentType; // 0: Consultation 1: X-Ray 2: Blood Test
-    public int appointmentStatus; // 0: booked 1: available 2: pending 3: completed 4: leaves for doctors
+
+    /**
+     * format: DDMMYYHH (in 24hr format).we enforce appointments to be in 1hr blocks (CLI)
+     */
+    public String startTime;
+    public String endTime;
+    /**
+     * 0: Consultation 1: X-Ray 2: Blood Test
+     */
+    public int appointmentType;
+    /**
+     * 0: booked 1: available 2: pending 3: completed 4: leaves for doctors
+     */
+    public int appointmentStatus;
     public String patient_id;
     public String doctor_id;
-    public int prescriptionStatus; // 0: No prescription 1: Pending prescription 2: Completed prescription
+    /**
+     *  0: No prescription 1: Pending prescription 2: Completed prescription
+     */
+    public int prescriptionStatus;
     public String diagnosis;
     public String prescription;
 

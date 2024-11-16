@@ -20,6 +20,7 @@ import java.util.Set;
 public class DoctorMenu extends Menu{
     StaffRepository staffRepo;
     PatientRepository patientRepo;
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH");
 
     public DoctorMenu(AppointmentRepository apptRepo, StaffRepository staffRepo, String id, UserRepository userRepo, PatientRepository patientRepo){
         super(apptRepo,userRepo, id);
@@ -30,7 +31,6 @@ public class DoctorMenu extends Menu{
     @Override
     public void userInterface() {
         DoctorAppointmentManager apptManager = new DoctorAppointmentManager();
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH");
         while (true) {
             System.out.println("Doctor Menu:");
             System.out.println("1. View Patient Medical Records");
@@ -66,28 +66,28 @@ public class DoctorMenu extends Menu{
                     System.out.println("Would you like to update your personal schedule? (y/n)");
                     String updateChoice = InputValidater.getValidString().toLowerCase();
                     if (updateChoice.equals("y")){
-                        updatePersonalSchedule(apptManager, apptRepo, id);
+                        updatePersonalSchedule(apptManager, id);
                     }
                     break;
 
                 case 4:
                     System.out.println("Setting Availability for Appointments...");
-                    createAppointments(apptManager,apptRepo,id);
+                    createAppointments(apptManager,id);
                     break;
 
                 case 5:
                     System.out.println("Accepting or Declining Appointment Requests...");
-                    handlePendingAppointments(apptManager,apptRepo,id,inputFormatter);
+                    handlePendingAppointments(apptManager,id);
                     break;
 
                 case 6:
                     System.out.println("Viewing Upcoming Appointments...");
-                    viewBookedAppointments(apptManager,apptRepo,id,inputFormatter);
+                    viewBookedAppointments(apptManager,id);
                     break;
 
                 case 7:
                     System.out.println("Recording Appointment Outcome...");
-                    recordAppointmentOutcome(apptManager,apptRepo,patientRepo,id,inputFormatter);
+                    recordAppointmentOutcome(apptManager,id);
                     break;
 
                 case 8:
@@ -253,10 +253,9 @@ public class DoctorMenu extends Menu{
     /**
      * CLI to add personal leave days by doctor
      * @param apptManager apptmanager obj
-     * @param apptRepo apptrepo obj
      * @param doctorId doctor id
      */
-    private void updatePersonalSchedule(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId){
+    private void updatePersonalSchedule(DoctorAppointmentManager apptManager, String doctorId){
         System.out.println("Setting Personal Leave Days...");
 
         //Get date of leave from doctor
@@ -319,10 +318,9 @@ public class DoctorMenu extends Menu{
     /**
      * CLI Menu (and submenus) to create appointments
      * @param apptManager apptmanager obj
-     * @param  apptRepo apptrepo object
      * @param doctorId doctor id
      */
-    public void createAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId) {
+    public void createAppointments(DoctorAppointmentManager apptManager, String doctorId) {
         System.out.println("Creating new appointments...");
 
         String datePrefix;
@@ -393,11 +391,9 @@ public class DoctorMenu extends Menu{
     /**
      * Fetch the appointments then allow the user (doctor) to accept or reject appointments that are pending
      * @param apptManager apptManager
-     * @param apptRepo apptRepo
      * @param doctorId id
-     * @param inputFormatter formatter object defined at top level of class
      */
-    private void handlePendingAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId, DateTimeFormatter inputFormatter) {
+    private void handlePendingAppointments(DoctorAppointmentManager apptManager, String doctorId) {
         List<Appointment> pendingAppointments = apptManager.checkPending(apptRepo, doctorId);
 
         if (pendingAppointments.isEmpty()) {
@@ -452,11 +448,9 @@ public class DoctorMenu extends Menu{
     /**
      * CLI to display booked appointments to the doctor
      * @param apptManager
-     * @param apptRepo
      * @param doctorId
-     * @param inputFormatter
      */
-    private void viewBookedAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId, DateTimeFormatter inputFormatter) {
+    private void viewBookedAppointments(DoctorAppointmentManager apptManager, String doctorId) {
         List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
 
         if (bookedAppointments.isEmpty()) {
@@ -480,12 +474,9 @@ public class DoctorMenu extends Menu{
     /**
      * Record the outcome (diagnosis, prescription, appointment type)
      * @param apptManager
-     * @param apptRepo
-     * @param patientRepo
      * @param doctorId
-     * @param inputFormatter
      */
-    private void recordAppointmentOutcome(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, PatientRepository patientRepo, String doctorId, DateTimeFormatter inputFormatter) {
+    private void recordAppointmentOutcome(DoctorAppointmentManager apptManager, String doctorId) {
         List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
 
         if (bookedAppointments.isEmpty()) {

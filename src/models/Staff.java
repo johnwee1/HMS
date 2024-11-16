@@ -1,5 +1,8 @@
 package models;
 
+/**
+ * Public schema class for generic staff (non-patient) object
+ */
 public class Staff implements IdentifiedObject {
     public String id;
     public String name;

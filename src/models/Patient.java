@@ -1,5 +1,9 @@
 package models;
 
+/**
+ * Public Schema class for the models.Patient object.
+ *
+ */
 public class Patient implements IdentifiedObject {
     public String id;
     public String name;
