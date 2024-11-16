@@ -16,7 +16,6 @@ import java.util.Set;
 public class DoctorMenu extends Menu{
     StaffRepository staffRepo;
     PatientRepository patientRepo;
-    String id;
 
     public DoctorMenu(AppointmentRepository apptRepo, StaffRepository staffRepo, String id, UserRepository userRepo, PatientRepository patientRepo){
         super(apptRepo,userRepo, id);

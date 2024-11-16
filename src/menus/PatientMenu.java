@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 public class PatientMenu extends Menu {
     StaffRepository staffRepo;
     PatientRepository patientRepo;
-    String id;
 
     public PatientMenu(String id, AppointmentRepository apptRepo, StaffRepository staffRepo, UserRepository userRepo, PatientRepository patientRepo){
         super(apptRepo,userRepo, id);

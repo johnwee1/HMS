@@ -37,7 +37,7 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
     public boolean createNewAppointment(String startTime, String endTime, int status, String doctor_id) {
         // set patient_id to "" first
         Map<String, Appointment> appointments = defaultViewOnlyDatabase();
-        boolean match = appointments.values().stream().anyMatch(appointment -> appointment.doctor_id.equals(doctor_id) && appointment.startTime.equals(startTime));
+        boolean match = appointments.values().stream().anyMatch(appointment -> Objects.equals(appointment.doctor_id,doctor_id) && Objects.equals(appointment.startTime,startTime));
         if (match) {
             System.out.println("Doctor has already created this appointment");
             return false;
