@@ -156,13 +156,13 @@ public class PharmacistMenu extends Menu {
             System.out.println("No outstanding appointments found!\n");
             return;
         }
-        final String headerFormat = "%-3s|%-15s|%-20s|%-12s|";
-        System.out.printf(headerFormat, "No.", "Time Added", "Prescription", "Status");
-        System.out.println("-".repeat(headerFormat.length()));
-        final String format = "%-3s|%-15s|%-20s|%-12d|";
+        final String headerFormat = "%-4s|%-15s|%-25s|%-12s|\n";
+        System.out.printf(headerFormat, "S/N", "    Time Added", "  Prescription", "    Status");
+        System.out.println("=".repeat(4+15+25+12+4));
+        final String format = "%-4s|%-15s|%-25s|%-12s|\n";
         for (int i = 0; i < appts.size(); i++) {
             Appointment a = appts.get(i);
-            System.out.printf(format, i, a.endTime, a.prescription, a.isPrescribed);
+            System.out.printf(format, i, a.timeToDisplayString(a.endTime), a.prescription, a.prescriptionIdToString(a.isPrescribed));
         }
     }
 

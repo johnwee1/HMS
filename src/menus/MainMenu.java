@@ -26,20 +26,20 @@ public class MainMenu {
         final UserRepository userRepository = new UserRepository(csv_users);
 
         System.out.println("Hospital Management System");
-
-        System.out.println("Login with username:");
-        String username = InputValidater.getValidString(); //
-        System.out.println("Password:");
-        String password = InputValidater.getValidString(); //
         User user;
+        String username;
         while (true) {
+            System.out.println("Login with username:");
             try {
+                username = InputValidater.getValidString();
                 user = userRepository.getUserObject(username);
                 break;
             } catch (RuntimeException e) {
-                System.out.println("user does not exist");
+                System.out.println("user does not exist! Try again.");
             }
         }
+        System.out.println("Password:");
+        String password = InputValidater.getValidString();
         int attempts=0;
         for (;attempts<5;attempts++) {
             if (!PasswordHelper.verify(password, user.passwordHash)) {

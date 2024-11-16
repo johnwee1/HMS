@@ -53,6 +53,7 @@ public abstract class Menu {
             if (!newPassword.equals(confirmPassword)) {
                 System.out.println("Passwords do not match. Please try again.");
             }
+            else break;
         }
 
         // 3 tries, after which exit method without changing the password

@@ -49,7 +49,36 @@ public class Appointment implements IdentifiedObject {
         this.diagnosis = diagnosis;
     }
 
-    public String getPatient_ID(){return patient_id;}
+    /*HELPER METHODS FOR PRESCRIPTION STATE MANAGEMENT*/
 
-    public void setPatient_ID(String id){this.patient_id = id;}
+    /**
+     * Prints the prescription id in readable string format
+     * @param id
+     * @return string
+     */
+    public String prescriptionIdToString(int id){
+        return switch (id){
+            case 1->"None";
+            case 2->"Pending";
+            case 3->"Prescribed";
+            default -> "Invalid";
+        };
+    }
+
+    /**
+     * Formats the given time stored in the appointment model as a string to read
+     * @param time
+     * @return readable string in "day/mo/yr hr:00" format
+     */
+    public String timeToDisplayString(String time){
+        if (time == null || time.length() != 8) {
+            return null;
+        }
+        String day = time.substring(0, 2);
+        String month = time.substring(2, 4);
+        String year = time.substring(4, 6);
+        String hour = time.substring(6, 8);
+
+        return String.format("%s/%s/%s %s:00", day, month, year, hour);
+    }
 }
