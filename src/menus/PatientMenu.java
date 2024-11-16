@@ -225,10 +225,19 @@ public class PatientMenu extends Menu {
 
     private void viewScheduledAppointments(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
         List<Appointment> apptBooked = manager.checkBooked(apptRepo, id);
+        List<Appointment> apptPending = manager.checkPending(apptRepo,id);
+
+        if (apptPending.isEmpty()) {
+            System.out.println("No pending appointments.");
+        } else {
+            System.out.println("Current pending appointments:");
+            displayAppointments(apptPending, inputFormatter, outputFormatter);
+        }
 
         if (apptBooked.isEmpty()) {
             System.out.println("No scheduled appointments.");
         } else {
+            System.out.println("Current scheduled appointments:");
             displayAppointments(apptBooked, inputFormatter, outputFormatter);
         }
     }

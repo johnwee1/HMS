@@ -60,8 +60,7 @@ public class DoctorMenu extends Menu{
 
                 case 3:
                     System.out.println("Viewing Personal Schedule...");
-                    // Call method to view the doctor's personal schedule
-
+                    viewPersonalSchedule(apptManager);
                     break;
 
                 case 4:

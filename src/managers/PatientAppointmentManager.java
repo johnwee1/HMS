@@ -11,6 +11,10 @@ public class PatientAppointmentManager {
         return repo.filterAppointments(null,null,1, null,null);
     }
 
+    public List<Appointment> checkPending(AppointmentRepository repo, String patId) {
+        return repo.filterAppointments(patId,null,2, null,null);
+    }
+
     public List<Appointment> checkBooked(AppointmentRepository repo, String patId) {
         return repo.filterAppointments(patId, null, 0, null,null);
     }
