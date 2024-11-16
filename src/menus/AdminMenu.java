@@ -51,6 +51,7 @@ public class AdminMenu extends Menu {
                     break;
                 case 4:
                     changePassword();
+                    break;
                 case 5:
                     System.out.println("Logging out...");
                     exit = true;

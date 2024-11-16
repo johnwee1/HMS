@@ -32,8 +32,9 @@ public class PharmacistMenu extends Menu {
             System.out.println("2. Update Prescription Status");
             System.out.println("3. View Medication Inventory");
             System.out.println("4. Submit Replenishment Request");
-            System.out.println("5. Logout");
-            System.out.print("\nPlease select an option (1-5): ");
+            System.out.println("5. Change Password");
+            System.out.println("6. Logout");
+            System.out.print("\nPlease select an option (1-6): ");
             List<Appointment> appts = pharmacistAppointmentManager.checkOutstandingRecords(apptRepo);
             int choice = InputValidater.getValidInteger();
             switch (choice) {
@@ -76,12 +77,16 @@ public class PharmacistMenu extends Menu {
                     break;
 
                 case 5:
+                    changePassword();
+                    break;
+
+                case 6:
                     System.out.println("\nLogging out...");
                     running = false;
                     break;
 
                 default:
-                    System.out.println("\nInvalid option. Please select a number between 1 and 5.");
+                    System.out.println("\nInvalid option. Please select a number between 1 and 6.");
             }
 
 

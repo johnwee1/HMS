@@ -86,6 +86,7 @@ public class DoctorMenu extends Menu{
 
                 case 8:
                     changePassword();
+                    break;
 
                 case 9:
                     System.out.println("Logging out...");
