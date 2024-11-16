@@ -34,8 +34,9 @@ public class AdminMenu extends Menu {
             System.out.println("1. View and Manage Hospital Staff");
             System.out.println("2. View Appointments Details");
             System.out.println("3. View and Manage Medication Inventory");
-            System.out.println("4. Logout");
-            System.out.print("Enter your choice: ");
+            System.out.println("4. Change Password");
+            System.out.println("5. Logout");
+            System.out.print("Enter your choice (1-5): ");
             int choice = InputValidater.getValidInteger();
 
             switch (choice) {
@@ -49,11 +50,13 @@ public class AdminMenu extends Menu {
                     manageInventoryMenu();
                     break;
                 case 4:
+                    changePassword();
+                case 5:
                     System.out.println("Logging out...");
                     exit = true;
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid choice. Please select a number between 1 and 5.");
             }
         }
 

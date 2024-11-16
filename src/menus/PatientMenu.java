@@ -42,8 +42,10 @@ public class PatientMenu extends Menu {
             System.out.println("6. Cancel an Appointment");
             System.out.println("7. View Scheduled Appointments");
             System.out.println("8. View Past Appointment Outcome Records");
-            System.out.println("9. Logout");
+            System.out.println("9. Change Password");
+            System.out.println("10. Logout");
 
+            System.out.print("Enter your choice (1-10): ");
             int choice = InputValidater.getValidInteger();
 
             switch (choice) {
@@ -72,10 +74,13 @@ public class PatientMenu extends Menu {
                     viewPastAppointmentRecords(manager, inputFormatter, outputFormatter);
                     break;
                 case 9:
+                    changePassword();
+                    break;
+                case 10:
                     System.out.println("Logging out...");
                     return;
                 default:
-                    System.out.println("Invalid choice. Please select an option between 1 and 9.");
+                    System.out.println("Invalid choice. Please select an option between 1 and 10.");
             }
         }
     }

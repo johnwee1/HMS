@@ -35,9 +35,10 @@ public class DoctorMenu extends Menu{
             System.out.println("5. Accept or Decline Appointment Requests");
             System.out.println("6. View Upcoming Appointments");
             System.out.println("7. Record Appointment Outcome");
-            System.out.println("8. Logout");
+            System.out.println("8. Change Password");
+            System.out.println("9. Logout");
 
-            System.out.print("Enter your choice (1-8): ");
+            System.out.print("Enter your choice (1-9): ");
             int choice = InputValidater.getValidInteger();
 
             switch (choice) {
@@ -80,12 +81,15 @@ public class DoctorMenu extends Menu{
                     break;
 
                 case 8:
+                    changePassword();
+
+                case 9:
                     System.out.println("Logging out...");
                     // Exit the loop and log out
                     return;
 
                 default:
-                    System.out.println("Invalid choice. Please select an option between 1 and 8.");
+                    System.out.println("Invalid choice. Please select an option between 1 and 9.");
                     break;
             }
         }

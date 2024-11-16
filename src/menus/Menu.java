@@ -45,21 +45,17 @@ public abstract class Menu {
         String confirmPassword = "";
         attempts = 0;
         for (; attempts < 3; attempts++) {
-            //Ask for the new password
             System.out.println("Enter your new password: ");
             newPassword = InputValidater.getValidString();
-
-            //Confirm the new password
             System.out.println("Confirm your new password: ");
             confirmPassword = InputValidater.getValidString();
 
-            //Check if newPassword and confirmPassword match
             if (!newPassword.equals(confirmPassword)) {
                 System.out.println("Passwords do not match. Please try again.");
             }
         }
 
-        // Exit method without changing the password
+        // 3 tries, after which exit method without changing the password
         if (attempts == 3) {
             System.out.println("Password reset failed too many times. Goodbye!");
             return;
