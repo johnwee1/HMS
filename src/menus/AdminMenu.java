@@ -315,7 +315,7 @@ public class AdminMenu extends Menu {
                             Appointment appointment = allappt.get(i);
                             System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
                             System.out.println("Doctor: " + staffRepo.getName(appointment.doctor_id));
-                            System.out.println("Patient: " + staffRepo.getName(appointment.patient_id));
+                            System.out.println("Patient: " + patRepo.getName(appointment.patient_id));
                         }
                     }
 
@@ -331,7 +331,7 @@ public class AdminMenu extends Menu {
                             Appointment appointment = allcompappt.get(i);
                             System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
                             System.out.println("Doctor: " + staffRepo.getName(appointment.doctor_id));
-                            System.out.println("Patient: " + staffRepo.getName(appointment.patient_id));
+                            System.out.println("Patient: " + patRepo.getName(appointment.patient_id));
                             System.out.println("Diagnosis:" + appointment.diagnosis);
                             if (appointment.isPrescribed == 1){
                                 System.out.println("Prescription:" + appointment.prescription);

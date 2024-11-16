@@ -1,2 +1,2 @@
 id,startTime,endTime,appointmentType,appointmentStatus,patient_id,doctor_id,isPrescribed,diagnosis,prescription
-72d7b615-318f-4aef-9f30-3b871df3054b,12112411,12112212,5,3,pat_a,test_doc,1,diagnosis,prescription
+72d7b615-318f-4aef-9f30-3b871df3054b,121124 11,12112212,5,3,testpat1,doctor1,1,diagnosis,prescription
