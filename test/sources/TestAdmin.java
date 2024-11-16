@@ -1,7 +1,4 @@
-import menus.Menu;
 import menus.AdminMenu;
-import menus.PharmacistMenu;
-import org.junit.jupiter.api.Test;
 import repository.AppointmentRepository;
 import repository.MedicineRepository;
 import repository.UserRepository;

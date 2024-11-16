@@ -41,7 +41,7 @@ public class MainMenu {
         final UserRepository userRepository = new UserRepository(csv_users);
 
         System.out.println("Hospital Management System");
-
+        createNewDefaultUser(userRepository);
         User user;
         String username;
         while (true) {
@@ -87,9 +87,11 @@ public class MainMenu {
      */
     private void createNewDefaultUser(UserRepository userRepository) {
         if (!userRepository.defaultViewOnlyDatabase().isEmpty()) return;
-        userRepository.createNewUser("admin","password", "admin");
+        String DEFAULT_USERNAME = "admin";
+        String DEFAULT_PASSWORD = "password";
+        userRepository.createNewUser(DEFAULT_USERNAME,DEFAULT_PASSWORD, "admin");
         System.out.println("No users exist! Log in with the default admin account.");
-        System.out.println("Username: admin");
-        System.out.println("Password: admin");
+        System.out.println("Username: "+DEFAULT_USERNAME);
+        System.out.println("Password: "+DEFAULT_PASSWORD);
     }
 }

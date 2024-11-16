@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 
 public class DoctorAppointmentManager {
+
+//    public List<Appointment> checkCompleted(AppointmentRepository repo, String docID){
+//        return repo.filterAppointments(null, docID,3, null, null);
+//    }
+
     public List<Appointment> checkPending(AppointmentRepository repo, String docID){
         return repo.filterAppointments(null, docID,2, null, null);
     }
@@ -17,8 +22,8 @@ public class DoctorAppointmentManager {
         return repo.filterAppointments(null, docID,0, null, null);
     }
 
-    public List<Appointment> checkCompleted(AppointmentRepository repo, String docID){
-        return repo.filterAppointments(null, docID,3, null, null);
+    public List<Appointment> viewLeaves(AppointmentRepository repo, String docID) {
+        return repo.filterAppointments(null, docID,4, null, null);
     }
 
     public Set<String> patientsUnderCare(AppointmentRepository repo,String docID){
@@ -27,6 +32,7 @@ public class DoctorAppointmentManager {
         for (Appointment appointment : list) {
             patients.add(appointment.patient_id);
         }
+        patients.remove("");
         return patients;
     }
 
@@ -38,14 +44,20 @@ public class DoctorAppointmentManager {
         repo.updateAppointment(apptID,null,null,null,1,null,null);
     }
 
-    public boolean createAppointment(AppointmentRepository repo, String start, String end, String docID) {
-        if (repo.createNewAppointment(start, end, 1, docID)) {
-            System.out.println("Appointment created successfully.");
-            return true;
+    public boolean createAppointment(AppointmentRepository repo, String start, String end, String docID, int status) {
+        if (repo.createNewAppointment(start, end, status, docID)) {
+            if (status == 1) {
+                System.out.println("Appointment created successfully.");
+                return true;
+            }
+            if (status == 4){
+                return true;
+            }
         } else {
             System.out.println("Failed to create the appointment.");
             return false;
         }
+        return false; //resolving no return statement error, no use because above is binary
     }
 
 

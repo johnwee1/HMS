@@ -171,7 +171,7 @@ public class PharmacistMenu extends Menu {
         final String format = "%-4s|%-15s|%-25s|%-12s|\n";
         for (int i = 0; i < appts.size(); i++) {
             Appointment a = appts.get(i);
-            System.out.printf(format, i, a.timeToDisplayString(a.endTime), a.prescription, a.prescriptionIdToString(a.isPrescribed));
+            System.out.printf(format, i, a.timeToDisplayString(a.endTime), a.prescription, a.prescriptionIdToString());
         }
     }
 }

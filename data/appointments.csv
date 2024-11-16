@@ -1,1 +1,1 @@
-id,startTime,endTime,appointmentType,appointmentStatus,patient_id,doctor_id,isPrescribed,diagnosis,prescription
+id,startTime,endTime,appointmentType,appointmentStatus,patient_id,doctor_id,prescriptionStatus,diagnosis,prescription

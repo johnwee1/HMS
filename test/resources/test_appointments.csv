@@ -1,4 +1,4 @@
-id,startTime,endTime,appointmentType,appointmentStatus,patient_id,doctor_id,isPrescribed,diagnosis,prescription
+id,startTime,endTime,appointmentType,appointmentStatus,patient_id,doctor_id,prescriptionStatus,diagnosis,prescription
 f00f5778-5505-476d-afa8-b9fd9a510b53,200524 12,200524 13,-1,0,pat_a,doctor1,0,,
 486a849b-8a13-46e8-80ff-b08ae9c7b6cc,200524 10,200524 11,-1,1,,doctor1,0,,
 72d7b615-318f-4aef-9f30-3b871df3054b,121124 11,12112212,5,3,pat_a,doctor1,1,diagnosis,prescription

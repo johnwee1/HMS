@@ -18,6 +18,8 @@ import java.time.format.DateTimeFormatter;
 public class PatientMenu extends Menu {
     StaffRepository staffRepo;
     PatientRepository patientRepo;
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH:00");
+    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:00");
 
     public PatientMenu(String id, AppointmentRepository apptRepo, StaffRepository staffRepo, UserRepository userRepo, PatientRepository patientRepo){
         super(apptRepo,userRepo, id);
@@ -29,8 +31,6 @@ public class PatientMenu extends Menu {
     public void userInterface() {
         PatientAppointmentManager manager = new PatientAppointmentManager();
         Patient current = patientRepo.getPatient(id);
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH");
 
         while (true) {
             System.out.println("Select an option:");
@@ -56,22 +56,22 @@ public class PatientMenu extends Menu {
                     updatePersonalInformation(current);
                     break;
                 case 3:
-                    viewAvailableAppointments(manager, inputFormatter, outputFormatter);
+                    viewAvailableAppointments(manager);
                     break;
                 case 4:
-                    scheduleAppointment(manager, inputFormatter, outputFormatter);
+                    scheduleAppointment(manager);
                     break;
                 case 5:
-                    rescheduleAppointment(manager, inputFormatter, outputFormatter);
+                    rescheduleAppointment(manager);
                     break;
                 case 6:
-                    cancelAppointment(manager, inputFormatter, outputFormatter);
+                    cancelAppointment(manager);
                     break;
                 case 7:
-                    viewScheduledAppointments(manager, inputFormatter, outputFormatter);
+                    viewScheduledAppointments(manager);
                     break;
                 case 8:
-                    viewPastAppointmentRecords(manager, inputFormatter, outputFormatter);
+                    viewPastAppointmentRecords(manager);
                     break;
                 case 9:
                     changePassword();
@@ -115,7 +115,6 @@ public class PatientMenu extends Menu {
                     System.out.print("Enter the new email: ");
                     String newEmail = InputValidater.getValidString();
                     patientRepo.updateEmail(current.id, newEmail);
-                    System.out.println("Email updated successfully.");
                     break;
                 case 2:
                     System.out.print("Enter the new phone number: ");
@@ -143,10 +142,8 @@ public class PatientMenu extends Menu {
     /**
      * View available appointments
      * @param manager
-     * @param inputFormatter
-     * @param outputFormatter
      */
-    private void viewAvailableAppointments(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+    private void viewAvailableAppointments(PatientAppointmentManager manager) {
         System.out.println("Viewing Available Appointment Slots...");
         List<Appointment> avail = manager.checkAvailability(apptRepo);
 
@@ -170,10 +167,8 @@ public class PatientMenu extends Menu {
     /**
      * Schedule an appointment
      * @param manager
-     * @param inputFormatter
-     * @param outputFormatter
      */
-    private void scheduleAppointment(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+    private void scheduleAppointment(PatientAppointmentManager manager) {
         System.out.println("Scheduling an Appointment...");
         List<Appointment> schedAvail = manager.checkAvailability(apptRepo);
 
@@ -188,7 +183,7 @@ public class PatientMenu extends Menu {
 //                    ", Staff: " + staffRepo.getName(appointment.doctor_id));
 //        }
 
-        int apptChoice = selectAppointment(schedAvail,inputFormatter,outputFormatter);
+        int apptChoice = selectAppointment(schedAvail);
 //        while (true) {
 //            System.out.print("Select an appointment (1 to " + schedAvail.size() + "): ");
 //            apptChoice = InputValidater.getValidInteger();
@@ -204,7 +199,7 @@ public class PatientMenu extends Menu {
         System.out.println("Appointment scheduled successfully.");
     }
 
-    private void rescheduleAppointment(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+    private void rescheduleAppointment(PatientAppointmentManager manager) {
         List<Appointment> reschedBooked = manager.checkBooked(apptRepo, id);
 
         if (reschedBooked.isEmpty()) {
@@ -212,7 +207,7 @@ public class PatientMenu extends Menu {
             return;
         }
         System.out.println("Listing current booked appointments.");
-        int apptChoice = selectAppointment(reschedBooked, inputFormatter, outputFormatter);
+        int apptChoice = selectAppointment(reschedBooked);
         List<Appointment> reschedAvail = manager.checkAvailability(apptRepo);
 
         if (reschedAvail.isEmpty()) {
@@ -220,7 +215,7 @@ public class PatientMenu extends Menu {
             return;
         }
 
-        int newApptChoice = selectAppointment(reschedAvail, inputFormatter, outputFormatter);
+        int newApptChoice = selectAppointment(reschedAvail);
         Appointment selectedBooked = reschedBooked.get(apptChoice - 1);
         Appointment selectedNew = reschedAvail.get(newApptChoice - 1);
 
@@ -229,7 +224,7 @@ public class PatientMenu extends Menu {
         System.out.println("Successfully rescheduled the appointment.");
     }
 
-    private void cancelAppointment(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+    private void cancelAppointment(PatientAppointmentManager manager) {
         List<Appointment> curBooked = manager.checkBooked(apptRepo, id);
 
         if (curBooked.isEmpty()) {
@@ -237,13 +232,13 @@ public class PatientMenu extends Menu {
             return;
         }
         System.out.println("Listing appointments for cancellation.");
-        int cancelChoice = selectAppointment(curBooked, inputFormatter, outputFormatter);
+        int cancelChoice = selectAppointment(curBooked);
         Appointment cancelled = curBooked.get(cancelChoice - 1);
         manager.cancelAppointment(apptRepo, cancelled.getID());
         System.out.println("Appointment canceled successfully.");
     }
 
-    private void viewScheduledAppointments(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+    private void viewScheduledAppointments(PatientAppointmentManager manager) {
         List<Appointment> apptBooked = manager.checkBooked(apptRepo, id);
         List<Appointment> apptPending = manager.checkPending(apptRepo,id);
 
@@ -251,29 +246,29 @@ public class PatientMenu extends Menu {
             System.out.println("No pending appointments.");
         } else {
             System.out.println("Current pending appointments:");
-            displayAppointments(apptPending, inputFormatter, outputFormatter);
+            displayAppointments(apptPending);
         }
 
         if (apptBooked.isEmpty()) {
             System.out.println("No scheduled appointments.");
         } else {
             System.out.println("Current scheduled appointments:");
-            displayAppointments(apptBooked, inputFormatter, outputFormatter);
+            displayAppointments(apptBooked);
         }
     }
 
-    private void viewPastAppointmentRecords(PatientAppointmentManager manager, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+    private void viewPastAppointmentRecords(PatientAppointmentManager manager) {
         List<Appointment> apptPast = manager.checkPastAppointments(apptRepo, id);
 
         if (apptPast.isEmpty()) {
             System.out.println("No past appointments.");
         } else {
-            displayAppointments(apptPast, inputFormatter, outputFormatter);
+            displayAppointments(apptPast);
         }
     }
 
-    private int selectAppointment(List<Appointment> appointments, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
-        displayAppointments(appointments, inputFormatter, outputFormatter);
+    private int selectAppointment(List<Appointment> appointments) {
+        displayAppointments(appointments);
         int choice;
         while (true) {
             System.out.print("Select an appointment (1 to " + appointments.size() + "): ");
@@ -286,7 +281,7 @@ public class PatientMenu extends Menu {
         }
     }
 
-    private void displayAppointments(List<Appointment> appointments, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+    private void displayAppointments(List<Appointment> appointments) {
         appointments.sort((a1, a2) -> {
             LocalDateTime time1 = LocalDateTime.parse(a1.startTime, inputFormatter);
             LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);

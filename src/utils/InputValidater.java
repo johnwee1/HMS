@@ -2,9 +2,16 @@ package utils;
 
 import java.util.Scanner;
 
+/**
+ * Wrapper class to get user input and perform preliminary input validation
+ */
 public class InputValidater {
     private static final Scanner scan = new Scanner(System.in);
 
+    /**
+     * Gets a valid (positive) integer
+     * @return
+     */
     public static int getValidInteger(){
         while (true) {
             System.out.print("Please enter a valid integer: ");// Consume the input to prevent input issues
@@ -21,6 +28,11 @@ public class InputValidater {
             }
         }
     }
+
+    /**
+     *  Gets a valid string input
+     * @return
+     */
     public static String getValidString() {
         while (true) {
             String input = scan.nextLine().trim();

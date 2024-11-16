@@ -63,6 +63,9 @@ public class AdminMenu extends Menu {
 
     }
 
+    /**
+     * Admin menu that handles all user related operations
+     */
     public void manageHospitalStaffMenu() {
         boolean back = false;
 
@@ -210,7 +213,49 @@ public class AdminMenu extends Menu {
 
                 case 2:
                     System.out.println("Update Staff Member functionality");
-                    // Add code for updating a staff member
+                    Staff curstaff = null;
+                    while (curstaff == null) {
+                        System.out.print("Enter Staff username (UID): ");
+                        String docupid = InputValidater.getValidString();
+
+                        curstaff = staffRepo.getStaff(docupid);
+                        if (curstaff == null) {
+                            System.out.println("Staff not found. Please try again.");
+                        }
+                    }
+                    System.out.println("selected staff:");
+                    System.out.println("Name: " + curstaff.name);
+                    System.out.println("Role: " + curstaff.role);
+                    System.out.println("Age: " + curstaff.age);
+                    System.out.println("Gender: " + curstaff.genderIsMale);
+                    System.out.println();
+                    System.out.println("Update details: (if no change, retype value)");
+                    System.out.print("Enter New Name: ");
+                    String staffupname = InputValidater.getValidString();
+
+                    String staffuprole = "";
+                    while (!(staffuprole.equalsIgnoreCase("doctor") || staffuprole.equalsIgnoreCase("pharmacist"))) {
+                        System.out.print("Enter a valid profession (doctor or pharmacist): ");
+                        staffuprole = InputValidater.getValidString(); // Trim to remove leading/trailing spaces
+                    }
+
+                    System.out.println("Enter New Age:");
+                    int staffupage = InputValidater.getValidInteger();
+
+                    System.out.print("Enter New Gender (0 for Male, 1 for Female): ");
+                    int docupintgender = -1;
+                    while (docupintgender < 0 || docupintgender > 1) {
+                        docupintgender = InputValidater.getValidInteger();
+                    }
+                    boolean staffupboolgender = true;
+                    if (docupintgender == 0) {
+                        staffupboolgender = true;
+                    } else if (docupintgender == 1) {
+                        staffupboolgender = false;
+                    }
+
+                    staffRepo.updateStaff(curstaff.getID(),staffupname,staffuprole,staffupage,staffupboolgender);
+                    System.out.println("Staff successfully updated");
                     break;
                 case 3:
                     System.out.println("Remove Staff Member functionality");
@@ -232,7 +277,7 @@ public class AdminMenu extends Menu {
                         System.out.println("1. Filter by Role");
                         System.out.println("2. Filter by Age");
                         System.out.println("3. Filter by Gender");
-                        System.out.println("4. Show Filtered Results and Exit");
+                        System.out.println("4. View all Staff");
 
                         int filtchoice = InputValidater.getValidInteger();
                         switch (filtchoice) {
@@ -244,7 +289,16 @@ public class AdminMenu extends Menu {
                                     System.out.println("No staff members matched your filters.");
                                 } else {
                                     System.out.println("Filtered Staff Names:");
-                                    rolefilteredStaff.forEach(staff -> System.out.println(staff.name));
+                                    for (int i = 0; i < rolefilteredStaff.size(); i++) {
+                                        Staff staff = rolefilteredStaff.get(i);
+                                        System.out.printf("%-5d %-20s %-20s %-5d %-10s%n",
+                                                i + 1,
+                                                staff.name,
+                                                staff.role,
+                                                staff.age,
+                                                staff.displayGender()
+                                        );
+                                    }
                                 }
                                 break;
 
@@ -256,28 +310,68 @@ public class AdminMenu extends Menu {
                                     System.out.println("No staff members matched your filters.");
                                 } else {
                                     System.out.println("Filtered Staff Names:");
-                                    agefilteredStaff.forEach(staff -> System.out.println(staff.name));
-                                }
-                                break;
-                            case 3:
-                                System.out.print("Enter gender to filter by (true for male, false for female): ");
-                                while (true) {
-                                    String genderInput = InputValidater.getValidString().toLowerCase();
-                                    if (genderInput.equals("true") || genderInput.equals("false")) {
-                                        boolean filtgender = Boolean.parseBoolean(genderInput);
-                                        List<Staff> genderfilteredStaff = staffRepo.filterStaff(null, null, null, null, filtgender);
-                                        if (genderfilteredStaff.isEmpty()) {
-                                            System.out.println("No staff members matched your filters.");
-                                        } else {
-                                            System.out.println("Filtered Staff Names:");
-                                            genderfilteredStaff.forEach(staff -> System.out.println(staff.name));
-                                        }
-                                        break;
-                                    } else {
-                                        System.out.println("Invalid input. Please enter 'true' or 'false'.");
+                                    for (int i = 0; i < agefilteredStaff.size(); i++) {
+                                        Staff staff = agefilteredStaff.get(i);
+                                        System.out.printf("%-5d %-20s %-20s %-5d %-10s%n",
+                                                i + 1,
+                                                staff.name,
+                                                staff.role,
+                                                staff.age,
+                                                staff.displayGender()
+                                        );
                                     }
                                 }
                                 break;
+                            case 3:
+                                boolean filtgender; // Declare outside the loop to use later
+                                while (true) {
+                                    System.out.print("Enter gender to filter by (true for male, false for female): ");
+                                    String genderInput = InputValidater.getValidString().toLowerCase();
+                                    if (genderInput.equals("true") || genderInput.equals("false")) {
+                                        filtgender = Boolean.parseBoolean(genderInput);
+                                        break; // Exit the loop when valid input is given
+                                    } else {
+                                        System.out.println("Invalid input. Please enter 'true' for male or 'false' for female.");
+                                    }
+                                }
+                                List<Staff> genderfilteredStaff = staffRepo.filterStaff(null, null, null, null, filtgender);
+                                if (genderfilteredStaff.isEmpty()) {
+                                    System.out.println("No staff members matched your filters.");
+                                } else {
+                                    System.out.println("Filtered Staff Names:");
+                                    for (int i = 0; i < genderfilteredStaff.size(); i++) {
+                                        Staff staff = genderfilteredStaff.get(i);
+                                        System.out.printf("%-5d %-20s %-20s %-5d %-10s%n",
+                                                i + 1,
+                                                staff.name,
+                                                staff.role,
+                                                staff.age,
+                                                staff.displayGender()
+                                        );
+                                    }
+                                    break;
+                                }
+                                break;
+                            case 4:
+                                List<Staff> allstaff = staffRepo.filterStaff(null,null,null,null,null);
+                                if (allstaff.isEmpty()) {
+                                    System.out.println("No staff members matched your filters.");
+                                } else {
+                                    System.out.printf("%-5s %-20s %-20s %-5s %-10s%n", "Index", "Name", "Role", "Age", "Gender");
+                                    System.out.println("--------------------------------------------------------------");
+                                    for (int i = 0; i < allstaff.size(); i++) {
+                                        Staff staff = allstaff.get(i);
+                                        System.out.printf("%-5d %-20s %-20s %-5d %-10s%n",
+                                                i + 1,
+                                                staff.name,
+                                                staff.role,
+                                                staff.age,
+                                                staff.displayGender()
+                                        );
+                                    }
+                                }
+                                break;
+
                             default:
                                 System.out.println("Invalid option. Please select a valid choice.");
                         }
@@ -293,7 +387,10 @@ public class AdminMenu extends Menu {
         }
     }
 
-
+    /**
+     * admin menu that handles all appointment related tasks that the admin can perform
+     * @param admapptmngr
+     */
     public void viewAppointmentsMenu(AdminAppointmentManager admapptmngr) {
         boolean back = false;
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH");
@@ -337,7 +434,7 @@ public class AdminMenu extends Menu {
                             System.out.println("Doctor: " + staffRepo.getName(appointment.doctor_id));
                             System.out.println("Patient: " + patRepo.getName(appointment.patient_id));
                             System.out.println("Diagnosis:" + appointment.diagnosis);
-                            if (appointment.isPrescribed == 1){
+                            if (appointment.prescriptionStatus == 1){
                                 System.out.println("Prescription:" + appointment.prescription);
                             } else {
                                 System.out.println("Prescription: No prescription set");

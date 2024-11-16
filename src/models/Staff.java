@@ -20,4 +20,8 @@ public class Staff implements IdentifiedObject {
     public String getID(){
         return id;
     }
+
+    public String displayGender(){
+        return genderIsMale ? "Male" : "Female";
+    }
 }

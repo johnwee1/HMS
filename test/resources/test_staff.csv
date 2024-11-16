@@ -1,4 +1,5 @@
-id,name,role,age,gender
-admin,Default admin,admin,30,true
-doctor1,Default doctor,doctor,32,false
+id,name,role,age,genderIsMale
+doctor1,Default doctor,doctor,47,true
+adddoctor1,Added Doctor,doctor,34,false
 pharmacist1,Default pharmacist,pharmacist,44,false
+admin,Default admin,admin,30,true

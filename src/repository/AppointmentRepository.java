@@ -96,7 +96,7 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
             curappt.appointmentType = type;
         }
         if (prescription != null) {
-            curappt.isPrescribed = 1;
+            curappt.prescriptionStatus = 1;
             curappt.prescription = prescription;
         }
         if (diagnosis != null) {
@@ -108,7 +108,7 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
     public boolean prescribeMedicine(String appointmentId) {
         try {
             Appointment curappt = defaultReadItem(appointmentId);
-            curappt.isPrescribed = 2;
+            curappt.prescriptionStatus = 2;
             defaultUpdateItem(curappt);
             return true;
         } catch (Exception e) {
@@ -135,7 +135,7 @@ public class AppointmentRepository extends GenericRepository<Appointment> {
                 matches = matches && Objects.equals(appt.startTime, startTime);
             }
             if (isPrescribed != null){
-                matches = matches && appt.isPrescribed == isPrescribed;
+                matches = matches && appt.prescriptionStatus == isPrescribed;
             }
             if (matches) {
                 filteredList.add(appt);

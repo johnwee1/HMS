@@ -20,7 +20,7 @@ public class TestPharmacist {
 
 
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         MedicineRepository medRepo = new MedicineRepository(f(medicines));
         UserRepository userRepo = new UserRepository(f(users));
         AppointmentRepository apptRepo = new AppointmentRepository(f(appointments));

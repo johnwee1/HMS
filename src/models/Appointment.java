@@ -1,7 +1,5 @@
 package models;
 
-import jdk.jshell.spi.SPIResolutionException;
-
 import java.util.UUID;
 
 /**
@@ -14,10 +12,10 @@ public class Appointment implements IdentifiedObject {
     public String startTime; //format: DDMMYYHH (in 24hr format) // we enforce appointments to be in 1hr blocks (CLI)
     public String endTime; //format: DDMMYYHH (in 24hr format)
     public int appointmentType; // 0: Consultation 1: X-Ray 2: Blood Test
-    public int appointmentStatus; // 0: booked 1: available 2: pending 3: completed
+    public int appointmentStatus; // 0: booked 1: available 2: pending 3: completed 4: leaves for doctors
     public String patient_id;
     public String doctor_id;
-    public int isPrescribed; // 0: No prescription 1: Pending prescription 2: Completed prescription
+    public int prescriptionStatus; // 0: No prescription 1: Pending prescription 2: Completed prescription
     public String diagnosis;
     public String prescription;
 
@@ -30,7 +28,7 @@ public class Appointment implements IdentifiedObject {
         this.appointmentStatus = status;
         this.patient_id = "";
         this.doctor_id = doctor_id;
-        this.isPrescribed = 0;
+        this.prescriptionStatus = 0;
         this.diagnosis = "";
         this.prescription = "";
         // set prescription and diagnosis only after completion
@@ -41,7 +39,7 @@ public class Appointment implements IdentifiedObject {
     }
 
     public void setPrescription(String prescription) {
-        this.isPrescribed = 2;
+        this.prescriptionStatus = 2;
         this.prescription = prescription;
     }
 
@@ -53,11 +51,10 @@ public class Appointment implements IdentifiedObject {
 
     /**
      * Prints the prescription id in readable string format
-     * @param id
      * @return string
      */
-    public String prescriptionIdToString(int id){
-        return switch (id){
+    public String prescriptionIdToString(){
+        return switch (this.prescriptionStatus){
             case 1->"None";
             case 2->"Pending";
             case 3->"Prescribed";

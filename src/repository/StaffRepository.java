@@ -13,6 +13,16 @@ public class StaffRepository extends GenericRepository<Staff>{
         super(Staff.class, csv_filepath);
     }
 
+    public Staff getStaff(String username) {
+        try {
+            Staff staff = defaultReadItem(username);
+            return staff;
+        } catch (RuntimeException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
     public String getName(String username) {
         Staff staff = defaultReadItem(username);
         if (staff == null) {

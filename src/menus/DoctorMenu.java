@@ -13,6 +13,7 @@ import utils.DateTimeHandler;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -60,7 +61,13 @@ public class DoctorMenu extends Menu{
 
                 case 3:
                     System.out.println("Viewing Personal Schedule...");
-                    viewPersonalSchedule(apptManager);
+                    viewPersonalSchedule(apptManager, apptRepo, id);
+
+                    System.out.println("Would you like to update your personal schedule? (y/n)");
+                    String updateChoice = InputValidater.getValidString().toLowerCase();
+                    if (updateChoice.equals("y")){
+                        updatePersonalSchedule(apptManager, apptRepo, id);
+                    }
                     break;
 
                 case 4:
@@ -219,6 +226,89 @@ public class DoctorMenu extends Menu{
     }
 
     /**
+     * CLI Menu to viewPersonalSchedule
+     */
+    private void viewPersonalSchedule(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId){
+        System.out.println("Viewing Personal Leave Schedule...");
+
+        //fetch all appts with status 4
+        List<Appointment> leaveDays = apptManager.viewLeaves(apptRepo, doctorId);
+        //Implemented this in doctorappointmentmanager
+
+        if (leaveDays.isEmpty()){
+            System.out.println("You have no leave days scheduled.");
+            return;
+        }
+
+        leaveDays.sort(Comparator.comparing(a -> a.startTime));
+        System.out.println("Scheduled Leave Days: ");
+        for (Appointment leaveDay : leaveDays){
+            System.out.println("Leave on: " + leaveDay.startTime);
+        }
+
+    }
+
+    private void updatePersonalSchedule(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId){
+        System.out.println("Setting Personal Leave Days...");
+
+        String datePrefix;
+        while (true){
+             System.out.println("Enter the leave day (1-31): ");
+             int day = InputValidater.getValidInteger();
+
+             System.out.println("Enter the leave month (1-12): ");
+             int month = InputValidater.getValidInteger();
+
+             System.out.println("Enter the leave year (e.g., 2024");
+             int year = InputValidater.getValidInteger();
+
+             datePrefix = String.format("%02d%02d%02d", day, month, year % 100);
+
+             String testDateTime = datePrefix + " 00";
+             if(DateTimeHandler.isValid(testDateTime)){
+                 break;
+             } else {
+                 System.out.println("invalid date entered. Please try again");
+             }
+        }
+
+        int startHour, endHour;
+        while (true){
+            System.out.println("Enter the start hour of leave (0-23): ");
+            startHour = InputValidater.getValidInteger();
+
+            System.out.print("Enter the end hour of leave (0-23): ");
+            endHour = InputValidater.getValidInteger();
+
+            if (startHour < 0 || endHour < 0 || startHour >= endHour || endHour > 23){
+                System.out.println("Invalid time range. Please ensure start time is before end time.");
+            } else {
+                break;
+            }
+        }
+
+        for (int hour = startHour; hour < endHour; hour++){
+            String startTime = datePrefix + " " + String.format("%02d", hour);
+            String endTime = datePrefix + " " + String.format("%02d", hour + 1);
+
+            if (!DateTimeHandler.isValid(startTime) || !DateTimeHandler.isValid(endTime)){
+                System.out.println("Invalid date or time format for: " + startTime + " - " + endTime);
+                continue;
+            }
+
+            boolean created = apptManager.createAppointment(apptRepo, startTime, endTime, doctorId, 4);
+
+            if (created){
+                System.out.println("Leave scheduled: " + startTime + " - " + endTime);
+            } else {
+                System.out.println("Failed to schedule leave for: " + startTime + " - " + endTime);
+            }
+        }
+
+        System.out.println("Leave scheduling complete.");
+    }
+
+    /**
      * CLI Menu (and submenus) to create appointments
      * @param apptManager apptmanager obj
      * @param  apptRepo apptrepo object
@@ -280,7 +370,7 @@ public class DoctorMenu extends Menu{
             }
 
             // Use DoctorAppointmentManager to create the appointment
-            boolean created = apptManager.createAppointment(apptRepo, startTime, endTime, doctorId);
+            boolean created = apptManager.createAppointment(apptRepo, startTime, endTime, doctorId, 1);
 
             if (created) {
                 System.out.println("Appointment created: " + startTime + " - " + endTime);
