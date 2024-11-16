@@ -9,6 +9,9 @@ import repository.StaffRepository;
 import repository.UserRepository;
 import utils.InputValidater;
 import utils.DateTimeHandler;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +29,7 @@ public class DoctorMenu extends Menu{
     @Override
     public void userInterface() {
         DoctorAppointmentManager apptManager = new DoctorAppointmentManager();
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH");
         while (true) {
             System.out.println("Doctor Menu:");
             System.out.println("1. View Patient Medical Records");
@@ -67,17 +71,17 @@ public class DoctorMenu extends Menu{
 
                 case 5:
                     System.out.println("Accepting or Declining Appointment Requests...");
-                    handlePendingAppointments(apptManager,apptRepo,id);
+                    handlePendingAppointments(apptManager,apptRepo,id,inputFormatter);
                     break;
 
                 case 6:
                     System.out.println("Viewing Upcoming Appointments...");
-                    viewBookedAppointments(apptManager,apptRepo,id);
+                    viewBookedAppointments(apptManager,apptRepo,id,inputFormatter);
                     break;
 
                 case 7:
                     System.out.println("Recording Appointment Outcome...");
-                    recordAppointmentOutcome(apptManager,apptRepo,patientRepo,id);
+                    recordAppointmentOutcome(apptManager,apptRepo,patientRepo,id,inputFormatter);
                     break;
 
                 case 8:
@@ -270,13 +274,18 @@ public class DoctorMenu extends Menu{
         System.out.println("Appointment creation process completed.");
     }
 
-    private void handlePendingAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId) {
+    private void handlePendingAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId, DateTimeFormatter inputFormatter) {
         List<Appointment> pendingAppointments = apptManager.checkPending(apptRepo, doctorId);
 
         if (pendingAppointments.isEmpty()) {
             System.out.println("No pending appointments.");
             return;
         }
+        pendingAppointments.sort((a1, a2) -> {
+            LocalDateTime time1 = LocalDateTime.parse(a1.startTime, inputFormatter);
+            LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);
+            return time1.compareTo(time2);
+        });
 
         System.out.println("Pending Appointments:");
         for (int i = 0; i < pendingAppointments.size(); i++) {
@@ -317,13 +326,19 @@ public class DoctorMenu extends Menu{
         }
     }
 
-    private void viewBookedAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId) {
+    private void viewBookedAppointments(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId, DateTimeFormatter inputFormatter) {
         List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
 
         if (bookedAppointments.isEmpty()) {
             System.out.println("No upcoming booked appointments.");
             return;
         }
+
+        bookedAppointments.sort((a1, a2) -> {
+            LocalDateTime time1 = LocalDateTime.parse(a1.startTime, inputFormatter);
+            LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);
+            return time1.compareTo(time2);
+        });
 
         System.out.println("Upcoming Booked Appointments:");
         for (int i = 0; i < bookedAppointments.size(); i++) {
@@ -332,13 +347,19 @@ public class DoctorMenu extends Menu{
         }
     }
 
-    private void recordAppointmentOutcome(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, PatientRepository patientRepo, String doctorId) {
+    private void recordAppointmentOutcome(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, PatientRepository patientRepo, String doctorId, DateTimeFormatter inputFormatter) {
         List<Appointment> bookedAppointments = apptManager.checkBooked(apptRepo, doctorId);
 
         if (bookedAppointments.isEmpty()) {
             System.out.println("No booked appointments to complete.");
             return;
         }
+
+        bookedAppointments.sort((a1, a2) -> {
+            LocalDateTime time1 = LocalDateTime.parse(a1.startTime, inputFormatter);
+            LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);
+            return time1.compareTo(time2);
+        });
 
         System.out.println("Booked Appointments:");
         for (int i = 0; i < bookedAppointments.size(); i++) {

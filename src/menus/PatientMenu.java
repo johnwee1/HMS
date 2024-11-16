@@ -139,6 +139,12 @@ public class PatientMenu extends Menu {
         if (avail.isEmpty()) {
             System.out.println("No available appointments.");
         } else {
+            avail.sort((a1, a2) -> {
+                LocalDateTime time1 = LocalDateTime.parse(a1.startTime, inputFormatter);
+                LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);
+                return time1.compareTo(time2);
+            });
+
             for (int i = 0; i < avail.size(); i++) {
                 Appointment appointment = avail.get(i);
                 System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
@@ -252,6 +258,11 @@ public class PatientMenu extends Menu {
     }
 
     private void displayAppointments(List<Appointment> appointments, DateTimeFormatter inputFormatter, DateTimeFormatter outputFormatter) {
+        appointments.sort((a1, a2) -> {
+            LocalDateTime time1 = LocalDateTime.parse(a1.startTime, inputFormatter);
+            LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);
+            return time1.compareTo(time2);
+        });
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
             String formattedTime = LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter);
