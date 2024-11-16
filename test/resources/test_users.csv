@@ -1,4 +1,5 @@
 id,passwordHash,role
 doctor1,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,doctor
+testpat1,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,patient
 pharmacist1,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,pharmacist
 admin,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,admin

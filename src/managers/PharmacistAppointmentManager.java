@@ -23,6 +23,6 @@ public class PharmacistAppointmentManager {
      * @return
      */
     public List<Appointment> checkOutstandingRecords(AppointmentRepository repo) {
-        return repo.filterAppointments(null, null, 0, null, 1);
+        return repo.filterAppointments(null, null, 3, null, 1);
     }
 }

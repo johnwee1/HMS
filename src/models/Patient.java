@@ -12,6 +12,8 @@ public class Patient implements IdentifiedObject {
     public String pastDiagnoses;
     public String currentTreatmentPlan;
 
+    public Patient(){}
+
     public Patient(String id, String name, String email, int phoneNumber, String role,
                    int age, boolean gender, String bloodType) {
         this.id = id;

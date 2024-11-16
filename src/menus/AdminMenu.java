@@ -1,5 +1,6 @@
 package menus;
 
+import managers.AdminAppointmentManager;
 import models.Appointment;
 import models.Medicine;
 import models.Staff;
@@ -25,6 +26,7 @@ public class AdminMenu extends Menu {
 
     public void userInterface() {
         boolean exit = false;
+        AdminAppointmentManager admapptmngr = new AdminAppointmentManager();
 
 
         while (!exit) {
@@ -41,7 +43,7 @@ public class AdminMenu extends Menu {
                     manageHospitalStaffMenu();
                     break;
                 case 2:
-                    viewAppointmentsMenu();
+                    viewAppointmentsMenu(admapptmngr);
                     break;
                 case 3:
                     manageInventoryMenu();
@@ -288,40 +290,56 @@ public class AdminMenu extends Menu {
     }
 
 
-    public void viewAppointmentsMenu() {
+    public void viewAppointmentsMenu(AdminAppointmentManager admapptmngr) {
         boolean back = false;
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH");
 
         while (!back) {
             System.out.println("\n=== View Appointments ===");
-            System.out.println("1. View All Appointments");
-            System.out.println("2. View Appointments by Status");
+            System.out.println("1. View Scheduled Appointments");
+            System.out.println("2. View Completed Appointments");
             System.out.println("3. Back to Main Menu");
             System.out.print("Enter your choice: ");
             int choice = InputValidater.getValidInteger();
 
             switch (choice) {
                 case 1:
-                    System.out.println("View All Appointments functionality");
-                    System.out.println("Viewing Available Appointment Slots...");
-                    List<Appointment> allappt = apptRepo.filterAppointments(null,null,null,null,null);
-
+                    System.out.println("View Scheduled Appointments functionality");
+                    System.out.println("Viewing Scheduled Appointment Slots...");
+                    List<Appointment> allappt = admapptmngr.viewScheduledAppointments(apptRepo);
                     if (allappt.isEmpty()) {
                         System.out.println("No currrent appointments.");
                     } else {
                         for (int i = 0; i < allappt.size(); i++) {
                             Appointment appointment = allappt.get(i);
                             System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
-                            System.out.println("Staff: " + staffRepo.getName(appointment.doctor_id));
-                            System.out.println("Status: "+ appointment.appointmentStatus);
+                            System.out.println("Doctor: " + staffRepo.getName(appointment.doctor_id));
+                            System.out.println("Patient: " + staffRepo.getName(appointment.patient_id));
                         }
                     }
 
                     break;
                 case 2:
-                    System.out.println("View Appointments by Status functionality");
-                    // Add code to view appointments filtered by status
+                    System.out.println("View Completed Appointments");
+                    System.out.println("Viewing Completed Appointment");
+                    List<Appointment> allcompappt = admapptmngr.viewCompletedAppointments(apptRepo);
+                    if (allcompappt.isEmpty()) {
+                        System.out.println("No currrent appointments.");
+                    } else {
+                        for (int i = 0; i < allcompappt.size(); i++) {
+                            Appointment appointment = allcompappt.get(i);
+                            System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
+                            System.out.println("Doctor: " + staffRepo.getName(appointment.doctor_id));
+                            System.out.println("Patient: " + staffRepo.getName(appointment.patient_id));
+                            System.out.println("Diagnosis:" + appointment.diagnosis);
+                            if (appointment.isPrescribed == 1){
+                                System.out.println("Prescription:" + appointment.prescription);
+                            } else {
+                                System.out.println("Prescription: No prescription set");
+                            }
+                        }
+                    }
                     break;
                 case 3:
                     back = true;

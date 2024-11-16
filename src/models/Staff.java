@@ -7,6 +7,8 @@ public class Staff implements IdentifiedObject {
     public int age;
     public boolean gender; // true: Male false: Female
 
+
+    public Staff(){}
     public Staff(String id, String name, String role, int age, boolean gender) {
         this.id = id;
         this.name = name;

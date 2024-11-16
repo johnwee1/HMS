@@ -1,13 +1,17 @@
 import menus.Menu;
+import menus.AdminMenu;
 import menus.PharmacistMenu;
 import org.junit.jupiter.api.Test;
 import repository.AppointmentRepository;
 import repository.MedicineRepository;
-import repository.StaffRepository;
 import repository.UserRepository;
+import repository.StaffRepository;
+import repository.PatientRepository;
 
-public class TestPharmacist {
-    final static String id = "pharmacist1";
+
+
+public class TestAdmin {
+    final static String id = "admin";
     final static String users = "test_users.csv";
     final static String appointments = "test_appointments.csv";
     final static String medicines = "test_medicines.csv";
@@ -18,16 +22,14 @@ public class TestPharmacist {
         return java.nio.file.Paths.get(System.getProperty("user.dir"), "test","resources", filename).toString();
     }
 
-
-
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         MedicineRepository medRepo = new MedicineRepository(f(medicines));
         UserRepository userRepo = new UserRepository(f(users));
         AppointmentRepository apptRepo = new AppointmentRepository(f(appointments));
+        StaffRepository staffRepo = new StaffRepository(f(staff));
+        PatientRepository patRepo = new PatientRepository(f(patients));
 
-        PharmacistMenu m = new PharmacistMenu(medRepo, apptRepo,userRepo, id);
-        m.userInterface();
+        AdminMenu a = new AdminMenu(id,apptRepo,staffRepo,patRepo,medRepo,userRepo);
+        a.userInterface();
     }
-
 }
-
