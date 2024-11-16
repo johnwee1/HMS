@@ -143,13 +143,11 @@ public class DoctorMenu extends Menu{
      * @param doctorId doctor id
      */
     private void updatePatientMedicalRecord(DoctorAppointmentManager apptManager, PatientRepository patientRepo, String doctorId) {
-        System.out.println("Updating Patient Medical Record...");
 
         // Get the set of patient IDs under the doctor's care
         Set<String> patientIds = apptManager.patientsUnderCare(apptRepo, doctorId);
 
         if (patientIds.isEmpty()) {
-            System.out.println("You have no patients under your care.");
             return;
         }
 
@@ -226,20 +224,24 @@ public class DoctorMenu extends Menu{
     }
 
     /**
-     * CLI Menu to viewPersonalSchedule
+     * CLI to view personal schedule of doctor, specifically leave days
+     * @param apptManager apptmanager obj
+     * @param apptRepo apptrepo obj
+     * @param doctorId doctor id
      */
     private void viewPersonalSchedule(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId){
         System.out.println("Viewing Personal Leave Schedule...");
 
         //fetch all appts with status 4
         List<Appointment> leaveDays = apptManager.viewLeaves(apptRepo, doctorId);
-        //Implemented this in doctorappointmentmanager
 
+        //Scenario if there are no leave days
         if (leaveDays.isEmpty()){
             System.out.println("You have no leave days scheduled.");
             return;
         }
 
+        //Sorting leave days chronologically and printing with time
         leaveDays.sort(Comparator.comparing(a -> a.startTime));
         System.out.println("Scheduled Leave Days: ");
         for (Appointment leaveDay : leaveDays){
@@ -248,9 +250,16 @@ public class DoctorMenu extends Menu{
 
     }
 
+    /**
+     * CLI to add personal leave days by doctor
+     * @param apptManager apptmanager obj
+     * @param apptRepo apptrepo obj
+     * @param doctorId doctor id
+     */
     private void updatePersonalSchedule(DoctorAppointmentManager apptManager, AppointmentRepository apptRepo, String doctorId){
         System.out.println("Setting Personal Leave Days...");
 
+        //Get date of leave from doctor
         String datePrefix;
         while (true){
              System.out.println("Enter the leave day (1-31): ");
@@ -272,6 +281,7 @@ public class DoctorMenu extends Menu{
              }
         }
 
+        //Get time of leave slot from doctor
         int startHour, endHour;
         while (true){
             System.out.println("Enter the start hour of leave (0-23): ");
@@ -295,16 +305,14 @@ public class DoctorMenu extends Menu{
                 System.out.println("Invalid date or time format for: " + startTime + " - " + endTime);
                 continue;
             }
-
+            //Create appointment with status 4 to block appts
             boolean created = apptManager.createAppointment(apptRepo, startTime, endTime, doctorId, 4);
-
             if (created){
                 System.out.println("Leave scheduled: " + startTime + " - " + endTime);
             } else {
                 System.out.println("Failed to schedule leave for: " + startTime + " - " + endTime);
             }
         }
-
         System.out.println("Leave scheduling complete.");
     }
 

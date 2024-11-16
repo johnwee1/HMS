@@ -1,2 +1,3 @@
 id,name,email,phoneNumber,role,age,gender,bloodType,pastDiagnoses,currentTreatmentPlan
 testpat1,Test Patient,testemail@example.com,72727272,patient,5,true,A,c,
+pat_a, Pat A,email,7373737,patient,5,true,A,diagnosis,

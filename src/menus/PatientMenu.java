@@ -95,7 +95,7 @@ public class PatientMenu extends Menu {
     }
 
     /**
-     * CLI to update the patient's information
+     * CLI to update the patient's information, only being able to edit phone number and email
      * @param current curr patient id
      */
     private void updatePersonalInformation(Patient current) {
@@ -140,7 +140,7 @@ public class PatientMenu extends Menu {
     }
 
     /**
-     * View available appointments
+     * View all available appointments created by doctors
      * @param manager
      */
     private void viewAvailableAppointments(PatientAppointmentManager manager) {
@@ -165,8 +165,9 @@ public class PatientMenu extends Menu {
     }
 
     /**
-     * Schedule an appointment
-     * @param manager
+     * Schedule an appointment, first showing all available appointments, before getting
+     * the patient to input which appointment they would like to book
+     * @param manager Patient Appointment Manager
      */
     private void scheduleAppointment(PatientAppointmentManager manager) {
         System.out.println("Scheduling an Appointment...");
@@ -199,6 +200,11 @@ public class PatientMenu extends Menu {
         System.out.println("Appointment scheduled successfully.");
     }
 
+    /**
+     * Reschedule an appointment, first prompting the patient to select an appointment to
+     * cancel before prompting the patient to select a new appointment to book
+     * @param manager Patient Appointment Manager
+     */
     private void rescheduleAppointment(PatientAppointmentManager manager) {
         List<Appointment> reschedBooked = manager.checkBooked(apptRepo, id);
 
@@ -224,6 +230,10 @@ public class PatientMenu extends Menu {
         System.out.println("Successfully rescheduled the appointment.");
     }
 
+    /**
+     * Cancel an existing booked appointment
+     * @param manager Patient Appointment Manager
+     */
     private void cancelAppointment(PatientAppointmentManager manager) {
         List<Appointment> curBooked = manager.checkBooked(apptRepo, id);
 
@@ -237,6 +247,12 @@ public class PatientMenu extends Menu {
         manager.cancelAppointment(apptRepo, cancelled.getID());
         System.out.println("Appointment canceled successfully.");
     }
+
+    /**
+     * View all currently scheduled appointments, showing appointments pending doctor approval,
+     * followed by approved appointments
+     * @param manager Patient Appointment Manager
+     */
 
     private void viewScheduledAppointments(PatientAppointmentManager manager) {
         List<Appointment> apptBooked = manager.checkBooked(apptRepo, id);
@@ -257,6 +273,10 @@ public class PatientMenu extends Menu {
         }
     }
 
+    /**
+     * View all past completed appointments for this patient
+     * @param manager Patient Appointment Manager
+     */
     private void viewPastAppointmentRecords(PatientAppointmentManager manager) {
         List<Appointment> apptPast = manager.checkPastAppointments(apptRepo, id);
 
@@ -281,6 +301,10 @@ public class PatientMenu extends Menu {
         }
     }
 
+    /**
+     * Helper function to display the start time and doctor's name of a list of appointments
+     * @param appointments appointments list
+     */
     private void displayAppointments(List<Appointment> appointments) {
         appointments.sort((a1, a2) -> {
             LocalDateTime time1 = LocalDateTime.parse(a1.startTime, inputFormatter);

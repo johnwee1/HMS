@@ -14,7 +14,7 @@ public class MenuFactory {
     StaffRepository staffRepo;
 
     /**
-     * Generic factory class to create a new menu to display to the user, depending on their role.
+     * Generic factory class to create a new menu to display to the user, depending on their role, and initializes the repositories.
      * Additionally, creates a default user if none exists yet (since staff repository is only initialized here.)
      * @param userRepo
      * @param appts

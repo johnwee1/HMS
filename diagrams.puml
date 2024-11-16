@@ -1,0 +1,351 @@
+@startuml
+class repository.AppointmentRepository {
++ void printAllAppointments()
++ boolean createNewAppointment(String,String,int,String)
++ void deleteAppointment(String)
++ void updateAppointment(String,String,String,Integer,Integer,String,String)
++ void completeAppointment(String,String,String,Integer)
++ boolean prescribeMedicine(String)
++ List<Appointment> filterAppointments(String,String,Integer,String,Integer)
+}
+
+class models.Appointment {
++ String id
++ String startTime
++ String endTime
++ int appointmentType
++ int appointmentStatus
++ String patient_id
++ String doctor_id
++ int prescriptionStatus
++ String diagnosis
++ String prescription
++ String getID()
++ void setPrescription(String)
++ void setDiagnosis(String)
++ String prescriptionIdToString()
++ String timeToDisplayString(String)
+}
+
+
+class menus.PharmacistMenu {
+- MedicineRepository medRepo
+- PharmacistAppointmentManager pharmacistAppointmentManager
+- Scanner sc
++ void userInterface()
+- boolean updatePrescriptionStatus(String)
+- boolean submitReplenishmentRequest(String)
+- void printAppointments(List<Appointment>)
+}
+
+
+class menus.MainMenu {
+~ String csv_users
+~ String csv_appts
+~ String csv_medicines
+~ String csv_staff
+~ String csv_patients
++ void run()
+- void createNewDefaultUser(UserRepository)
+}
+
+
+class Main {
+~ {static} String users
+~ {static} String appointments
+~ {static} String medicines
+~ {static} String staff
+~ {static} String patients
++ {static} String f(String)
++ {static} void main(String[])
+}
+
+
+class repository.UserRepository {
++ {static} String[] roles
++ String getUserRole(String)
++ boolean createNewUser(String,String,String)
++ boolean updateUserPassword(String,String)
++ void deleteUser(String)
++ User getUserObject(String)
+}
+
+
+abstract class menus.Menu {
+~ AppointmentRepository apptRepo
+~ UserRepository userRepo
+~ String id
++ {abstract}void userInterface()
++ void changePassword()
+}
+
+
+class managers.DoctorAppointmentManager {
++ List<Appointment> checkPending(AppointmentRepository,String)
++ List<Appointment> checkBooked(AppointmentRepository,String)
++ List<Appointment> viewLeaves(AppointmentRepository,String)
++ Set<String> patientsUnderCare(AppointmentRepository,String)
++ void acceptAppointment(AppointmentRepository,String)
++ void declineAppointment(AppointmentRepository,String)
++ boolean createAppointment(AppointmentRepository,String,String,String,int)
++ void completeAppointment(AppointmentRepository,String,String,String,Integer)
+}
+
+class models.User {
++ String id
++ String passwordHash
++ String role
++ String getID()
+}
+
+
+class models.Staff {
++ String id
++ String name
++ String role
++ int age
++ boolean genderIsMale
++ String getID()
++ String displayGender()
+}
+
+
+interface models.IdentifiedObject {
++ String getID()
+}
+
+class menus.AdminMenu {
+~ StaffRepository staffRepo
+~ PatientRepository patRepo
+~ MedicineRepository medRepo
+~ String id
++ void userInterface()
++ void manageHospitalStaffMenu()
++ void viewAppointmentsMenu(AdminAppointmentManager)
++ void manageInventoryMenu()
+}
+
+
+class utils.DateTimeHandler {
++ {static} boolean isValid(String)
+}
+
+class repository.GenericRepository {
+- Class<T> classType
+- String filename
+- HashMap<String,T> db
++ Map<String,T> defaultViewOnlyDatabase()
+# void loadDatabase()
+# void saveDatabase()
+# void defaultCreateItem(T)
+# T defaultReadItem(String)
+# void defaultUpdateItem(T)
+# void defaultDeleteItem(String)
+}
+
+
+interface utils.ResourceHandler {
++ List<String> readHeaders(String)
++ List<List<String>> readRows(String)
++ void writeToFile(String,List<String>,List<List<String>>)
+}
+
+class managers.AdminAppointmentManager {
++ List<Appointment> viewScheduledAppointments(AppointmentRepository)
++ List<Appointment> viewCompletedAppointments(AppointmentRepository)
+}
+
+class models.Patient {
++ String id
++ String name
++ String email
++ int phoneNumber
++ String role
++ int age
++ boolean gender
++ String bloodType
++ String pastDiagnoses
++ String currentTreatmentPlan
++ String getID()
++ String toString()
+}
+
+
+class utils.CSVHandler {
+- {static} char DELIMITER
+- {static} char QUOTE_CHAR
+- {static} char UNPROCESSED_QUOTE_CHAR
++ List<String> readHeaders(String)
++ List<List<String>> readRows(String)
+- List<String> parseLine(String)
++ void writeToFile(String,List<String>,List<List<String>>)
+- void writeLine(BufferedWriter,List<String>)
+}
+
+
+class utils.InputValidater {
+- {static} Scanner scan
++ {static} int getValidInteger()
++ {static} String getValidString()
+}
+
+
+class models.Medicine {
++ String id
++ String displayName
++ int quantity
++ int alertLevel
++ boolean topUpRequested
++ String getID()
+}
+
+
+class menus.DoctorMenu {
+~ StaffRepository staffRepo
+~ PatientRepository patientRepo
++ void userInterface()
+- void viewPatientMedicalRecords(DoctorAppointmentManager,PatientRepository,String)
+- void updatePatientMedicalRecord(DoctorAppointmentManager,PatientRepository,String)
+- void viewPersonalSchedule(DoctorAppointmentManager,AppointmentRepository,String)
+- void updatePersonalSchedule(DoctorAppointmentManager,AppointmentRepository,String)
++ void createAppointments(DoctorAppointmentManager,AppointmentRepository,String)
+- void handlePendingAppointments(DoctorAppointmentManager,AppointmentRepository,String,DateTimeFormatter)
+- void viewBookedAppointments(DoctorAppointmentManager,AppointmentRepository,String,DateTimeFormatter)
+- void recordAppointmentOutcome(DoctorAppointmentManager,AppointmentRepository,PatientRepository,String,DateTimeFormatter)
+}
+
+
+class utils.PasswordHelper {
+- {static} String salt
++ {static} String hash(String)
++ {static} boolean passwordRuleValidator(String)
++ {static} boolean verify(String,String)
+}
+
+
+class repository.StaffRepository {
++ Staff getStaff(String)
++ String getName(String)
++ boolean createNewStaff(String,String,String,int,Boolean)
++ void updateStaff(String,String,String,Integer,Boolean)
++ void deleteStaff(String)
++ List<Staff> filterStaff(String,String,String,Integer,Boolean)
+}
+
+class managers.PharmacistAppointmentManager {
++ List<Appointment> checkOutcomeRecord(AppointmentRepository,String)
++ List<Appointment> checkOutstandingRecords(AppointmentRepository)
+}
+
+class managers.PatientAppointmentManager {
++ List<Appointment> checkAvailability(AppointmentRepository)
++ List<Appointment> checkPending(AppointmentRepository,String)
++ List<Appointment> checkBooked(AppointmentRepository,String)
++ List<Appointment> checkPastAppointments(AppointmentRepository,String)
++ void bookAppointment(AppointmentRepository,String,String)
++ void cancelAppointment(AppointmentRepository,String)
+}
+
+class menus.PatientMenu {
+~ StaffRepository staffRepo
+~ PatientRepository patientRepo
+~ DateTimeFormatter inputFormatter
+~ DateTimeFormatter outputFormatter
++ void userInterface()
+- void viewMedicalRecord(Patient)
+- void updatePersonalInformation(Patient)
+- void viewAvailableAppointments(PatientAppointmentManager)
+- void scheduleAppointment(PatientAppointmentManager)
+- void rescheduleAppointment(PatientAppointmentManager)
+- void cancelAppointment(PatientAppointmentManager)
+- void viewScheduledAppointments(PatientAppointmentManager)
+- void viewPastAppointmentRecords(PatientAppointmentManager)
+- int selectAppointment(List<Appointment>)
+- void displayAppointments(List<Appointment>)
+}
+
+
+class repository.PatientRepository {
++ String getName(String)
++ Patient getPatient(String)
++ boolean createNewPatient(String,String,String,int,String,int,Boolean,String)
++ void updatePatient(String,String,String,Integer,Boolean,String,Integer,String,String,String)
++ void updatePastDiagnoses(String,String)
++ void updateCurrentTreatmentPlan(String,String)
++ void updateEmail(String,String)
++ void updatePhoneNumber(String,int)
++ void deletePatient(String)
++ List<Patient> filterPatients(String,String,String,Integer,Boolean,String,Integer,String,String,String)
+}
+
+abstract class repository.AbstractRepository {
+# {abstract}void loadDatabase()
+# {abstract}void saveDatabase()
++ {abstract}Map<String,T> defaultViewOnlyDatabase()
+# {abstract}void defaultCreateItem(T)
+# {abstract}T defaultReadItem(String)
+# {abstract}void defaultUpdateItem(T)
+# {abstract}void defaultDeleteItem(String)
+}
+
+class repository.MedicineRepository {
+~ Set<Medicine> alertedMedicines
+- {static} String headerFormat
+- {static} String rowFormat
++ Medicine getMedicineObject(String)
++ boolean setAlertLevel(String,int)
++ boolean setRequest(String,boolean)
++ boolean dispense(String,int)
++ void replenishAll()
++ boolean defaultReplenish(String)
++ void setQuantity(String,int)
++ void registerMedicine(Medicine)
++ void deregisterMedicine(String)
++ Set<Medicine> getAlerts()
+- void printMedicineCollection(Collection<Medicine>)
++ void viewMedicationInventory()
++ void viewReplenishmentRequests()
++ void printMedicineStatus(Medicine)
+}
+
+
+class utils.DBLoader {
+- {static} ResourceHandler resourceHandler
++ {static} HashMap<String,T> loadCSV(String,Class<T>)
++ {static} void saveCSV(String,HashMap<String,T>)
+}
+
+
+class menus.MenuFactory {
+~ String csv_appts
+~ String csv_medicines
+~ String csv_staff
+~ String csv_patients
+~ AppointmentRepository apptRepo
+~ UserRepository userRepo
+~ PatientRepository patientRepo
+~ MedicineRepository medRepo
+~ StaffRepository staffRepo
++ Menu createMenu(String,String)
+}
+
+
+
+
+repository.GenericRepository <|-- repository.AppointmentRepository
+models.IdentifiedObject <|.. models.Appointment
+menus.Menu <|-- menus.PharmacistMenu
+repository.GenericRepository <|-- repository.UserRepository
+models.IdentifiedObject <|.. models.User
+models.IdentifiedObject <|.. models.Staff
+menus.Menu <|-- menus.AdminMenu
+repository.AbstractRepository <|-- repository.GenericRepository
+models.IdentifiedObject <|.. models.Patient
+utils.ResourceHandler <|.. utils.CSVHandler
+models.IdentifiedObject <|.. models.Medicine
+menus.Menu <|-- menus.DoctorMenu
+repository.GenericRepository <|-- repository.StaffRepository
+menus.Menu <|-- menus.PatientMenu
+repository.GenericRepository <|-- repository.PatientRepository
+repository.GenericRepository <|-- repository.MedicineRepository
+@enduml

@@ -38,8 +38,7 @@ public class Patient implements IdentifiedObject {
      */
     @Override
     public String toString() {
-        return "Patient Information:\n" +
-                "ID: " + id + "\n" +
+        return  "ID: " + id + "\n" +
                 "Name: " + name + "\n" +
                 "Email: " + email + "\n" +
                 "Phone Number: " + phoneNumber + "\n" +

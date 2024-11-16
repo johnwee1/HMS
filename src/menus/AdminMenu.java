@@ -412,11 +412,19 @@ public class AdminMenu extends Menu {
                     if (allappt.isEmpty()) {
                         System.out.println("No currrent appointments.");
                     } else {
+                        String header = String.format("%-5s %-20s %-25s %-25s", "S/N", "Start Time", "Doctor Name", "Patient Name");
+                        System.out.println(header);
+                        System.out.println("------------------------------------------------------------------------------------");
+
                         for (int i = 0; i < allappt.size(); i++) {
                             Appointment appointment = allappt.get(i);
-                            System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
-                            System.out.println("Doctor: " + staffRepo.getName(appointment.doctor_id));
-                            System.out.println("Patient: " + patRepo.getName(appointment.patient_id));
+                            String startTimeFormatted = LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter);
+                            String doctorName = staffRepo.getName(appointment.doctor_id);
+                            String patientName = patRepo.getName(appointment.patient_id);
+
+                            // Print each row with the same format as the header
+                            String row = String.format("%-5d %-20s %-25s %-25s", (i + 1), startTimeFormatted, doctorName, patientName);
+                            System.out.println(row);
                         }
                     }
 
@@ -428,17 +436,29 @@ public class AdminMenu extends Menu {
                     if (allcompappt.isEmpty()) {
                         System.out.println("No currrent appointments.");
                     } else {
+                        // Define column headers and their widths
+                        String header = String.format(
+                                "%-5s %-20s %-25s %-25s %-20s %-30s",
+                                "S/N", "Start Time", "Doctor Name", "Patient Name", "Diagnosis", "Prescription"
+                        );
+                        System.out.println(header);
+                        System.out.println("-----------------------------------------------------------------------------------------------" +
+                                "-------------------------------------------");
+
                         for (int i = 0; i < allcompappt.size(); i++) {
                             Appointment appointment = allcompappt.get(i);
-                            System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
-                            System.out.println("Doctor: " + staffRepo.getName(appointment.doctor_id));
-                            System.out.println("Patient: " + patRepo.getName(appointment.patient_id));
-                            System.out.println("Diagnosis:" + appointment.diagnosis);
-                            if (appointment.prescriptionStatus == 1){
-                                System.out.println("Prescription:" + appointment.prescription);
-                            } else {
-                                System.out.println("Prescription: No prescription set");
-                            }
+                            String startTimeFormatted = LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter);
+                            String doctorName = staffRepo.getName(appointment.doctor_id);
+                            String patientName = patRepo.getName(appointment.patient_id);
+                            String diagnosis = appointment.diagnosis;
+                            String prescription = appointment.prescriptionStatus == 1 ? appointment.prescription : "No prescription set";
+
+                            // Print each row with the same format as the header
+                            String row = String.format(
+                                    "%-5d %-20s %-25s %-25s %-20s %-30s",
+                                    (i + 1), startTimeFormatted, doctorName, patientName, diagnosis, prescription
+                            );
+                            System.out.println(row);
                         }
                     }
                     break;
@@ -451,6 +471,9 @@ public class AdminMenu extends Menu {
         }
     }
 
+    /**
+     * admin menu that handles all medicine inventory related tasks that the admin can perform
+     */
     public void manageInventoryMenu() {
         boolean back = false;
 
