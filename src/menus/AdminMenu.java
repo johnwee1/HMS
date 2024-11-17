@@ -328,13 +328,13 @@ public class AdminMenu extends Menu {
                                 }
                                 break;
                             case 3:
-                                boolean filtgender; // Declare outside the loop to use later
+                                boolean filtgender;
                                 while (true) {
                                     System.out.print("Filter by [m]ale or [f]emale? ");
                                     String genderInput = InputValidater.getValidString().toLowerCase();
                                     char c = genderInput.charAt(0);
                                     if (c == 'm' || c == 'f') {
-                                        filtgender = c == 'm'; // true for male
+                                        filtgender = c == 'm';
                                         break;
                                     } else {
                                         System.out.println("Invalid input. Please enter 'male'/'m' or 'female'/'f'.");
@@ -428,7 +428,6 @@ public class AdminMenu extends Menu {
                             String doctorName = staffRepo.getName(appointment.doctor_id);
                             String patientName = patRepo.getName(appointment.patient_id);
 
-                            // Print each row with the same format as the header
                             String row = String.format("%-5d %-20s %-25s %-25s", (i + 1), startTimeFormatted, doctorName, patientName);
                             System.out.println(row);
                         }
@@ -442,7 +441,7 @@ public class AdminMenu extends Menu {
                     if (allcompappt.isEmpty()) {
                         System.out.println("No currrent appointments.");
                     } else {
-                        // Define column headers and their widths
+                        
                         String header = String.format(
                                 "%-5s %-20s %-25s %-25s %-20s %-30s",
                                 "S/N", "Start Time", "Doctor Name", "Patient Name", "Diagnosis", "Prescription"
@@ -459,7 +458,6 @@ public class AdminMenu extends Menu {
                             String diagnosis = appointment.diagnosis;
                             String prescription = appointment.prescriptionStatus == 1 ? appointment.prescription : "No prescription set";
 
-                            // Print each row with the same format as the header
                             String row = String.format(
                                     "%-5d %-20s %-25s %-25s %-20s %-30s",
                                     (i + 1), startTimeFormatted, doctorName, patientName, diagnosis, prescription

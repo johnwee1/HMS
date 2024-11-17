@@ -12,6 +12,7 @@ public class Medicine implements IdentifiedObject {
      */
     public int alertLevel;
     public boolean topUpRequested;
+
     public String getID(){
         return id;
     }

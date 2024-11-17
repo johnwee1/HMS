@@ -20,7 +20,7 @@ public abstract class Menu {
     }
 
     /**
-     * Flush the CLI using ansi codes.
+     * Flush the CLI using ansi codes to look pretty.
      */
     public void flushTerminal(){
         System.out.print("\033[H\033[2J");

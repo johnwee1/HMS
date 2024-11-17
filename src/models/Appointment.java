@@ -9,14 +9,17 @@ import java.util.UUID;
  */
 public class Appointment implements IdentifiedObject {
     /**
-     * Unlike other IDs, Appointment IDs are UUIDs.
+     * Unlike other IDs, Appointment IDs are generated UUIDs to prevent clashes during generation.
      */
     public String id;
 
     /**
-     * format: DDMMYYHH (in 24hr format).we enforce appointments to be in 1hr blocks (CLI)
+     * format: DDMMYY HH (in 24hr format). We enforce appointments in the appointment schema to be in 1hr blocks.
      */
     public String startTime;
+    /**
+     * As above
+     */
     public String endTime;
     /**
      * 0: Consultation 1: X-Ray 2: Blood Test
@@ -32,7 +35,13 @@ public class Appointment implements IdentifiedObject {
      *  0: No prescription 1: Pending prescription 2: Completed prescription
      */
     public int prescriptionStatus;
+    /**
+     * Readable diagnosis given by the doctor for the particular appointment
+     */
     public String diagnosis;
+    /**
+     * Readable prescription given by the doctor for the pharmacist to read. Not linked to actual medicine IDs.
+     */
     public String prescription;
 
     public Appointment(){}
@@ -85,7 +94,8 @@ public class Appointment implements IdentifiedObject {
      * @return readable string in "day/mo/yr hr:00" format
      */
     public String timeToDisplayString(String time){
-        if (time == null || time.length() != 8) {
+        if (time.length() != 9) {
+            // default catch all for incompatibility
             return time;
         }
         String day = time.substring(0, 2);

@@ -16,11 +16,13 @@ public class MenuFactory {
     /**
      * Generic factory class to create a new menu to display to the user, depending on their role, and initializes the repositories.
      * Additionally, creates a default user if none exists yet (since staff repository is only initialized here.)
-     * @param userRepo
-     * @param appts
-     * @param medicines
-     * @param staff
-     * @param patients
+     *
+     * The menu factory will thus be in charge of initializing the menu that is seen by the user.
+     * @param userRepo user repository object
+     * @param appts filepath
+     * @param medicines filepath
+     * @param staff filepath
+     * @param patients filepath
      */
     MenuFactory(UserRepository userRepo, String appts, String medicines, String staff, String patients) {
         this.userRepo = userRepo;

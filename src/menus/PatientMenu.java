@@ -165,12 +165,7 @@ public class PatientMenu extends Menu {
                 LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);
                 return time1.compareTo(time2);
             });
-
-            for (int i = 0; i < avail.size(); i++) {
-                Appointment appointment = avail.get(i);
-                System.out.println((i + 1) + ". Start Time: " + LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter));
-                System.out.println("Staff: " + staffRepo.getName(appointment.doctor_id));
-            }
+            displayAppointments(avail);
         }
     }
 
@@ -321,10 +316,17 @@ public class PatientMenu extends Menu {
             LocalDateTime time2 = LocalDateTime.parse(a2.startTime, inputFormatter);
             return time1.compareTo(time2);
         });
+        String header = String.format("%-5s %-25s %-20s", "No.", "Start Time", "Doctor");
+        System.out.println(header);
+        System.out.println("=".repeat(header.length()));
+
         for (int i = 0; i < appointments.size(); i++) {
             Appointment appointment = appointments.get(i);
             String formattedTime = LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter);
-            System.out.println((i + 1) + ". Start Time: " + formattedTime + "\n" +"Doctor: " + staffRepo.getName(appointment.doctor_id));
+            String doctorName = staffRepo.getName(appointment.doctor_id);
+
+            String row = String.format("%-5d %-25s %-20s", (i + 1), formattedTime, doctorName);
+            System.out.println(row);
         }
     }
 }
