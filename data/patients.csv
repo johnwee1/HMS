@@ -1,1 +1,2 @@
 id,name,email,phoneNumber,role,age,gender,bloodType,pastDiagnoses,currentTreatmentPlan
+tommy,Tom,tom1@gmail.com,75757575,patient,15,true,A,cancer,morphine 10 times a day

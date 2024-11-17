@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class PatientMenu extends Menu {
     StaffRepository staffRepo;
     PatientRepository patientRepo;
-    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH:00");
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("ddMMyy HH");
     DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:00");
 
     public PatientMenu(String id, AppointmentRepository apptRepo, StaffRepository staffRepo, UserRepository userRepo, PatientRepository patientRepo){

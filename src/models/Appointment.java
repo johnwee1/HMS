@@ -86,12 +86,12 @@ public class Appointment implements IdentifiedObject {
      */
     public String timeToDisplayString(String time){
         if (time == null || time.length() != 8) {
-            return null;
+            return time;
         }
         String day = time.substring(0, 2);
         String month = time.substring(2, 4);
         String year = time.substring(4, 6);
-        String hour = time.substring(6, 8);
+        String hour = time.substring(7, 9);
 
         return String.format("%s/%s/%s %s:00", day, month, year, hour);
     }

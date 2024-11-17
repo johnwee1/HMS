@@ -1,5 +1,6 @@
 id,passwordHash,role
 carol,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,pharmacist
 caroline,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,pharmacist
+tommy,Z+Uk9gz5Tfi9yARRlNBXA8+1IVU8EpjXn2NMVE19VWY=,patient
 doc_ock,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,doctor
 admin,ZfHgzHfBMoka9vKfwUTu2JrGQhRpaDNXWOIecJWsL4Y=,admin
