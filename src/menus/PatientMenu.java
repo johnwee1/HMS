@@ -288,7 +288,36 @@ public class PatientMenu extends Menu {
         if (apptPast.isEmpty()) {
             System.out.println("No past appointments.");
         } else {
-            displayAppointments(apptPast);
+            String header = String.format(
+                    "%-5s %-20s %-25s %-25s %-20s %-30s",
+                    "S/N", "Start Time", "Doctor Name", "Patient Name", "Diagnosis", "Prescription"
+            );
+            System.out.println(header);
+            System.out.println("-----------------------------------------------------------------------------------------------" +
+                    "-------------------------------------------");
+
+            for (int i = 0; i < apptPast.size(); i++) {
+                Appointment appointment = apptPast.get(i);
+                String startTimeFormatted = LocalDateTime.parse(appointment.startTime, inputFormatter).format(outputFormatter);
+                String doctorName = staffRepo.getName(appointment.doctor_id);
+                String patientName = patientRepo.getName(appointment.patient_id);
+                String diagnosis = appointment.diagnosis;
+                String prescription = "";
+                if (appointment.prescriptionStatus == 0) {
+                    prescription = "No prescription set";
+                } else if (appointment.prescriptionStatus == 1) {
+                    prescription = appointment.prescription;
+                } else if (appointment.prescriptionStatus == 2) {
+                    prescription = appointment.prescription + " (prescribed)";
+                }
+
+                // Print each row with the same format as the header
+                String row = String.format(
+                        "%-5d %-20s %-25s %-25s %-20s %-30s",
+                        (i + 1), startTimeFormatted, doctorName, patientName, diagnosis, prescription
+                );
+                System.out.println(row);
+            }
         }
     }
 

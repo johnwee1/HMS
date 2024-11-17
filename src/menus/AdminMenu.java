@@ -456,7 +456,14 @@ public class AdminMenu extends Menu {
                             String doctorName = staffRepo.getName(appointment.doctor_id);
                             String patientName = patRepo.getName(appointment.patient_id);
                             String diagnosis = appointment.diagnosis;
-                            String prescription = appointment.prescriptionStatus == 1 ? appointment.prescription : "No prescription set";
+                            String prescription = "";
+                            if (appointment.prescriptionStatus == 0) {
+                                prescription = "No prescription set";
+                            } else if (appointment.prescriptionStatus == 1) {
+                                prescription = appointment.prescription;
+                            } else if (appointment.prescriptionStatus == 2) {
+                                prescription = appointment.prescription + " (prescribed)";
+                            }
 
                             String row = String.format(
                                     "%-5d %-20s %-25s %-25s %-20s %-30s",
