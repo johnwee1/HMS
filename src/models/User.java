@@ -12,7 +12,7 @@ public class User implements IdentifiedObject {
     public String id;
     public String passwordHash;
 
-    public User() {};
+    public User() {}
 
     /**
      * When creating new user, constructor will also hash the provided string and store it

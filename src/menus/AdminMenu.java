@@ -30,6 +30,7 @@ public class AdminMenu extends Menu {
 
 
         while (!exit) {
+            flushTerminal();
             System.out.println("=== Admin Menu ===");
             System.out.println("1. View and Manage Hospital Staff");
             System.out.println("2. View Appointments Details");
@@ -41,15 +42,19 @@ public class AdminMenu extends Menu {
 
             switch (choice) {
                 case 1:
+                    flushTerminal();
                     manageHospitalStaffMenu();
                     break;
                 case 2:
+                    flushTerminal();
                     viewAppointmentsMenu(admapptmngr);
                     break;
                 case 3:
+                    flushTerminal();
                     manageInventoryMenu();
                     break;
                 case 4:
+                    flushTerminal();
                     changePassword();
                     break;
                 case 5:

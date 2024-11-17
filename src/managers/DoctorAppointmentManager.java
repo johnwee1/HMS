@@ -50,14 +50,11 @@ public class DoctorAppointmentManager {
                 System.out.println("Appointment created successfully.");
                 return true;
             }
-            if (status == 4){
-                return true;
-            }
+            return status == 4;
         } else {
             System.out.println("Failed to create the appointment.");
             return false;
-        }
-        return false; //resolving no return statement error, no use because above is binary
+        }//resolving no return statement error, no use because above is binary
     }
 
 

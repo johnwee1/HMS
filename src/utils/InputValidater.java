@@ -14,8 +14,7 @@ public class InputValidater {
      */
     public static int getValidInteger(){
         while (true) {
-            System.out.print("Please enter a valid integer: ");// Consume the input to prevent input issues
-            if (scan.hasNextInt()) {
+            if (scan.hasNextInt()) { // only proceed if valid
                 int nextInt = scan.nextInt();
                 scan.nextLine();
                 if (nextInt < 0) {

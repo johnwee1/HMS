@@ -167,9 +167,9 @@ public class MedicineRepository extends GenericRepository<Medicine> {
 
     private void printMedicineCollection(Collection<Medicine> medicines) {
         System.out.println("Medicine Inventory");
-        System.out.println("--------------------------------------------------");
+        System.out.println("=".repeat(80));
         System.out.format(headerFormat, "Display Name", "System ID", "Quantity", "Alert Level", "Alerted?");
-        System.out.println("--------------------------------------------------");
+        System.out.println("=".repeat(80));
         for (Medicine m : medicines) {
             System.out.format(rowFormat, m.displayName, m.id, m.quantity, m.alertLevel, m.topUpRequested);
         }

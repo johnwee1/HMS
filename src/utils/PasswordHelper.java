@@ -33,9 +33,8 @@ public class PasswordHelper {
      * @return true if password requirements are met
      */
     public static boolean passwordRuleValidator(String password){
-        if (password.isEmpty()) return false;
+        return !password.isEmpty();
         // add more rules if necessary.
-        return true;
     }
 
     /**

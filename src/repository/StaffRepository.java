@@ -2,10 +2,7 @@ package repository;
 
 import models.Staff;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class StaffRepository extends GenericRepository<Staff>{
@@ -33,7 +30,7 @@ public class StaffRepository extends GenericRepository<Staff>{
 
     public boolean createNewStaff(String username, String name, String role, int age, Boolean gender) {
         if (defaultViewOnlyDatabase().containsKey(username)) return false;
-        if (!Arrays.asList(role).contains(role)) return false;
+        if (!Collections.singletonList(role).contains(role)) return false;
         Staff newstaff = new Staff(username,name,role,age,gender);
         defaultCreateItem(newstaff);
         return true;

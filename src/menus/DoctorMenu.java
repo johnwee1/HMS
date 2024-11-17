@@ -32,6 +32,7 @@ public class DoctorMenu extends Menu{
     public void userInterface() {
         DoctorAppointmentManager apptManager = new DoctorAppointmentManager();
         while (true) {
+            flushTerminal();
             System.out.println("Doctor Menu:");
             System.out.println("1. View Patient Medical Records");
             System.out.println("2. Update Patient Medical Records");
@@ -48,11 +49,13 @@ public class DoctorMenu extends Menu{
 
             switch (choice) {
                 case 1:
+                    flushTerminal();
                     System.out.println("Viewing Patient Medical Records...");
                     viewPatientMedicalRecords(apptManager,patientRepo,id);
                     break;
 
                 case 2:
+                    flushTerminal();
                     System.out.println("Updating Patient Medical Records...");
                     // Show the list of patients under the doctor's care first
                     viewPatientMedicalRecords(apptManager,patientRepo,id);
@@ -60,6 +63,7 @@ public class DoctorMenu extends Menu{
                     break;
 
                 case 3:
+                    flushTerminal();
                     System.out.println("Viewing Personal Schedule...");
                     viewPersonalSchedule(apptManager, apptRepo, id);
 
@@ -71,26 +75,31 @@ public class DoctorMenu extends Menu{
                     break;
 
                 case 4:
+                    flushTerminal();
                     System.out.println("Setting Availability for Appointments...");
                     createAppointments(apptManager,id);
                     break;
 
                 case 5:
+                    flushTerminal();
                     System.out.println("Accepting or Declining Appointment Requests...");
                     handlePendingAppointments(apptManager,id);
                     break;
 
                 case 6:
+                    flushTerminal();
                     System.out.println("Viewing Upcoming Appointments...");
                     viewBookedAppointments(apptManager,id);
                     break;
 
                 case 7:
+                    flushTerminal();
                     System.out.println("Recording Appointment Outcome...");
                     recordAppointmentOutcome(apptManager,id);
                     break;
 
                 case 8:
+                    flushTerminal();
                     changePassword();
                     break;
 
@@ -128,7 +137,7 @@ public class DoctorMenu extends Menu{
             Patient patient = patientRepo.getPatient(patientId);
             if (patient != null) {
                 System.out.println("\nPatient " + patientNumber + ":");
-                System.out.println(patient.toString());
+                System.out.println(patient);
                 patientNumber++; // Increment the patient number
             } else {
                 System.out.println("No medical record found for patient ID: " + patientId);
@@ -218,7 +227,7 @@ public class DoctorMenu extends Menu{
 
             // Confirm the update and display the updated medical record
             System.out.println("\nUpdated Medical Record:");
-            System.out.println(selectedPatientRecord.toString());
+            System.out.println(selectedPatientRecord);
             break;
         }
     }

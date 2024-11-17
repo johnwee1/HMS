@@ -11,7 +11,7 @@ public interface ResourceHandler {
      * @return list of header strings
      * @throws IOException if there's an error reading the resource
      */
-    public List<String> readHeaders(String filepath) throws IOException;
+    List<String> readHeaders(String filepath) throws IOException;
 
     /**
      * Reads all data rows from a resource.
@@ -20,7 +20,7 @@ public interface ResourceHandler {
      * @return all rows (data) as a list, where each row is a string list
      * @throws IOException if there's an error reading the resource
      */
-    public List<List<String>> readRows(String filepath) throws IOException;
+    List<List<String>> readRows(String filepath) throws IOException;
 
     /**
      * Writes headers and data rows to a resource.
@@ -30,5 +30,5 @@ public interface ResourceHandler {
      * @param rows list of data rows, where each row is a List of strings
      * @throws IOException if there's an error writing to the resource
      */
-    public void writeToFile(String filepath, List<String> headers, List<List<String>> rows) throws IOException;
+    void writeToFile(String filepath, List<String> headers, List<List<String>> rows) throws IOException;
 }

@@ -48,7 +48,7 @@ public class MenuFactory {
             case "pharmacist" -> menu =  new PharmacistMenu(medRepo, apptRepo,userRepo, userId);
             case "admin" -> menu = new AdminMenu(userId,apptRepo,staffRepo,patientRepo,medRepo,userRepo);
             default -> throw new IllegalArgumentException("Unknown role: " + role);
-        };
+        }
         return menu;
     }
 }

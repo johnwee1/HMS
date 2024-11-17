@@ -38,7 +38,13 @@ public class MainMenu {
      * Handles the login, then hands off to the respective menu after login.
      */
     public void run(){
-        final UserRepository userRepository = new UserRepository(csv_users);
+        UserRepository userRepository = null;
+        try {
+            userRepository = new UserRepository(csv_users);
+        } catch (RuntimeException e) {
+            System.out.println("Data files are not available! The data folder should be in the same folder as the HMS.");
+            exit(1);
+        }
 
         System.out.println("Hospital Management System");
         createNewDefaultUser(userRepository);

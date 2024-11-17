@@ -35,7 +35,8 @@ public class Appointment implements IdentifiedObject {
     public String diagnosis;
     public String prescription;
 
-    public Appointment(){};
+    public Appointment(){}
+
     public Appointment(String startTime, String endTime, int status, String doctor_id){
         this.id = UUID.randomUUID().toString();
         this.startTime = startTime;

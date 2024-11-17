@@ -27,6 +27,7 @@ public class PharmacistMenu extends Menu {
     public void userInterface() {
         boolean running = true;
         while (running) {
+            flushTerminal();
             System.out.println("\n=== Pharmacy Management System ===");
             System.out.println("1. View Appointment Outcome Record");
             System.out.println("2. Update Prescription Status");
@@ -39,10 +40,12 @@ public class PharmacistMenu extends Menu {
             int choice = InputValidater.getValidInteger();
             switch (choice) {
                 case 1:
+                    flushTerminal();
                     printAppointments(appts);
                     break;
 
                 case 2:
+                    flushTerminal();
                     printAppointments(appts);
                     if (appts.isEmpty()) break;
                     System.out.println("Updating Prescription Status...");
@@ -57,7 +60,6 @@ public class PharmacistMenu extends Menu {
                             System.out.println("Invalid ID!");
                             break;
                         }
-                        ;
                         break;
                     } catch (InputMismatchException e) {
                         System.out.println("Invalid input! Must be an integer!");
@@ -65,6 +67,7 @@ public class PharmacistMenu extends Menu {
                     }
                     break;
                 case 3:
+                    flushTerminal();
                     medRepo.viewMedicationInventory();
                     break;
 
@@ -73,7 +76,7 @@ public class PharmacistMenu extends Menu {
                     String m_id = InputValidater.getValidString();
                     if (!submitReplenishmentRequest(m_id)) {
                         System.out.println("Invalid ID!");
-                    };
+                    }
                     break;
 
                 case 5:
@@ -88,8 +91,6 @@ public class PharmacistMenu extends Menu {
                 default:
                     System.out.println("\nInvalid option. Please select a number between 1 and 6.");
             }
-
-
         }
     }
 

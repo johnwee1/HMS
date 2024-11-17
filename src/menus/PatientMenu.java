@@ -33,6 +33,7 @@ public class PatientMenu extends Menu {
         Patient current = patientRepo.getPatient(id);
 
         while (true) {
+            flushTerminal();
             System.out.println("Select an option:");
             System.out.println("1. View Medical Record");
             System.out.println("2. Update Personal Information");
@@ -50,30 +51,39 @@ public class PatientMenu extends Menu {
 
             switch (choice) {
                 case 1:
+                    flushTerminal();
                     viewMedicalRecord(current);
                     break;
                 case 2:
+                    flushTerminal();
                     updatePersonalInformation(current);
                     break;
                 case 3:
+                    flushTerminal();
                     viewAvailableAppointments(manager);
                     break;
                 case 4:
+                    flushTerminal();
                     scheduleAppointment(manager);
                     break;
                 case 5:
+                    flushTerminal();
                     rescheduleAppointment(manager);
                     break;
                 case 6:
+                    flushTerminal();
                     cancelAppointment(manager);
                     break;
                 case 7:
+                    flushTerminal();
                     viewScheduledAppointments(manager);
                     break;
                 case 8:
+                    flushTerminal();
                     viewPastAppointmentRecords(manager);
                     break;
                 case 9:
+                    flushTerminal();
                     changePassword();
                     break;
                 case 10:

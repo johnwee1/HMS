@@ -31,7 +31,7 @@ public class GenericRepository<T extends IdentifiedObject> extends AbstractRepos
      * @return view only database object, for iteration and filtering.
      */
     public Map<String, T> defaultViewOnlyDatabase(){
-        return (Map<String, T>) Collections.unmodifiableMap(db);
+        return Collections.unmodifiableMap(db);
     }
 
     protected void loadDatabase() {

@@ -20,6 +20,14 @@ public abstract class Menu {
     }
 
     /**
+     * Flush the CLI using ansi codes.
+     */
+    public void flushTerminal(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    /**
      * Abstract userInterface() implemented by all subclasses
      */
     public abstract void userInterface();
