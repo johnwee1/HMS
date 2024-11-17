@@ -227,7 +227,7 @@ public class AdminMenu extends Menu {
                     System.out.println("Name: " + curstaff.name);
                     System.out.println("Role: " + curstaff.role);
                     System.out.println("Age: " + curstaff.age);
-                    System.out.println("Gender: " + curstaff.genderIsMale);
+                    System.out.println("Gender: " + curstaff.displayGender());
                     System.out.println();
                     System.out.println("Update details: (if no change, retype value)");
                     System.out.print("Enter New Name: ");
@@ -325,13 +325,14 @@ public class AdminMenu extends Menu {
                             case 3:
                                 boolean filtgender; // Declare outside the loop to use later
                                 while (true) {
-                                    System.out.print("Enter gender to filter by (true for male, false for female): ");
+                                    System.out.print("Filter by [m]ale or [f]emale? ");
                                     String genderInput = InputValidater.getValidString().toLowerCase();
-                                    if (genderInput.equals("true") || genderInput.equals("false")) {
-                                        filtgender = Boolean.parseBoolean(genderInput);
-                                        break; // Exit the loop when valid input is given
+                                    char c = genderInput.charAt(0);
+                                    if (c == 'm' || c == 'f') {
+                                        filtgender = c == 'm'; // true for male
+                                        break;
                                     } else {
-                                        System.out.println("Invalid input. Please enter 'true' for male or 'false' for female.");
+                                        System.out.println("Invalid input. Please enter 'male'/'m' or 'female'/'f'.");
                                     }
                                 }
                                 List<Staff> genderfilteredStaff = staffRepo.filterStaff(null, null, null, null, filtgender);
@@ -357,11 +358,11 @@ public class AdminMenu extends Menu {
                                 if (allstaff.isEmpty()) {
                                     System.out.println("No staff members matched your filters.");
                                 } else {
-                                    System.out.printf("%-5s %-20s %-20s %-5s %-10s%n", "Index", "Name", "Role", "Age", "Gender");
+                                    System.out.printf("%-5s %-40.36s %-15s %-5s %-10s%n", "Index", "Name", "Role", "Age", "Gender");
                                     System.out.println("--------------------------------------------------------------");
                                     for (int i = 0; i < allstaff.size(); i++) {
                                         Staff staff = allstaff.get(i);
-                                        System.out.printf("%-5d %-20s %-20s %-5d %-10s%n",
+                                        System.out.printf("%-5d %-40.36s %-15s %-5d %-10s%n",
                                                 i + 1,
                                                 staff.name,
                                                 staff.role,

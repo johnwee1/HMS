@@ -69,6 +69,8 @@ public class MainMenu {
         }
 
         System.out.println("Login successful!");
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         String role = userRepository.getUserRole(username);
 
         MenuFactory mf = new MenuFactory(

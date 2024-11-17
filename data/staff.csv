@@ -1,2 +1,5 @@
 id,name,role,age,genderIsMale
+carol,Carol,pharmacist,29,false
+caroline,Carol,pharmacist,25,false
 admin,Administrator,admin,0,true
+doc_ock,"Otto OCTAVIAN, PHD (with distinction)",doctor,50,true
